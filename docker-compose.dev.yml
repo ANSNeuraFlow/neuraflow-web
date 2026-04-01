@@ -1,0 +1,32 @@
+services:
+  neuraflow-web:
+    image: neuraflow/neuraflow-web:dev
+    build:
+      target: dev
+    environment:
+      - ENVIRONMENT=development
+      - PORT=3000
+      - HOST=0.0.0.0
+      - CORE_LAYER_PATH=./neuraflow-core-layer
+      - COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+    env_file:
+      - .env.dev
+    volumes:
+      - .:/app
+      - /app/.nuxt
+      - node_modules:/app/node_modules
+      - ../neuraflow-core-layer:/app/neuraflow-core-layer
+      - /app/neuraflow-core-layer/node_modules
+    command:
+      - sh
+      - -lc
+      - >-
+        if [ -f /app/neuraflow-core-layer/package.json ]; then
+          cd /app/neuraflow-core-layer && pnpm install;
+        fi;
+        cd /app && pnpm dev
+    tty: true
+    stdin_open: true
+
+volumes:
+  node_modules:

@@ -1,0 +1,11 @@
+services:
+  neuraflow-web:
+    image: neuraflow/neuraflow-web:prod
+    build:
+      target: prod
+    environment:
+      - ENVIRONMENT=production
+      - PORT=3000
+      - HOST=127.0.0.1
+    env_file:
+      - .env.prod
