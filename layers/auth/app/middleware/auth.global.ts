@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const { redirectAuthenticated, redirectUnauthenticated } = useAuthRedirects();
 
   if (sessionStore.isAuthenticated) {
-    return redirectAuthenticated(to, from, sessionStore.session!);
+    return redirectAuthenticated(to, from, sessionStore.user!);
   }
 
   return redirectUnauthenticated(to, from);
