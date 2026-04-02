@@ -1,6 +1,6 @@
 import type { RouteLocationNormalizedGeneric } from 'vue-router';
 
-import type { UserSession } from '../models/user-session.domain';
+import type { LoggedUser } from '../models/user-session.domain';
 
 export const useAuthRedirects = () => {
   const localePath = useLocalePath();
@@ -8,7 +8,7 @@ export const useAuthRedirects = () => {
   const redirectAuthenticated = (
     to: RouteLocationNormalizedGeneric,
     _from: RouteLocationNormalizedGeneric,
-    session: UserSession,
+    user: LoggedUser,
   ) => {
     const requiredPermissions = to.meta.requiredPermissions;
 
@@ -16,13 +16,11 @@ export const useAuthRedirects = () => {
       return;
     }
 
-    const userPermissions = session.user.permissions;
+    const userPermissionNames = user.permissions.map((p) => p.name);
 
-    if (!userPermissions) {
-      return abortNavigation({ message: 'Insufficient permissions' });
-    }
-
-    const userHasAllRequiredPermissions = requiredPermissions.every((v) => userPermissions.includes(v));
+    const userHasAllRequiredPermissions = requiredPermissions.every((required) =>
+      userPermissionNames.includes(required as string),
+    );
 
     if (!userHasAllRequiredPermissions) {
       return abortNavigation({ message: 'Insufficient permissions' });
