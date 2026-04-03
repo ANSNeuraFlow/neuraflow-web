@@ -15,5 +15,4 @@ export default defineNuxtConfig({
       extensions: ['.vue'],
     },
   ],
-  css: [resolve(currentDir, 'app/assets/css/landing.css')],
 });

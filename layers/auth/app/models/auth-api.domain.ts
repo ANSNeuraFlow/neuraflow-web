@@ -3,7 +3,7 @@ export type LoginApiResponse = {
   user: {
     id: string;
     email: string;
-    role: { id: string; name: string } | null;
+    role: { id: number; name: string } | null;
     isVerified: boolean;
     isPasswordChangeRequired: boolean;
   };
@@ -26,7 +26,7 @@ export type MeApiResponse = {
   firstName: string;
   lastName: string;
   email: string;
-  role: { id: string; name: string } | null;
+  role: { id: number; name: string } | null;
   createdAt: string;
-  permissions: { name: string }[];
+  permissions: string[];
 };

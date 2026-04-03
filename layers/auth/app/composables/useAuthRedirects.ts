@@ -16,7 +16,7 @@ export const useAuthRedirects = () => {
       return;
     }
 
-    const userPermissionNames = user.permissions.map((p) => p.name);
+    const userPermissionNames = user.permissions;
 
     const userHasAllRequiredPermissions = requiredPermissions.every((required) =>
       userPermissionNames.includes(required as string),

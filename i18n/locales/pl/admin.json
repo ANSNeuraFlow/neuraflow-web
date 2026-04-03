@@ -1,0 +1,74 @@
+{
+  "admin": {
+    "actions": {
+      "cancel": "Anuluj",
+      "createUser": "Nowy użytkownik",
+      "delete": "Usuń",
+      "editRole": "Zmień rolę",
+      "retry": "Spróbuj ponownie"
+    },
+    "createUser": {
+      "passwordChangeNote": "Użytkownik zostanie poproszony o zmianę hasła przy pierwszym logowaniu.",
+      "submit": "Utwórz konto",
+      "title": "Utwórz nowego użytkownika"
+    },
+    "deleteUser": {
+      "confirm": "Czy na pewno chcesz usunąć konto użytkownika {name}? Tej operacji nie można cofnąć.",
+      "submit": "Usuń konto",
+      "title": "Usuń użytkownika"
+    },
+    "editRole": {
+      "submit": "Zapisz zmiany",
+      "title": "Zmień rolę użytkownika"
+    },
+    "errors": {
+      "createFailed": "Nie udało się utworzyć użytkownika",
+      "deleteFailed": "Nie udało się usunąć użytkownika",
+      "fetchFailed": "Nie udało się pobrać listy użytkowników",
+      "updateRoleFailed": "Nie udało się zmienić roli"
+    },
+    "fields": {
+      "email": "Adres e-mail",
+      "firstName": "Imię",
+      "lastName": "Nazwisko",
+      "role": "Rola",
+      "temporaryPassword": "Tymczasowe hasło"
+    },
+    "placeholders": {
+      "email": "jan{'@'}example.com",
+      "firstName": "Jan",
+      "lastName": "Kowalski",
+      "role": "Wybierz rolę",
+      "roleOptional": "Domyślna (USER)",
+      "temporaryPassword": "Min. 8 znaków"
+    },
+    "table": {
+      "actions": "Akcje",
+      "active": "Aktywny",
+      "createdAt": "Data rejestracji",
+      "email": "E-mail",
+      "empty": "Brak użytkowników",
+      "name": "Imię i nazwisko",
+      "noRole": "Brak roli",
+      "passwordChangeRequired": "Wymaga zmiany hasła",
+      "role": "Rola",
+      "status": "Status",
+      "unverified": "Niezweryfikowany"
+    },
+    "users": {
+      "subtitle": "Łącznie {count} użytkowników",
+      "title": "Zarządzanie użytkownikami"
+    },
+    "validation": {
+      "emailInvalid": "Podaj prawidłowy adres e-mail",
+      "emailRequired": "E-mail jest wymagany",
+      "firstNameMax": "Imię może mieć maksymalnie 64 znaki",
+      "firstNameMin": "Imię musi mieć co najmniej 2 znaki",
+      "lastNameMax": "Nazwisko może mieć maksymalnie 64 znaki",
+      "lastNameMin": "Nazwisko musi mieć co najmniej 2 znaki",
+      "passwordMax": "Hasło może mieć maksymalnie 128 znaków",
+      "passwordMin": "Hasło musi mieć co najmniej 8 znaków",
+      "roleRequired": "Wybierz rolę"
+    }
+  }
+}

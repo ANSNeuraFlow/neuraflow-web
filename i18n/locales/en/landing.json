@@ -41,24 +41,94 @@
       "submit": "Send message",
       "title": "Let's talk about your implementation"
     },
+    "cta": {
+      "badge": "Beta — join now for free",
+      "description": "Join BCI researchers and developers who use NeuraFlow to analyze EEG signals and train their own thought-classification models.",
+      "emailError": "Please enter a valid email address.",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "your{'@'}email.com",
+      "submitLabel": "Join the beta",
+      "submittingLabel": "Saving...",
+      "successMessage": "Great! We've added you to the beta testers list.",
+      "title": "Ready to",
+      "titleAccent": "connect",
+      "titleSuffix": "with your own brain?",
+      "trust1": "Free beta access",
+      "trust2": "No credit card required",
+      "trust3": "Access to API docs"
+    },
+    "features": {
+      "description": "From raw EEG signal to trained model — NeuraFlow handles the entire pipeline in one place.",
+      "items": {
+        "models": {
+          "description": "Every trained BCI model stored with metadata: accuracy, training date, linked session. Ready for deployment and inference.",
+          "tags": ["Model Registry", "Versioning", "Accuracy Tracking"],
+          "title": "Model Registry"
+        },
+        "security": {
+          "description": "JWT (JWE/AES-256-GCM), role-based access control (USER/ADMIN), timing-safe webhook verification, and force-change-password for new accounts.",
+          "tags": ["JWT", "RBAC", "AES-256-GCM", "NestJS Guards"],
+          "title": "Security"
+        },
+        "sessions": {
+          "description": "Create, monitor, and manage EEG sessions with precise protocols (LEFT_HAND, RIGHT_HAND). Full history with timestamps and ACTIVE/COMPLETED status.",
+          "tags": ["PostgreSQL", "Session Tracking", "Protocols"],
+          "title": "Session Management"
+        },
+        "spark": {
+          "description": "PySpark Structured Streaming processes raw EEG data from Kafka and writes to HDFS — ready for thought-classification model training.",
+          "tags": ["Apache Spark", "HDFS", "Structured Streaming"],
+          "title": "Spark Processing"
+        },
+        "streaming": {
+          "description": "WebSocket gateway receives real-time data from OpenBCI and other headsets — 8 channels, 256 Hz, sub-millisecond latency via Kafka.",
+          "tags": ["WebSocket", "Kafka", "256 Hz", "OpenBCI"],
+          "title": "EEG Streaming"
+        },
+        "training": {
+          "description": "Automatic dispatch of training jobs to the Ray cluster. Job handling: PENDING → RUNNING → COMPLETED with accuracy and S3 model path.",
+          "tags": ["Ray Cluster", "PyTorch", "S3", "HDFS"],
+          "title": "ML Training on Ray"
+        }
+      },
+      "sectionLabel": "Platform capabilities",
+      "title": "Everything you need for",
+      "titleAccent": "BCI"
+    },
     "footer": {
+      "apiDocsAvailable": "Swagger docs available",
+      "apiEndpoint": "http://localhost:4000/api/v1",
+      "apiLabel": "API:",
       "copyright": "NeuraFlow. All rights reserved.",
       "legal": "Legal",
+      "links": {
+        "apiDocs": "API Docs",
+        "features": "Features",
+        "howItWorks": "How it works",
+        "tech": "Technology"
+      },
       "privacy": "Privacy policy",
       "product": "Product",
-      "tagline": "EEG and AI platform for teams building BCI solutions.",
+      "tagline": "Brain-Computer Interface Platform",
       "terms": "Terms of service"
     },
     "hero": {
-      "badge": "NeuraFlow Platform",
-      "description": "Capture multi-channel brain signals, stream data in real time, train ML models at scale, and deploy with confidence.",
-      "primaryCta": "Get started",
-      "secondaryCta": "Documentation",
+      "badge": "Next-generation BCI platform",
+      "description": "NeuraFlow combines EEG data streaming, advanced Machine Learning models, and a Ray cluster into one cohesive Brain-Computer Interface platform.",
+      "primaryCta": "Get started free",
+      "scrollHint": "Scroll",
+      "secondaryCta": "How it works",
       "titleAccent": "EEG Intelligence",
+      "titleLine1": "Decode your",
+      "titleLine2": "brain in",
+      "titleLine3": "real time",
       "titlePrefix": "The",
       "titleSuffix": "Platform for AI Teams",
       "visualCaption": "Live data stream with intent markers and cluster telemetry.",
-      "visualTitle": "EEG signal preview"
+      "visualFreq": "256 Hz",
+      "visualLive": "LIVE",
+      "visualSession": "SESSION_ACTIVE • OpenBCI • LEFT_HAND",
+      "visualTitle": "Real-time EEG signal visualization"
     },
     "highlights": {
       "description": "The platform supports the complete workflow, from EEG acquisition to production-ready models.",
@@ -80,29 +150,45 @@
           "title": "Distributed ML training"
         }
       },
-      "title": "Marketing highlights"
+      "title": "Key highlights"
     },
     "howItWorks": {
-      "description": "Four steps from raw brain signals to a deployable model.",
+      "codeExample1Comment": "// 1. Create EEG session",
+      "codeExample2Comment": "// 2. Dispatch training job",
+      "codeFile": "example.http — NeuraFlow API",
+      "codeProtocol": "WebSocket + REST",
+      "description": "Five steps from electrode to model — an automated pipeline for BCI scientists and developers.",
+      "sectionLabel": "Data pipeline",
       "steps": {
-        "deploy": {
-          "description": "Receive results, manage model versions, and prepare for production use.",
-          "title": "Deploy output"
+        "kafka": {
+          "description": "EEG data flows into a Kafka topic. PySpark Structured Streaming processes it and writes to HDFS.",
+          "tech": "Apache Kafka + Spark",
+          "title": "Kafka → Spark"
         },
-        "record": {
-          "description": "Create an EEG session and select your capture device and protocol.",
-          "title": "Record session"
+        "model": {
+          "description": "Trained model (accuracy, filePath in S3) goes to the registry. Ready to classify your thoughts.",
+          "tech": "Model Registry",
+          "title": "BCI Model"
         },
-        "stream": {
-          "description": "WebSocket data flows into Kafka, ready for downstream processing.",
-          "title": "Stream data"
+        "ray": {
+          "description": "After session completes (COMPLETED), dispatch a training job. Ray cluster runs train.py on HDFS data.",
+          "tech": "Ray Jobs API",
+          "title": "Ray Training"
         },
-        "train": {
-          "description": "Choose completed sessions and dispatch a training job to the Ray cluster.",
-          "title": "Train model"
+        "session": {
+          "description": "Create a session via REST API, specifying device and protocol (e.g. LEFT_HAND). Status: PENDING → ACTIVE.",
+          "tech": "NestJS REST API",
+          "title": "EEG Session"
+        },
+        "streaming": {
+          "description": "EEG headset (e.g. OpenBCI) connects via WebSocket and streams 8 channels at 256 Hz.",
+          "tech": "WebSocket Gateway",
+          "title": "Data Streaming"
         }
       },
-      "title": "How it works"
+      "title": "How",
+      "titleAccent": "NeuraFlow",
+      "titleSuffix": "works"
     },
     "meta": {
       "description": "NeuraFlow is a platform for EEG signal capture, real-time data streaming, and ML model training on distributed infrastructure.",
@@ -112,30 +198,28 @@
       "capabilities": "Capabilities",
       "closeMenu": "Close navigation menu",
       "contact": "Contact",
+      "features": "Features",
       "highlights": "Highlights",
       "howItWorks": "How it works",
       "login": "Login",
       "openMenu": "Open navigation menu",
-      "register": "Register",
+      "register": "Get started",
+      "stats": "Stats",
       "technology": "Technology"
     },
-    "technology": {
-      "description": "A layered architecture that connects frontend, backend, and compute infrastructure.",
-      "groups": {
-        "backend": {
-          "items": "NestJS, PostgreSQL/Kysely, JWT/JWE, Socket.IO",
-          "title": "Backend"
-        },
-        "frontend": {
-          "items": "Nuxt 4, TypeScript, Tailwind CSS, Reka UI",
-          "title": "Frontend"
-        },
-        "infrastructure": {
-          "items": "Apache Kafka, Ray, Prometheus, Docker",
-          "title": "Infrastructure"
-        }
-      },
-      "title": "Technology overview"
+    "stats": {
+      "channels": { "label": "EEG channels", "sub": "simultaneous", "value": "8" },
+      "latency": { "label": "WebSocket latency", "sub": "live streaming", "value": "<1ms" },
+      "sampleRate": { "label": "Sampling frequency", "sub": "per EEG channel", "value": "256 Hz" },
+      "scale": { "label": "Sessions & models", "sub": "scalable Ray cluster", "value": "∞" }
+    },
+    "tech": {
+      "archCaption": "Microservices architecture with event-driven communication via Kafka",
+      "description": "Every layer of the stack chosen for scalability, performance, and reliability in production environments.",
+      "sectionLabel": "Technology stack",
+      "title": "Built on",
+      "titleAccent": "enterprise-grade",
+      "titleSuffix": "technologies"
     }
   }
 }
