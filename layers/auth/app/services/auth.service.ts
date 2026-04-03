@@ -1,12 +1,12 @@
 import { useApi } from '#layers/core/app/composables/useApi';
 
+import { loginApiResponseDto, meApiResponseDto, registerApiResponseDto } from '../dtos/auth.dto';
 import type {
   LoginApiResponse,
   LoginPasswordChangeRequiredResponse,
   MeApiResponse,
   RegisterApiResponse,
 } from '../models/auth-api.domain';
-import { loginApiResponseSchema, meApiResponseSchema, registerApiResponseSchema } from '../schemas/auth-api.schema';
 
 export type LoginPayload = {
   email: string;
@@ -28,7 +28,7 @@ export const useAuthService = () => {
       body: payload,
     });
 
-    return loginApiResponseSchema.parse(response);
+    return loginApiResponseDto.parse(response);
   };
 
   const register = async (payload: RegisterPayload) => {
@@ -36,13 +36,13 @@ export const useAuthService = () => {
       body: payload,
     });
 
-    return registerApiResponseSchema.parse(response);
+    return registerApiResponseDto.parse(response);
   };
 
   const me = async () => {
     const response = await get<MeApiResponse>('/auth/me');
 
-    return meApiResponseSchema.parse(response);
+    return meApiResponseDto.parse(response);
   };
 
   return {
