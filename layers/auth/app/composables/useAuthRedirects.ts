@@ -1,6 +1,6 @@
 import type { RouteLocationNormalizedGeneric } from 'vue-router';
 
-import type { LoggedUser } from '../models/user-session.domain';
+import type { LoggedInUser } from '../models/user-session.domain';
 
 export const useAuthRedirects = () => {
   const localePath = useLocalePath();
@@ -8,7 +8,7 @@ export const useAuthRedirects = () => {
   const redirectAuthenticated = (
     to: RouteLocationNormalizedGeneric,
     _from: RouteLocationNormalizedGeneric,
-    user: LoggedUser,
+    user: LoggedInUser,
   ) => {
     const requiredPermissions = to.meta.requiredPermissions;
 

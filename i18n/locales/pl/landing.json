@@ -1,0 +1,141 @@
+{
+  "landing": {
+    "capabilities": {
+      "description": "Zestaw funkcji zoptymalizowany pod operacje BCI i eksperymenty neuro-AI.",
+      "items": {
+        "access": {
+          "description": "Role i uprawnienia chronia zasoby oraz operacje administracyjne.",
+          "title": "Kontrola dostepu"
+        },
+        "capture": {
+          "description": "Spójny format probek dla sygnalow z urzadzen EEG i protokolow badawczych.",
+          "title": "Rejestracja 8 kanalow EEG"
+        },
+        "kafka": {
+          "description": "Niezawodny bufor i dystrybucja danych dla modulow analitycznych oraz treningowych.",
+          "title": "Pipeline oparty o Kafka"
+        },
+        "markers": {
+          "description": "Adnotuj sygnal klasami ruchowymi i poznawczymi, aby poprawic jakosc treningu.",
+          "title": "Markery intencji"
+        },
+        "models": {
+          "description": "Przegladaj, pobieraj i porzadkuj wytrenowane modele przypisane do uzytkownikow.",
+          "title": "Zarzadzanie modelami"
+        },
+        "ray": {
+          "description": "Automatyzuj uruchamianie zadan treningowych i odbieraj wyniki przez webhook.",
+          "title": "Trening na Ray"
+        }
+      },
+      "title": "Co umozliwia platforma"
+    },
+    "contact": {
+      "description": "Napisz, a pomoziemy dobrac architekture NeuraFlow do Twojego przypadku uzycia.",
+      "emailLabel": "Adres e-mail",
+      "emailPlaceholder": "Wpisz adres e-mail",
+      "messageLabel": "Wiadomosc",
+      "messagePlaceholder": "Opisz swoj scenariusz, cele i wymagania techniczne",
+      "nameLabel": "Imie i nazwisko",
+      "namePlaceholder": "Wpisz imie i nazwisko",
+      "submit": "Wyslij wiadomosc",
+      "title": "Porozmawiajmy o wdrozeniu"
+    },
+    "footer": {
+      "copyright": "NeuraFlow. Wszelkie prawa zastrzezone.",
+      "legal": "Informacje prawne",
+      "privacy": "Polityka prywatnosci",
+      "product": "Produkt",
+      "tagline": "Platforma EEG i AI dla zespolow budujacych rozwiazania BCI.",
+      "terms": "Warunki korzystania"
+    },
+    "hero": {
+      "badge": "NeuraFlow Platform",
+      "description": "Rejestruj wielokanalowe sygnaly mozgu, przesylaj dane w czasie rzeczywistym, trenuj modele ML na skali i wdrazaj je z pewnoscia.",
+      "primaryCta": "Rozpocznij",
+      "secondaryCta": "Dokumentacja",
+      "titleAccent": "EEG Intelligence",
+      "titlePrefix": "Platforma",
+      "titleSuffix": "dla zespolow budujacych AI",
+      "visualCaption": "Strumien danych na zywo z markerami intencji i telemetria klastra.",
+      "visualTitle": "Podglad sygnalu EEG"
+    },
+    "highlights": {
+      "description": "Architektura platformy wspiera caly przeplyw pracy: od akwizycji EEG po gotowy model.",
+      "items": {
+        "monitoring": {
+          "description": "Sledz zdrowie infrastruktury i metryki wydajnosci z integracja Prometheus.",
+          "title": "Monitoring klastra"
+        },
+        "sessions": {
+          "description": "Planuj, prowadz i zamykaj sesje EEG z markerami i jednoznaczna historia eksperymentow.",
+          "title": "Pelny cykl sesji"
+        },
+        "streaming": {
+          "description": "Niskie opoznienia i stabilny przesyl wielokanalowych probek do pipeline'u danych.",
+          "title": "Strumieniowanie EEG na zywo"
+        },
+        "training": {
+          "description": "Uruchamiaj zadania treningowe w klastrze Ray i skaluj obciazenie na wiele wezlow.",
+          "title": "Rozproszone trenowanie ML"
+        }
+      },
+      "title": "Kluczowe korzysci"
+    },
+    "howItWorks": {
+      "description": "Cztery kroki od surowego sygnalu do gotowego modelu.",
+      "steps": {
+        "deploy": {
+          "description": "Odbierz wynik, zarzadzaj wersjami i przygotuj model do produkcyjnego uzycia.",
+          "title": "Wdrozenie modelu"
+        },
+        "record": {
+          "description": "Utworz sesje EEG, wybierz urzadzenie i protokol eksperymentu.",
+          "title": "Nagraj sesje"
+        },
+        "stream": {
+          "description": "Strumien WebSocket trafia do Kafki, gdzie dane sa gotowe do dalszego przetwarzania.",
+          "title": "Przesylaj dane"
+        },
+        "train": {
+          "description": "Wybierz zakonczone sesje i wyslij zadanie trenowania na klaster Ray.",
+          "title": "Uruchom trening"
+        }
+      },
+      "title": "Jak to dziala"
+    },
+    "meta": {
+      "description": "NeuraFlow to platforma do rejestracji sygnalow EEG, strumieniowania danych i trenowania modeli ML na infrastrukturze rozproszonej.",
+      "title": "NeuraFlow | Platforma EEG i AI"
+    },
+    "nav": {
+      "capabilities": "Mozliwosci",
+      "closeMenu": "Zamknij menu nawigacji",
+      "contact": "Kontakt",
+      "highlights": "Korzyści",
+      "howItWorks": "Jak to dziala",
+      "login": "Zaloguj",
+      "openMenu": "Otworz menu nawigacji",
+      "register": "Rejestracja",
+      "technology": "Technologie"
+    },
+    "technology": {
+      "description": "Warstwowa architektura laczy frontend, backend i infrastrukture obliczeniowa.",
+      "groups": {
+        "backend": {
+          "items": "NestJS, PostgreSQL/Kysely, JWT/JWE, Socket.IO",
+          "title": "Backend"
+        },
+        "frontend": {
+          "items": "Nuxt 4, TypeScript, Tailwind CSS, Reka UI",
+          "title": "Frontend"
+        },
+        "infrastructure": {
+          "items": "Apache Kafka, Ray, Prometheus, Docker",
+          "title": "Infrastruktura"
+        }
+      },
+      "title": "Przeglad technologii"
+    }
+  }
+}

@@ -6,6 +6,7 @@ import type {
   MeApiResponse,
   RegisterApiResponse,
 } from '../models/auth-api.domain';
+import { loginApiResponseSchema, meApiResponseSchema, registerApiResponseSchema } from '../schemas/auth-api.schema';
 
 export type LoginPayload = {
   email: string;
@@ -22,17 +23,31 @@ export type RegisterPayload = {
 export const useAuthService = () => {
   const { post, get } = useApi();
 
-  const login = (payload: LoginPayload) =>
-    post<LoginApiResponse | LoginPasswordChangeRequiredResponse>('/auth/login', {
+  const login = async (payload: LoginPayload) => {
+    const response = await post<LoginApiResponse | LoginPasswordChangeRequiredResponse>('/auth/login', {
       body: payload,
     });
 
-  const register = (payload: RegisterPayload) =>
-    post<RegisterApiResponse>('/auth/register', {
+    return loginApiResponseSchema.parse(response);
+  };
+
+  const register = async (payload: RegisterPayload) => {
+    const response = await post<RegisterApiResponse>('/auth/register', {
       body: payload,
     });
 
-  const me = () => get<MeApiResponse>('/auth/me');
+    return registerApiResponseSchema.parse(response);
+  };
 
-  return { login, register, me };
+  const me = async () => {
+    const response = await get<MeApiResponse>('/auth/me');
+
+    return meApiResponseSchema.parse(response);
+  };
+
+  return {
+    login,
+    register,
+    me,
+  };
 };

@@ -1,4 +1,4 @@
-export type LoggedUser = {
+export type LoggedInUser = {
   id: string;
   firstName: string;
   lastName: string;

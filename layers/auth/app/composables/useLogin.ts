@@ -1,15 +1,10 @@
 import { toTypedSchema } from '@vee-validate/zod';
-import { z } from 'zod';
 
+import { loginSchema } from '../schemas/login.schema';
 import { useAuthService } from '../services/auth.service';
 import { useUserSessionStore } from '../store/user-session.store';
 
-const schema = toTypedSchema(
-  z.object({
-    email: z.string().min(1, 'auth.validation.emailRequired').email('auth.validation.emailInvalid'),
-    password: z.string().min(1, 'auth.validation.passwordRequired').min(8, 'auth.validation.passwordMinLength'),
-  }),
-);
+const schema = toTypedSchema(loginSchema);
 
 export const useLogin = () => {
   const { t } = useI18n();
