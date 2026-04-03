@@ -4,138 +4,223 @@
       "description": "Zestaw funkcji zoptymalizowany pod operacje BCI i eksperymenty neuro-AI.",
       "items": {
         "access": {
-          "description": "Role i uprawnienia chronia zasoby oraz operacje administracyjne.",
-          "title": "Kontrola dostepu"
+          "description": "Role i uprawnienia chronią zasoby oraz operacje administracyjne.",
+          "title": "Kontrola dostępu"
         },
         "capture": {
-          "description": "Spójny format probek dla sygnalow z urzadzen EEG i protokolow badawczych.",
-          "title": "Rejestracja 8 kanalow EEG"
+          "description": "Spójny format próbek dla sygnałów z urządzeń EEG i protokołów badawczych.",
+          "title": "Rejestracja 8 kanałów EEG"
         },
         "kafka": {
-          "description": "Niezawodny bufor i dystrybucja danych dla modulow analitycznych oraz treningowych.",
+          "description": "Niezawodny bufor i dystrybucja danych dla modułów analitycznych oraz treningowych.",
           "title": "Pipeline oparty o Kafka"
         },
         "markers": {
-          "description": "Adnotuj sygnal klasami ruchowymi i poznawczymi, aby poprawic jakosc treningu.",
+          "description": "Adnotuj sygnał klasami ruchowymi i poznawczymi, aby poprawić jakość treningu.",
           "title": "Markery intencji"
         },
         "models": {
-          "description": "Przegladaj, pobieraj i porzadkuj wytrenowane modele przypisane do uzytkownikow.",
-          "title": "Zarzadzanie modelami"
+          "description": "Przeglądaj, pobieraj i porządkuj wytrenowane modele przypisane do użytkowników.",
+          "title": "Zarządzanie modelami"
         },
         "ray": {
-          "description": "Automatyzuj uruchamianie zadan treningowych i odbieraj wyniki przez webhook.",
+          "description": "Automatyzuj uruchamianie zadań treningowych i odbieraj wyniki przez webhook.",
           "title": "Trening na Ray"
         }
       },
-      "title": "Co umozliwia platforma"
+      "title": "Co umożliwia platforma"
     },
     "contact": {
-      "description": "Napisz, a pomoziemy dobrac architekture NeuraFlow do Twojego przypadku uzycia.",
+      "description": "Napisz, a pomożemy dobrać architekturę NeuraFlow do Twojego przypadku użycia.",
       "emailLabel": "Adres e-mail",
       "emailPlaceholder": "Wpisz adres e-mail",
-      "messageLabel": "Wiadomosc",
-      "messagePlaceholder": "Opisz swoj scenariusz, cele i wymagania techniczne",
-      "nameLabel": "Imie i nazwisko",
-      "namePlaceholder": "Wpisz imie i nazwisko",
-      "submit": "Wyslij wiadomosc",
-      "title": "Porozmawiajmy o wdrozeniu"
+      "messageLabel": "Wiadomość",
+      "messagePlaceholder": "Opisz swój scenariusz, cele i wymagania techniczne",
+      "nameLabel": "Imię i nazwisko",
+      "namePlaceholder": "Wpisz imię i nazwisko",
+      "submit": "Wyślij wiadomość",
+      "title": "Porozmawiajmy o wdrożeniu"
+    },
+    "cta": {
+      "badge": "Beta — dołącz teraz za darmo",
+      "description": "Dołącz do badaczy i deweloperów BCI, którzy używają NeuraFlow do analizy sygnałów EEG i trenowania własnych modeli klasyfikacji myśli.",
+      "emailError": "Podaj prawidłowy adres email.",
+      "emailLabel": "Adres email",
+      "emailPlaceholder": "jan{'@'}example.com",
+      "submitLabel": "Dołącz do bety",
+      "submittingLabel": "Zapisuję...",
+      "successMessage": "Świetnie! Zapisaliśmy Cię na listę beta testerów.",
+      "title": "Gotowy aby",
+      "titleAccent": "połączyć się",
+      "titleSuffix": "z własnym mózgiem?",
+      "trust1": "Bezpłatna wersja beta",
+      "trust2": "Brak karty kredytowej",
+      "trust3": "Dostęp do API docs"
+    },
+    "features": {
+      "description": "Od surowego sygnału EEG do wytrenowanego modelu — NeuraFlow obsługuje cały pipeline w jednym miejscu.",
+      "items": {
+        "models": {
+          "description": "Każdy wytrenowany model BCI przechowywany z metadanymi: accuracy, data treningu, powiązana sesja. Gotowy do wdrożenia i inferencji.",
+          "tags": ["Model Registry", "Versioning", "Accuracy Tracking"],
+          "title": "Rejestr Modeli"
+        },
+        "security": {
+          "description": "JWT (JWE/AES-256-GCM), role-based access control (USER/ADMIN), timing-safe webhook verification i force-change-password dla nowych kont.",
+          "tags": ["JWT", "RBAC", "AES-256-GCM", "NestJS Guards"],
+          "title": "Bezpieczeństwo"
+        },
+        "sessions": {
+          "description": "Twórz, monitoruj i zarządzaj sesjami EEG z dokładnymi protokołami (LEFT_HAND, RIGHT_HAND). Pełna historia z timestampami i statusem ACTIVE/COMPLETED.",
+          "tags": ["PostgreSQL", "Session Tracking", "Protokoły"],
+          "title": "Zarządzanie Sesjami"
+        },
+        "spark": {
+          "description": "PySpark Structured Streaming przetwarza surowe dane EEG z Kafka i zapisuje je do HDFS — gotowe do trenowania modeli klasyfikacji myśli.",
+          "tags": ["Apache Spark", "HDFS", "Structured Streaming"],
+          "title": "Przetwarzanie Spark"
+        },
+        "streaming": {
+          "description": "WebSocket gateway odbiera dane w czasie rzeczywistym z urządzeń OpenBCI i innych headsetów — 8 kanałów, 256 Hz, sub-milisekundowe opóźnienie przez Kafka.",
+          "tags": ["WebSocket", "Kafka", "256 Hz", "OpenBCI"],
+          "title": "Streaming EEG"
+        },
+        "training": {
+          "description": "Automatyczne wysyłanie zadań treningowych do klastra Ray. Obsługa jobów PENDING → RUNNING → COMPLETED z accuracy i ścieżką modelu w S3.",
+          "tags": ["Ray Cluster", "PyTorch", "S3", "HDFS"],
+          "title": "Trening ML na Ray"
+        }
+      },
+      "sectionLabel": "Możliwości platformy",
+      "title": "Wszystko czego potrzebujesz do",
+      "titleAccent": "BCI"
     },
     "footer": {
-      "copyright": "NeuraFlow. Wszelkie prawa zastrzezone.",
+      "apiDocsAvailable": "Swagger docs dostępne",
+      "apiEndpoint": "http://localhost:4000/api/v1",
+      "apiLabel": "API:",
+      "copyright": "NeuraFlow. Wszelkie prawa zastrzeżone.",
       "legal": "Informacje prawne",
-      "privacy": "Polityka prywatnosci",
+      "links": {
+        "apiDocs": "API Docs",
+        "features": "Funkcje",
+        "howItWorks": "Jak to działa",
+        "tech": "Technologia"
+      },
+      "privacy": "Polityka prywatności",
       "product": "Produkt",
-      "tagline": "Platforma EEG i AI dla zespolow budujacych rozwiazania BCI.",
+      "tagline": "Brain-Computer Interface Platform",
       "terms": "Warunki korzystania"
     },
     "hero": {
-      "badge": "NeuraFlow Platform",
-      "description": "Rejestruj wielokanalowe sygnaly mozgu, przesylaj dane w czasie rzeczywistym, trenuj modele ML na skali i wdrazaj je z pewnoscia.",
-      "primaryCta": "Rozpocznij",
-      "secondaryCta": "Dokumentacja",
+      "badge": "Platforma BCI nowej generacji",
+      "description": "NeuraFlow łączy streaming danych EEG, zaawansowane modele Machine Learning i klaster Ray w jedną spójną platformę Brain-Computer Interface.",
+      "primaryCta": "Zacznij za darmo",
+      "primaryCta": "Zacznij za darmo",
+      "scrollHint": "Przewiń",
+      "secondaryCta": "Jak to działa",
+      "secondaryCta": "Jak to działa",
       "titleAccent": "EEG Intelligence",
+      "titleLine1": "Odczytaj swój",
+      "titleLine2": "mózg w czasie",
+      "titleLine3": "rzeczywistym",
       "titlePrefix": "Platforma",
-      "titleSuffix": "dla zespolow budujacych AI",
-      "visualCaption": "Strumien danych na zywo z markerami intencji i telemetria klastra.",
-      "visualTitle": "Podglad sygnalu EEG"
+      "titleSuffix": "dla zespołów budujących AI",
+      "visualCaption": "Strumień danych na żywo z markerami intencji i telemetrią klastra.",
+      "visualFreq": "256 Hz",
+      "visualLive": "LIVE",
+      "visualSession": "SESSION_ACTIVE • OpenBCI • LEFT_HAND",
+      "visualTitle": "Wizualizacja sygnału EEG w czasie rzeczywistym"
     },
     "highlights": {
-      "description": "Architektura platformy wspiera caly przeplyw pracy: od akwizycji EEG po gotowy model.",
+      "description": "Architektura platformy wspiera cały przepływ pracy: od akwizycji EEG po gotowy model.",
       "items": {
         "monitoring": {
-          "description": "Sledz zdrowie infrastruktury i metryki wydajnosci z integracja Prometheus.",
+          "description": "Śledź zdrowie infrastruktury i metryki wydajności z integracją Prometheus.",
           "title": "Monitoring klastra"
         },
         "sessions": {
-          "description": "Planuj, prowadz i zamykaj sesje EEG z markerami i jednoznaczna historia eksperymentow.",
-          "title": "Pelny cykl sesji"
+          "description": "Planuj, prowadź i zamykaj sesje EEG z markerami i jednoznaczną historią eksperymentów.",
+          "title": "Pełny cykl sesji"
         },
         "streaming": {
-          "description": "Niskie opoznienia i stabilny przesyl wielokanalowych probek do pipeline'u danych.",
-          "title": "Strumieniowanie EEG na zywo"
+          "description": "Niskie opóźnienia i stabilny przesył wielokanałowych próbek do pipeline'u danych.",
+          "title": "Strumieniowanie EEG na żywo"
         },
         "training": {
-          "description": "Uruchamiaj zadania treningowe w klastrze Ray i skaluj obciazenie na wiele wezlow.",
+          "description": "Uruchamiaj zadania treningowe w klastrze Ray i skaluj obciążenie na wiele węzłów.",
           "title": "Rozproszone trenowanie ML"
         }
       },
-      "title": "Kluczowe korzysci"
+      "title": "Kluczowe korzyści"
     },
     "howItWorks": {
-      "description": "Cztery kroki od surowego sygnalu do gotowego modelu.",
+      "codeExample1Comment": "// 1. Utwórz sesję EEG",
+      "codeExample2Comment": "// 2. Wyślij zadanie treningowe",
+      "codeFile": "example.http — NeuraFlow API",
+      "codeProtocol": "WebSocket + REST",
+      "description": "Pięć kroków od elektrody do modelu — zautomatyzowany pipeline dla naukowców i deweloperów BCI.",
+      "sectionLabel": "Pipeline danych",
       "steps": {
-        "deploy": {
-          "description": "Odbierz wynik, zarzadzaj wersjami i przygotuj model do produkcyjnego uzycia.",
-          "title": "Wdrozenie modelu"
+        "kafka": {
+          "description": "Dane EEG trafiają do topiku Kafka. PySpark Structured Streaming przetwarza je i zapisuje do HDFS.",
+          "tech": "Apache Kafka + Spark",
+          "title": "Kafka → Spark"
         },
-        "record": {
-          "description": "Utworz sesje EEG, wybierz urzadzenie i protokol eksperymentu.",
-          "title": "Nagraj sesje"
+        "model": {
+          "description": "Wytrenowany model (accuracy, filePath w S3) trafia do rejestru. Gotowy do klasyfikacji Twoich myśli.",
+          "tech": "Model Registry",
+          "title": "Model BCI"
         },
-        "stream": {
-          "description": "Strumien WebSocket trafia do Kafki, gdzie dane sa gotowe do dalszego przetwarzania.",
-          "title": "Przesylaj dane"
+        "ray": {
+          "description": "Po zakończeniu sesji (COMPLETED) wysyłasz zadanie treningowe. Ray cluster uruchamia train.py na HDFS danych.",
+          "tech": "Ray Jobs API",
+          "title": "Trening Ray"
         },
-        "train": {
-          "description": "Wybierz zakonczone sesje i wyslij zadanie trenowania na klaster Ray.",
-          "title": "Uruchom trening"
+        "session": {
+          "description": "Utwórz sesję przez REST API, podając urządzenie i protokół (np. LEFT_HAND). Status: PENDING → ACTIVE.",
+          "tech": "NestJS REST API",
+          "title": "Sesja EEG"
+        },
+        "streaming": {
+          "description": "Headset EEG (np. OpenBCI) łączy się przez WebSocket i streamuje 8 kanałów z częstotliwością 256 Hz.",
+          "tech": "WebSocket Gateway",
+          "title": "Streaming danych"
         }
       },
-      "title": "Jak to dziala"
+      "title": "Jak działa",
+      "titleAccent": "NeuraFlow"
     },
     "meta": {
-      "description": "NeuraFlow to platforma do rejestracji sygnalow EEG, strumieniowania danych i trenowania modeli ML na infrastrukturze rozproszonej.",
+      "description": "NeuraFlow to platforma do rejestracji sygnałów EEG, strumieniowania danych i trenowania modeli ML na infrastrukturze rozproszonej.",
       "title": "NeuraFlow | Platforma EEG i AI"
     },
     "nav": {
-      "capabilities": "Mozliwosci",
+      "capabilities": "Możliwości",
       "closeMenu": "Zamknij menu nawigacji",
       "contact": "Kontakt",
+      "features": "Funkcje",
       "highlights": "Korzyści",
-      "howItWorks": "Jak to dziala",
-      "login": "Zaloguj",
-      "openMenu": "Otworz menu nawigacji",
-      "register": "Rejestracja",
-      "technology": "Technologie"
+      "howItWorks": "Jak to działa",
+      "login": "Zaloguj się",
+      "openMenu": "Otwórz menu nawigacji",
+      "register": "Zacznij za darmo",
+      "stats": "Statystyki",
+      "technology": "Technologia"
     },
-    "technology": {
-      "description": "Warstwowa architektura laczy frontend, backend i infrastrukture obliczeniowa.",
-      "groups": {
-        "backend": {
-          "items": "NestJS, PostgreSQL/Kysely, JWT/JWE, Socket.IO",
-          "title": "Backend"
-        },
-        "frontend": {
-          "items": "Nuxt 4, TypeScript, Tailwind CSS, Reka UI",
-          "title": "Frontend"
-        },
-        "infrastructure": {
-          "items": "Apache Kafka, Ray, Prometheus, Docker",
-          "title": "Infrastruktura"
-        }
-      },
-      "title": "Przeglad technologii"
+    "stats": {
+      "channels": { "label": "Kanałów EEG", "sub": "simultaneous", "value": "8" },
+      "latency": { "label": "Opóźnienie WebSocket", "sub": "live streaming", "value": "<1ms" },
+      "sampleRate": { "label": "Częstotliwość próbkowania", "sub": "na kanał EEG", "value": "256 Hz" },
+      "scale": { "label": "Sesji i modeli", "sub": "skalowalny klaster Ray", "value": "∞" }
+    },
+    "tech": {
+      "archCaption": "Architektura mikroserwisowa z event-driven communication przez Kafka",
+      "description": "Każdy element stosu dobrany pod kątem skalowalności, wydajności i niezawodności w środowiskach produkcyjnych.",
+      "sectionLabel": "Stack technologiczny",
+      "title": "Zbudowany na",
+      "titleAccent": "enterprise-grade",
+      "titleSuffix": "technologiach"
     }
   }
 }

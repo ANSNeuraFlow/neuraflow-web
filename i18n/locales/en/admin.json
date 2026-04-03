@@ -1,0 +1,74 @@
+{
+  "admin": {
+    "actions": {
+      "cancel": "Cancel",
+      "createUser": "New user",
+      "delete": "Delete",
+      "editRole": "Change role",
+      "retry": "Try again"
+    },
+    "createUser": {
+      "passwordChangeNote": "The user will be prompted to change their password on first login.",
+      "submit": "Create account",
+      "title": "Create new user"
+    },
+    "deleteUser": {
+      "confirm": "Are you sure you want to delete {name}'s account? This action cannot be undone.",
+      "submit": "Delete account",
+      "title": "Delete user"
+    },
+    "editRole": {
+      "submit": "Save changes",
+      "title": "Change user role"
+    },
+    "errors": {
+      "createFailed": "Failed to create user",
+      "deleteFailed": "Failed to delete user",
+      "fetchFailed": "Failed to fetch users",
+      "updateRoleFailed": "Failed to update role"
+    },
+    "fields": {
+      "email": "Email address",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "role": "Role",
+      "temporaryPassword": "Temporary password"
+    },
+    "placeholders": {
+      "email": "jan{'@'}example.com",
+      "firstName": "John",
+      "lastName": "Doe",
+      "role": "Select role",
+      "roleOptional": "Default (USER)",
+      "temporaryPassword": "Min. 8 characters"
+    },
+    "table": {
+      "actions": "Actions",
+      "active": "Active",
+      "createdAt": "Registered",
+      "email": "Email",
+      "empty": "No users found",
+      "name": "Name",
+      "noRole": "No role",
+      "passwordChangeRequired": "Password change required",
+      "role": "Role",
+      "status": "Status",
+      "unverified": "Unverified"
+    },
+    "users": {
+      "subtitle": "{count} users total",
+      "title": "User management"
+    },
+    "validation": {
+      "emailInvalid": "Enter a valid email address",
+      "emailRequired": "Email is required",
+      "firstNameMax": "First name can be at most 64 characters",
+      "firstNameMin": "First name must be at least 2 characters",
+      "lastNameMax": "Last name can be at most 64 characters",
+      "lastNameMin": "Last name must be at least 2 characters",
+      "passwordMax": "Password can be at most 128 characters",
+      "passwordMin": "Password must be at least 8 characters",
+      "roleRequired": "Select a role"
+    }
+  }
+}

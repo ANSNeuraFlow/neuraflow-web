@@ -87,6 +87,8 @@ export default defineNuxtConfig({
   googleFonts: {
     families: {
       Roboto: '400..700',
+      Inter: '400..700',
+      'Space Grotesk': '400..700',
     },
     preload: true,
   },
@@ -99,7 +101,7 @@ export default defineNuxtConfig({
     provider: 'local',
   },
   fontMetrics: {
-    fonts: ['Roboto', { family: 'Roboto' }],
+    fonts: ['Roboto', { family: 'Roboto' }, 'Inter', 'Space Grotesk'],
   },
   image: {
     domains: process.env.API_BASE_URL ? [new URL(process.env.API_BASE_URL).hostname] : [],

@@ -3,6 +3,6 @@ export type LoggedInUser = {
   firstName: string;
   lastName: string;
   email: string;
-  role: { id: string; name: string } | null;
-  permissions: { name: string }[];
+  role: { id: number; name: string } | null;
+  permissions: string[];
 };

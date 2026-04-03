@@ -10,7 +10,7 @@ export const loginSuccessDto = z.object({
   user: z.object({
     id: z.string().uuid(),
     email: z.string().email(),
-    role: z.object({ id: z.string().uuid(), name: z.string() }).nullable(),
+    role: z.object({ id: z.coerce.number().int().positive(), name: z.string() }).nullable(),
     isVerified: z.boolean(),
     isPasswordChangeRequired: z.boolean(),
   }),
@@ -30,7 +30,7 @@ export const meApiResponseDto = z.object({
   firstName: z.string(),
   lastName: z.string(),
   email: z.string().email(),
-  role: z.object({ id: z.string().uuid(), name: z.string() }).nullable(),
-  permissions: z.array(z.object({ name: z.string() })),
+  role: z.object({ id: z.coerce.number().int().positive(), name: z.string() }).nullable(),
+  permissions: z.array(z.string()),
   createdAt: z.string(),
 });

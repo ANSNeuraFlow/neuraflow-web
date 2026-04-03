@@ -50,6 +50,7 @@ export const useLogin = () => {
 
       await navigateTo(localePath('/'));
     } catch (err: unknown) {
+      console.error('[useLogin] error:', err);
       const error = err as { data?: { message?: string } };
       apiError.value = error?.data?.message ?? t('auth.errors.unknownError');
     }
