@@ -1,15 +1,15 @@
 import { STORE_KEYS } from '#layers/core/app/constants/store-keys';
 
-import type { LoggedUser } from '../models/user-session.domain';
+import type { LoggedInUser } from '../models/user-session.domain';
 
 export const useUserSessionStore = defineStore(
   STORE_KEYS.USER_SESSION,
   () => {
-    const user = ref<LoggedUser | undefined>(undefined);
+    const user = ref<LoggedInUser | undefined>(undefined);
 
     const isAuthenticated = computed(() => !!user.value);
 
-    const setUser = (data: LoggedUser) => {
+    const setUser = (data: LoggedInUser) => {
       user.value = data;
     };
 

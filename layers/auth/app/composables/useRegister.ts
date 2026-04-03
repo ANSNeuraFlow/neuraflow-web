@@ -1,22 +1,9 @@
 import { toTypedSchema } from '@vee-validate/zod';
-import { z } from 'zod';
 
+import { registerSchema } from '../schemas/register.schema';
 import { useAuthService } from '../services/auth.service';
 
-const schema = toTypedSchema(
-  z
-    .object({
-      firstName: z.string().min(2, 'auth.validation.firstNameMin').max(64),
-      lastName: z.string().min(2, 'auth.validation.lastNameMin').max(64),
-      email: z.string().min(1, 'auth.validation.emailRequired').email('auth.validation.emailInvalid'),
-      password: z.string().min(8, 'auth.validation.passwordMinLength').max(128),
-      confirmPassword: z.string().min(1, 'auth.validation.confirmRequired'),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-      message: 'auth.validation.passwordsMustMatch',
-      path: ['confirmPassword'],
-    }),
-);
+const schema = toTypedSchema(registerSchema);
 
 export const useRegister = () => {
   const { t } = useI18n();

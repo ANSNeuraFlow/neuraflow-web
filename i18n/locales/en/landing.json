@@ -1,0 +1,141 @@
+{
+  "landing": {
+    "capabilities": {
+      "description": "A focused capability set built for BCI operations and neuro-AI experimentation.",
+      "items": {
+        "access": {
+          "description": "Roles and permissions secure platform resources and administrative actions.",
+          "title": "Role-based access"
+        },
+        "capture": {
+          "description": "Consistent sample format for EEG devices and research protocols.",
+          "title": "8-channel EEG capture"
+        },
+        "kafka": {
+          "description": "Reliable buffering and distribution for analytics and model training modules.",
+          "title": "Kafka data pipeline"
+        },
+        "markers": {
+          "description": "Attach motor or cognitive class markers to improve training data quality.",
+          "title": "Intent marker annotation"
+        },
+        "models": {
+          "description": "Browse, organize, and retrieve trained models associated with user workspaces.",
+          "title": "Model management"
+        },
+        "ray": {
+          "description": "Automate training dispatch and collect model results through secure webhooks.",
+          "title": "Ray-powered training"
+        }
+      },
+      "title": "What the platform enables"
+    },
+    "contact": {
+      "description": "Send us a message and we will help you shape a NeuraFlow architecture for your use case.",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "Enter your email address",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe your scenario, goals, and technical requirements",
+      "nameLabel": "Full name",
+      "namePlaceholder": "Enter your full name",
+      "submit": "Send message",
+      "title": "Let's talk about your implementation"
+    },
+    "footer": {
+      "copyright": "NeuraFlow. All rights reserved.",
+      "legal": "Legal",
+      "privacy": "Privacy policy",
+      "product": "Product",
+      "tagline": "EEG and AI platform for teams building BCI solutions.",
+      "terms": "Terms of service"
+    },
+    "hero": {
+      "badge": "NeuraFlow Platform",
+      "description": "Capture multi-channel brain signals, stream data in real time, train ML models at scale, and deploy with confidence.",
+      "primaryCta": "Get started",
+      "secondaryCta": "Documentation",
+      "titleAccent": "EEG Intelligence",
+      "titlePrefix": "The",
+      "titleSuffix": "Platform for AI Teams",
+      "visualCaption": "Live data stream with intent markers and cluster telemetry.",
+      "visualTitle": "EEG signal preview"
+    },
+    "highlights": {
+      "description": "The platform supports the complete workflow, from EEG acquisition to production-ready models.",
+      "items": {
+        "monitoring": {
+          "description": "Track infrastructure health and performance metrics with Prometheus integration.",
+          "title": "Cluster observability"
+        },
+        "sessions": {
+          "description": "Plan, run, and close EEG sessions with clear marker history and experiment traceability.",
+          "title": "Session lifecycle management"
+        },
+        "streaming": {
+          "description": "Low-latency, reliable transport of multi-channel samples into the data pipeline.",
+          "title": "Real-time EEG streaming"
+        },
+        "training": {
+          "description": "Run training workloads on a Ray cluster and scale jobs across multiple nodes.",
+          "title": "Distributed ML training"
+        }
+      },
+      "title": "Marketing highlights"
+    },
+    "howItWorks": {
+      "description": "Four steps from raw brain signals to a deployable model.",
+      "steps": {
+        "deploy": {
+          "description": "Receive results, manage model versions, and prepare for production use.",
+          "title": "Deploy output"
+        },
+        "record": {
+          "description": "Create an EEG session and select your capture device and protocol.",
+          "title": "Record session"
+        },
+        "stream": {
+          "description": "WebSocket data flows into Kafka, ready for downstream processing.",
+          "title": "Stream data"
+        },
+        "train": {
+          "description": "Choose completed sessions and dispatch a training job to the Ray cluster.",
+          "title": "Train model"
+        }
+      },
+      "title": "How it works"
+    },
+    "meta": {
+      "description": "NeuraFlow is a platform for EEG signal capture, real-time data streaming, and ML model training on distributed infrastructure.",
+      "title": "NeuraFlow | EEG and AI Platform"
+    },
+    "nav": {
+      "capabilities": "Capabilities",
+      "closeMenu": "Close navigation menu",
+      "contact": "Contact",
+      "highlights": "Highlights",
+      "howItWorks": "How it works",
+      "login": "Login",
+      "openMenu": "Open navigation menu",
+      "register": "Register",
+      "technology": "Technology"
+    },
+    "technology": {
+      "description": "A layered architecture that connects frontend, backend, and compute infrastructure.",
+      "groups": {
+        "backend": {
+          "items": "NestJS, PostgreSQL/Kysely, JWT/JWE, Socket.IO",
+          "title": "Backend"
+        },
+        "frontend": {
+          "items": "Nuxt 4, TypeScript, Tailwind CSS, Reka UI",
+          "title": "Frontend"
+        },
+        "infrastructure": {
+          "items": "Apache Kafka, Ray, Prometheus, Docker",
+          "title": "Infrastructure"
+        }
+      },
+      "title": "Technology overview"
+    }
+  }
+}
