@@ -23,7 +23,7 @@ const formatDate = (dateStr: string | null) => {
 };
 
 const getRoleBadgeClass = (role: string | null) => {
-  if (!role) return 'bg-surface-container-high text-on-surface-dim';
+  if (!role) return 'bg-on-surface/10 text-on-surface-dim';
   if (role === 'ADMIN') return 'bg-accent/10 text-accent';
   return 'bg-success/10 text-success';
 };
@@ -47,13 +47,13 @@ const getRoleBadgeClass = (role: string | null) => {
       class="w-full border-separate border-spacing-0"
     >
       <thead>
-        <tr class="text-on-surface-dim text-body-sm text-left">
-          <th class="border-outline px-md py-sm border-b font-medium">{{ $t('admin.table.name') }}</th>
-          <th class="border-outline px-md py-sm border-b font-medium">{{ $t('admin.table.email') }}</th>
-          <th class="border-outline px-md py-sm border-b font-medium">{{ $t('admin.table.role') }}</th>
-          <th class="border-outline px-md py-sm border-b font-medium">{{ $t('admin.table.status') }}</th>
-          <th class="border-outline px-md py-sm border-b font-medium">{{ $t('admin.table.createdAt') }}</th>
-          <th class="border-outline px-md py-sm border-b font-medium">{{ $t('admin.table.actions') }}</th>
+        <tr class="text-body-sm text-on-surface-dim text-left">
+          <th class="border-on-surface/10 px-md py-sm border-b font-medium">{{ $t('admin.table.name') }}</th>
+          <th class="border-on-surface/10 px-md py-sm border-b font-medium">{{ $t('admin.table.email') }}</th>
+          <th class="border-on-surface/10 px-md py-sm border-b font-medium">{{ $t('admin.table.role') }}</th>
+          <th class="border-on-surface/10 px-md py-sm border-b font-medium">{{ $t('admin.table.status') }}</th>
+          <th class="border-on-surface/10 px-md py-sm border-b font-medium">{{ $t('admin.table.createdAt') }}</th>
+          <th class="border-on-surface/10 px-md py-sm border-b font-medium">{{ $t('admin.table.actions') }}</th>
         </tr>
       </thead>
 
@@ -61,28 +61,28 @@ const getRoleBadgeClass = (role: string | null) => {
         <tr
           v-for="user in users"
           :key="user.id"
-          class="hover:bg-surface-container-high duration-short transition-colors"
+          class="duration-short hover:bg-on-surface/[0.04] transition-colors"
         >
-          <td class="border-outline px-md py-sm text-body-md text-on-surface border-b">
+          <td class="border-on-surface/[0.06] px-md py-sm text-body-md text-on-surface border-b">
             {{ user.firstName }} {{ user.lastName }}
           </td>
-          <td class="border-outline px-md py-sm text-body-md text-on-surface border-b">
+          <td class="border-on-surface/[0.06] px-md py-sm text-body-md text-on-surface border-b">
             {{ user.email }}
           </td>
-          <td class="border-outline px-md py-sm border-b">
+          <td class="border-on-surface/[0.06] px-md py-sm border-b">
             <span
               :class="[
-                'px-sm py-xs text-body-sm inline-flex items-center rounded-full font-medium',
+                'px-sm py-x-tiny text-body-x-sm inline-flex items-center rounded-full font-medium',
                 getRoleBadgeClass(user.role),
               ]"
             >
               {{ user.role ?? $t('admin.table.noRole') }}
             </span>
           </td>
-          <td class="border-outline px-md py-sm border-b">
+          <td class="border-on-surface/[0.06] px-md py-sm border-b">
             <span
               v-if="user.isPasswordChangeRequired"
-              class="bg-warning/10 text-warning gap-xs px-sm py-xs text-body-sm inline-flex items-center rounded-full font-medium"
+              class="gap-xs bg-warning/10 px-sm py-x-tiny text-body-x-sm text-warning inline-flex items-center rounded-full font-medium"
             >
               <Icon
                 name="material-symbols:lock-outline"
@@ -92,7 +92,7 @@ const getRoleBadgeClass = (role: string | null) => {
             </span>
             <span
               v-else-if="user.isVerified"
-              class="bg-success/10 text-success gap-xs px-sm py-xs text-body-sm inline-flex items-center rounded-full font-medium"
+              class="gap-xs bg-success/10 px-sm py-x-tiny text-body-x-sm text-success inline-flex items-center rounded-full font-medium"
             >
               <Icon
                 name="material-symbols:check-circle-outline"
@@ -102,15 +102,15 @@ const getRoleBadgeClass = (role: string | null) => {
             </span>
             <span
               v-else
-              class="bg-surface-container-high text-on-surface-dim gap-xs px-sm py-xs text-body-sm inline-flex items-center rounded-full font-medium"
+              class="gap-xs bg-on-surface/10 px-sm py-x-tiny text-body-x-sm text-on-surface-dim inline-flex items-center rounded-full font-medium"
             >
               {{ $t('admin.table.unverified') }}
             </span>
           </td>
-          <td class="border-outline px-md py-sm text-body-md text-on-surface-dim border-b">
+          <td class="border-on-surface/[0.06] px-md py-sm text-body-sm text-on-surface-dim border-b">
             {{ formatDate(user.createdAt) }}
           </td>
-          <td class="border-outline px-md py-sm border-b">
+          <td class="border-on-surface/[0.06] px-md py-sm border-b">
             <div class="gap-sm flex items-center">
               <AppButton
                 variant="ghost"
@@ -142,7 +142,7 @@ const getRoleBadgeClass = (role: string | null) => {
         <tr v-if="users.length === 0 && !isLoading">
           <td
             colspan="6"
-            class="text-on-surface-dim py-xx-lg text-body-md text-center"
+            class="py-xx-lg text-body-md text-on-surface-dim text-center"
           >
             {{ $t('admin.table.empty') }}
           </td>

@@ -34,6 +34,15 @@
       "role": "Rola",
       "temporaryPassword": "Tymczasowe hasło"
     },
+    "navigation": {
+      "backToSite": "Wróć do strony",
+      "closeMenu": "Zamknij menu",
+      "clusters": "Klastry",
+      "openMenu": "Otwórz menu",
+      "panel": "Admin",
+      "section": "Nawigacja",
+      "users": "Użytkownicy"
+    },
     "placeholders": {
       "email": "jan{'@'}example.com",
       "firstName": "Jan",
@@ -55,8 +64,15 @@
       "status": "Status",
       "unverified": "Niezweryfikowany"
     },
+    "theme": {
+      "switchToDark": "Tryb ciemny",
+      "switchToLight": "Tryb jasny"
+    },
     "users": {
+      "kicker": "Strefa administratora",
       "subtitle": "Łącznie {count} użytkowników",
+      "tableSubtitle": "Lista wszystkich użytkowników wraz z rolami i statusem konta.",
+      "tableTitle": "Użytkownicy systemu",
       "title": "Zarządzanie użytkownikami"
     },
     "validation": {

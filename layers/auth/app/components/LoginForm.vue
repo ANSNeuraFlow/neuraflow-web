@@ -14,28 +14,28 @@ const justRegistered = computed(() => route.query.registered === 'true');
     <div class="mb-xx-lg text-center">
       <BrandLogo
         size="default"
-        class="mb-x-lg mx-auto"
+        class="mb-x-lg mx-auto opacity-95"
       />
-      <h1 class="text-heading-md text-on-surface font-semibold">
+      <h1 class="text-heading-lg tracking-sm text-on-surface font-display font-bold">
         {{ $t('auth.login.title') }}
       </h1>
     </div>
     <div
       v-if="justRegistered"
-      class="mb-x-lg border-success/30 bg-success/10 p-md text-body-sm text-success rounded-sm border"
+      class="mb-x-lg border-success/40 bg-success/10 p-md text-body-sm text-success rounded-lg border"
     >
       {{ $t('auth.login.registrationSuccess') }}
     </div>
     <div
       v-if="passwordChangeEmail"
-      class="mb-x-lg border-warning/30 bg-warning/10 p-md text-body-sm text-warning rounded-sm border"
+      class="mb-x-lg border-warning/40 bg-warning/10 p-md text-body-sm text-warning rounded-lg border"
     >
       {{ $t('auth.login.passwordChangeRequired') }}
     </div>
 
     <div
       v-if="apiError"
-      class="mb-x-lg border-error/30 bg-error/10 p-md text-body-sm text-error rounded-sm border"
+      class="mb-x-lg border-error/40 bg-error/10 p-md text-body-sm text-error rounded-lg border"
       role="alert"
     >
       {{ apiError }}
@@ -79,20 +79,27 @@ const justRegistered = computed(() => route.query.registered === 'true');
         />
       </AppFormField>
 
-      <AppButton
+      <button
         type="submit"
-        size="full"
-        :loading="isSubmitting"
+        class="btn-primary w-full"
+        :disabled="isSubmitting"
+        :aria-busy="isSubmitting"
       >
-        {{ $t('auth.login.submit') }}
-      </AppButton>
+        <Icon
+          v-if="isSubmitting"
+          name="material-symbols:progress-activity"
+          class="h-x-lg w-x-lg shrink-0 animate-spin"
+          aria-hidden="true"
+        />
+        <span v-else>{{ $t('auth.login.submit') }}</span>
+      </button>
     </form>
 
     <p class="mt-x-lg text-body-sm text-on-surface-dim text-center">
       {{ $t('auth.login.noAccount') }}
       <NuxtLink
         :to="localePath('/register')"
-        class="text-accent duration-short hover:text-accent/80 transition-colors"
+        class="duration-short font-medium text-neural-400 transition-colors hover:text-cyan-400"
       >
         {{ $t('auth.login.registerLink') }}
       </NuxtLink>

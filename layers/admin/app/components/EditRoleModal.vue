@@ -31,7 +31,6 @@ const {
   close,
 } = useUpdateUserRole(handleSuccess);
 
-// Synchronizuj user z composable gdy prop się zmienia
 watch(
   () => props.user,
   (user) => {
@@ -51,47 +50,52 @@ const handleOpenChange = (val: boolean) => {
     @update:open="handleOpenChange"
   >
     <DialogPortal>
-      <DialogOverlay class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm" />
+      <DialogOverlay class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" />
       <DialogContent
-        class="bg-surface fixed left-1/2 top-1/2 z-50 w-full max-w-[42rem] -translate-x-1/2 -translate-y-1/2 rounded-md shadow-xl"
+        class="border-on-surface/10 bg-surface fixed left-1/2 top-1/2 z-50 w-full max-w-[42rem] -translate-x-1/2 -translate-y-1/2 rounded-lg border shadow-neural-lg outline-none"
       >
-        <AppCard
-          padding="xl"
-          class="w-full"
-        >
-          <div class="mb-x-lg flex items-center justify-between">
+        <div class="p-x-lg sm:p-xx-lg">
+          <!-- Header -->
+          <div class="mb-x-lg gap-md flex items-start justify-between">
             <div>
-              <DialogTitle class="text-heading-sm text-on-surface font-semibold">
+              <p class="mb-xx-sm text-body-x-sm font-semibold uppercase tracking-wider text-neural-400">
+                {{ $t('admin.navigation.users') }}
+              </p>
+              <DialogTitle class="text-heading-md tracking-sm text-on-surface font-display font-bold">
                 {{ $t('admin.editRole.title') }}
               </DialogTitle>
               <p
                 v-if="user"
-                class="text-body-sm text-on-surface-dim mt-xs"
+                class="mt-xx-sm text-body-sm text-on-surface-dim"
               >
-                {{ user.firstName }} {{ user.lastName }} · {{ user.email }}
+                {{ user.firstName }} {{ user.lastName }}
+                <span class="mx-xs opacity-50">·</span>
+                {{ user.email }}
               </p>
             </div>
             <DialogClose as-child>
-              <AppButton
-                variant="ghost"
-                size="sm"
+              <button
+                class="mt-xx-sm p-xx-sm text-on-surface-dim duration-short hover:bg-on-surface/[0.06] hover:text-on-surface rounded-lg transition-colors"
+                :aria-label="$t('admin.actions.cancel')"
               >
                 <Icon
                   name="material-symbols:close"
                   size="2rem"
                 />
-              </AppButton>
+              </button>
             </DialogClose>
           </div>
 
+          <!-- Error -->
           <div
             v-if="apiError"
-            class="mb-x-lg border-error/30 bg-error/10 p-md text-body-sm text-error rounded-sm border"
+            class="mb-x-lg border-error/30 bg-error/10 p-md text-body-sm text-error rounded-lg border"
             role="alert"
           >
             {{ apiError }}
           </div>
 
+          <!-- Form -->
           <form
             novalidate
             @submit="onSubmit"
@@ -112,7 +116,7 @@ const handleOpenChange = (val: boolean) => {
               />
             </AppFormField>
 
-            <div class="mt-x-lg gap-md flex justify-end">
+            <div class="mt-x-lg gap-md border-on-surface/10 pt-x-lg flex justify-end border-t">
               <DialogClose as-child>
                 <AppButton
                   variant="secondary"
@@ -129,7 +133,7 @@ const handleOpenChange = (val: boolean) => {
               </AppButton>
             </div>
           </form>
-        </AppCard>
+        </div>
       </DialogContent>
     </DialogPortal>
   </DialogRoot>

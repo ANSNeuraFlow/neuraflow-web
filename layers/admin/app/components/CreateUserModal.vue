@@ -48,45 +48,50 @@ const handleOpenChange = (val: boolean) => {
     @update:open="handleOpenChange"
   >
     <DialogPortal>
-      <DialogOverlay class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm" />
+      <DialogOverlay class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" />
       <DialogContent
-        class="bg-surface fixed left-1/2 top-1/2 z-50 w-full max-w-[54rem] -translate-x-1/2 -translate-y-1/2 rounded-md shadow-xl"
+        class="border-on-surface/10 bg-surface fixed left-1/2 top-1/2 z-50 w-full max-w-[54rem] -translate-x-1/2 -translate-y-1/2 rounded-lg border shadow-neural-lg outline-none"
       >
-        <AppCard
-          padding="xl"
-          class="w-full"
-        >
-          <div class="mb-x-lg flex items-center justify-between">
-            <DialogTitle class="text-heading-sm text-on-surface font-semibold">
-              {{ $t('admin.createUser.title') }}
-            </DialogTitle>
+        <div class="p-x-lg sm:p-xx-lg">
+          <!-- Header -->
+          <div class="mb-x-lg gap-md flex items-start justify-between">
+            <div>
+              <p class="mb-xx-sm text-body-x-sm font-semibold uppercase tracking-wider text-neural-400">
+                {{ $t('admin.navigation.panel') }}
+              </p>
+              <DialogTitle class="text-heading-md tracking-sm text-on-surface font-display font-bold">
+                {{ $t('admin.createUser.title') }}
+              </DialogTitle>
+            </div>
             <DialogClose as-child>
-              <AppButton
-                variant="ghost"
-                size="sm"
+              <button
+                class="mt-xx-sm p-xx-sm text-on-surface-dim duration-short hover:bg-on-surface/[0.06] hover:text-on-surface rounded-lg transition-colors"
+                :aria-label="$t('admin.actions.cancel')"
               >
                 <Icon
                   name="material-symbols:close"
                   size="2rem"
                 />
-              </AppButton>
+              </button>
             </DialogClose>
           </div>
 
+          <!-- Error -->
           <div
             v-if="apiError"
-            class="mb-x-lg border-error/30 bg-error/10 p-md text-body-sm text-error rounded-sm border"
+            class="mb-x-lg border-error/30 bg-error/10 p-md text-body-sm text-error rounded-lg border"
             role="alert"
           >
             {{ apiError }}
           </div>
 
+          <!-- Form -->
           <form
             class="gap-x-lg flex flex-col"
             novalidate
             @submit="onSubmit"
           >
-            <div class="gap-x-lg grid grid-cols-2">
+            <div class="gap-x-lg grid grid-cols-1 sm:grid-cols-2">
               <AppFormField
                 :label="$t('admin.fields.firstName')"
                 :error="errors.firstName ? $t(errors.firstName) : undefined"
@@ -166,11 +171,11 @@ const handleOpenChange = (val: boolean) => {
               />
             </AppFormField>
 
-            <p class="text-body-sm text-on-surface-dim -mt-sm">
+            <p class="text-body-sm text-on-surface-dim">
               {{ $t('admin.createUser.passwordChangeNote') }}
             </p>
 
-            <div class="mt-x-lg gap-md flex justify-end">
+            <div class="gap-md border-on-surface/10 pt-x-lg flex justify-end border-t">
               <DialogClose as-child>
                 <AppButton
                   variant="secondary"
@@ -187,7 +192,7 @@ const handleOpenChange = (val: boolean) => {
               </AppButton>
             </div>
           </form>
-        </AppCard>
+        </div>
       </DialogContent>
     </DialogPortal>
   </DialogRoot>

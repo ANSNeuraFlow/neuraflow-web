@@ -195,6 +195,7 @@
       "title": "NeuraFlow | EEG and AI Platform"
     },
     "nav": {
+      "adminPanel": "Admin panel",
       "capabilities": "Capabilities",
       "closeMenu": "Close navigation menu",
       "contact": "Contact",
@@ -202,7 +203,9 @@
       "highlights": "Highlights",
       "howItWorks": "How it works",
       "login": "Login",
+      "logout": "Log out",
       "openMenu": "Open navigation menu",
+      "profile": "Profile",
       "register": "Get started",
       "stats": "Stats",
       "technology": "Technology"

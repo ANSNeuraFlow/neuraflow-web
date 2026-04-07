@@ -34,6 +34,15 @@
       "role": "Role",
       "temporaryPassword": "Temporary password"
     },
+    "navigation": {
+      "backToSite": "Back to site",
+      "closeMenu": "Close menu",
+      "clusters": "Clusters",
+      "openMenu": "Open menu",
+      "panel": "Admin",
+      "section": "Navigation",
+      "users": "Users"
+    },
     "placeholders": {
       "email": "jan{'@'}example.com",
       "firstName": "John",
@@ -55,8 +64,15 @@
       "status": "Status",
       "unverified": "Unverified"
     },
+    "theme": {
+      "switchToDark": "Switch to dark mode",
+      "switchToLight": "Switch to light mode"
+    },
     "users": {
+      "kicker": "Administrator zone",
       "subtitle": "{count} users total",
+      "tableSubtitle": "List of all users with their roles and account status.",
+      "tableTitle": "System users",
       "title": "User management"
     },
     "validation": {
