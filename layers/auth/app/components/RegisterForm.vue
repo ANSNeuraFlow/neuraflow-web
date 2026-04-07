@@ -26,16 +26,16 @@ const localePath = useLocalePath();
     <div class="mb-xx-lg text-center">
       <BrandLogo
         size="default"
-        class="mb-x-lg mx-auto"
+        class="mb-x-lg mx-auto opacity-95"
       />
-      <h1 class="text-heading-md text-on-surface font-semibold">
+      <h1 class="text-heading-lg tracking-sm text-on-surface font-display font-bold">
         {{ $t('auth.register.title') }}
       </h1>
     </div>
 
     <div
       v-if="apiError"
-      class="mb-x-lg border-error/30 bg-error/10 p-md text-body-sm text-error rounded-sm border"
+      class="mb-x-lg border-error/40 bg-error/10 p-md text-body-sm text-error rounded-lg border"
       role="alert"
     >
       {{ apiError }}
@@ -46,7 +46,7 @@ const localePath = useLocalePath();
       novalidate
       @submit="onSubmit"
     >
-      <div class="gap-x-lg grid grid-cols-2">
+      <div class="gap-x-lg grid grid-cols-1 sm:grid-cols-2">
         <AppFormField
           :label="$t('auth.fields.firstName')"
           :error="errors.firstName ? $t(errors.firstName) : undefined"
@@ -125,20 +125,27 @@ const localePath = useLocalePath();
         />
       </AppFormField>
 
-      <AppButton
+      <button
         type="submit"
-        size="full"
-        :loading="isSubmitting"
+        class="btn-primary w-full"
+        :disabled="isSubmitting"
+        :aria-busy="isSubmitting"
       >
-        {{ $t('auth.register.submit') }}
-      </AppButton>
+        <Icon
+          v-if="isSubmitting"
+          name="material-symbols:progress-activity"
+          class="h-x-lg w-x-lg shrink-0 animate-spin"
+          aria-hidden="true"
+        />
+        <span v-else>{{ $t('auth.register.submit') }}</span>
+      </button>
     </form>
 
     <p class="mt-x-lg text-body-sm text-on-surface-dim text-center">
       {{ $t('auth.register.hasAccount') }}
       <NuxtLink
-        :to="localePath('/')"
-        class="text-accent duration-short hover:text-accent/80 transition-colors"
+        :to="localePath('/login')"
+        class="duration-short font-medium text-neural-400 transition-colors hover:text-cyan-400"
       >
         {{ $t('auth.register.loginLink') }}
       </NuxtLink>

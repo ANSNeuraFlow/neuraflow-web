@@ -5,9 +5,10 @@ import type { AppSelectOption } from '#layers/neuraflow-core-layer/app/component
 import { useAdminUsers } from '../../composables/useAdminUsers';
 import type { AdminUser } from '../../models/admin-api.domain';
 
-// definePageMeta({
-//   requiredPermissions: ['VIEW_ADMIN_PANEL'],
-// });
+definePageMeta({
+  layout: 'admin',
+  requiredPermissions: ['VIEW_ADMIN_PANEL'],
+});
 
 const { users, isLoading, error, fetchUsers, availableRoles } = useAdminUsers();
 
@@ -35,29 +36,47 @@ const roleOptions = computed<AppSelectOption[]>(() =>
 </script>
 
 <template>
-  <div class="p-x-lg mx-auto max-w-[120rem]">
+  <div class="mx-auto w-full max-w-[120rem]">
+    <section class="glass-card mb-x-lg p-md sm:p-x-lg">
+      <div class="gap-sm flex flex-wrap items-start justify-between">
+        <div>
+          <p class="text-body-x-sm mb-xx-sm font-semibold uppercase tracking-wider text-neural-400">
+            {{ $t('admin.users.kicker') }}
+          </p>
+          <h1 class="text-heading-lg tracking-sm text-on-surface font-display font-bold">
+            {{ $t('admin.users.title') }}
+          </h1>
+          <p class="text-body-md mt-xx-sm text-on-surface-dim">
+            {{ $t('admin.users.subtitle', { count: users.length }) }}
+          </p>
+        </div>
+        <button
+          class="gap-x-sm px-x-lg py-sm text-body-sm duration-short inline-flex items-center rounded-lg bg-neural-600 font-semibold text-white transition-colors hover:bg-neural-500 focus-visible:outline-none"
+          @click="isCreateOpen = true"
+        >
+          <Icon
+            name="material-symbols:add"
+            size="1.6rem"
+          />
+          {{ $t('admin.actions.createUser') }}
+        </button>
+      </div>
+    </section>
+
     <div class="mb-x-lg flex items-center justify-between">
       <div>
-        <h1 class="text-heading-lg text-on-surface font-semibold">
-          {{ $t('admin.users.title') }}
-        </h1>
-        <p class="text-body-md text-on-surface-dim mt-xs">
-          {{ $t('admin.users.subtitle', { count: users.length }) }}
+        <h2 class="text-heading-md text-on-surface font-semibold">
+          {{ $t('admin.users.tableTitle') }}
+        </h2>
+        <p class="text-body-sm mt-xx-sm text-on-surface-dim">
+          {{ $t('admin.users.tableSubtitle') }}
         </p>
       </div>
-      <AppButton @click="isCreateOpen = true">
-        <Icon
-          name="material-symbols:add"
-          size="1.6rem"
-          class="mr-xs"
-        />
-        {{ $t('admin.actions.createUser') }}
-      </AppButton>
     </div>
 
     <div
       v-if="error"
-      class="mb-x-lg border-error/30 bg-error/10 p-md text-body-sm text-error rounded-sm border"
+      class="mb-x-lg border-error/30 bg-error/10 p-md text-body-sm text-error rounded-lg border"
       role="alert"
     >
       {{ error }}
@@ -71,7 +90,10 @@ const roleOptions = computed<AppSelectOption[]>(() =>
       </AppButton>
     </div>
 
-    <AppCard border>
+    <AppCard
+      border
+      class="border-on-surface/10 bg-surface/60 backdrop-blur-xl"
+    >
       <AdminUsersTable
         :users="users"
         :is-loading="isLoading"

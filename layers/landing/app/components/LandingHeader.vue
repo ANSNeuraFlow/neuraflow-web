@@ -94,22 +94,8 @@ onUnmounted(() => {
           </a>
         </nav>
 
-        <!-- Desktop CTA -->
         <div class="gap-sm lg:gap-md relative z-10 ml-auto hidden shrink-0 items-center md:flex">
-          <button
-            class="btn-secondary px-md py-xx-sm text-body-sm font-semibold"
-            :aria-label="t('landing.nav.login')"
-            @click="navigateTo('/login')"
-          >
-            {{ t('landing.nav.login') }}
-          </button>
-          <button
-            class="btn-primary px-md py-xx-sm text-body-sm font-semibold"
-            :aria-label="t('landing.nav.register')"
-            @click="navigateTo('/register')"
-          >
-            {{ t('landing.nav.register') }}
-          </button>
+          <AppNavActions variant="desktop" />
         </div>
 
         <!-- Mobile hamburger -->
@@ -173,19 +159,9 @@ onUnmounted(() => {
           >
             {{ item.label }}
           </a>
+
           <div class="mt-md gap-sm pt-md flex flex-col border-t border-white/[0.06]">
-            <button
-              class="btn-secondary w-full justify-center"
-              @click="navigateTo('/login')"
-            >
-              {{ t('landing.nav.login') }}
-            </button>
-            <button
-              class="btn-primary w-full justify-center"
-              @click="navigateTo('/register')"
-            >
-              {{ t('landing.nav.register') }}
-            </button>
+            <AppNavActions variant="mobile" />
           </div>
         </nav>
       </div>

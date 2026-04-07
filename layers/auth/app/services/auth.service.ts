@@ -45,9 +45,14 @@ export const useAuthService = () => {
     return meApiResponseDto.parse(response);
   };
 
+  const logout = async () => {
+    await post('/auth/logout', {});
+  };
+
   return {
     login,
     register,
     me,
+    logout,
   };
 };

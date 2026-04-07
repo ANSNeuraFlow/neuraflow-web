@@ -86,6 +86,8 @@ export default {
         'landing-card': '896px',
         'landing-copy': '768px',
         'landing-form': '576px',
+        'auth-panel': '420px',
+        'auth-panel-wide': '520px',
       },
     },
   },

@@ -196,6 +196,7 @@
       "title": "NeuraFlow | Platforma EEG i AI"
     },
     "nav": {
+      "adminPanel": "Panel admina",
       "capabilities": "Możliwości",
       "closeMenu": "Zamknij menu nawigacji",
       "contact": "Kontakt",
@@ -203,7 +204,9 @@
       "highlights": "Korzyści",
       "howItWorks": "Jak to działa",
       "login": "Zaloguj się",
+      "logout": "Wyloguj się",
       "openMenu": "Otwórz menu nawigacji",
+      "profile": "Profil",
       "register": "Zacznij za darmo",
       "stats": "Statystyki",
       "technology": "Technologia"
