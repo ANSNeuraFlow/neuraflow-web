@@ -12,10 +12,14 @@ const { metrics, isLoading, isConnected, error, fetchMetrics } = useClusterMetri
 
 <template>
   <div class="mx-auto w-full max-w-[120rem]">
-    <section class="glass-card mb-x-lg p-md sm:p-x-lg">
-      <div class="gap-sm flex flex-wrap items-start justify-between">
+    <section class="glass-card mb-x-lg p-md sm:p-x-lg relative overflow-hidden">
+      <div
+        class="bg-accent/5 pointer-events-none absolute -right-20 -top-20 h-[200px] w-[200px] rounded-full blur-3xl"
+        aria-hidden="true"
+      />
+      <div class="gap-sm relative z-10 flex flex-wrap items-start justify-between">
         <div>
-          <p class="text-body-x-sm mb-xx-sm font-semibold uppercase tracking-wider text-neural-400">
+          <p class="text-body-x-sm mb-xx-sm text-on-surface-dim font-semibold uppercase tracking-wider">
             {{ $t('admin.cluster.kicker') }}
           </p>
           <h1 class="text-heading-lg tracking-sm text-on-surface font-display font-bold">
@@ -32,11 +36,11 @@ const { metrics, isLoading, isConnected, error, fetchMetrics } = useClusterMetri
           <Icon
             name="material-symbols:sync"
             size="1.4rem"
-            class="text-neural-400"
+            class="text-on-surface-dim"
           />
           <span class="text-body-x-sm text-on-surface-dim">
             {{ $t('admin.cluster.lastUpdate') }}:
-            <span class="font-medium text-neural-300">
+            <span class="text-on-surface font-medium">
               {{ new Date(metrics.fetchedAt).toLocaleTimeString() }}
             </span>
           </span>

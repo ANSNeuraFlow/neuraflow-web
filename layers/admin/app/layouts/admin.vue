@@ -59,13 +59,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-surface text-on-surface relative min-h-screen">
+  <div class="bg-surface text-on-surface relative min-h-screen overflow-x-hidden">
     <div
-      class="pointer-events-none absolute inset-0 bg-hero-pattern"
+      class="pointer-events-none absolute inset-0 bg-hero-pattern opacity-50"
       aria-hidden="true"
     />
     <div
-      class="pointer-events-none absolute inset-0 bg-neural-glow"
+      class="bg-info/5 dark:bg-info/10 pointer-events-none absolute left-0 top-1/4 h-[500px] w-[500px] -translate-x-1/2 rounded-full blur-3xl"
+      aria-hidden="true"
+    />
+    <div
+      class="bg-accent/5 dark:bg-accent/10 pointer-events-none absolute bottom-0 right-0 h-[600px] w-[600px] translate-x-1/3 translate-y-1/3 rounded-full blur-3xl"
       aria-hidden="true"
     />
     <div
@@ -87,7 +91,7 @@ onMounted(() => {
     <Transition name="slide-sidebar">
       <aside
         v-if="isMobileSidebarOpen"
-        class="border-on-surface/[0.08] bg-surface fixed left-0 top-0 z-40 flex h-full w-[26rem] flex-col border-r shadow-neural-lg backdrop-blur-2xl md:hidden"
+        class="border-on-surface/[0.08] bg-surface fixed left-0 top-0 z-40 flex h-full w-[26rem] flex-col border-r shadow-2xl backdrop-blur-2xl md:hidden"
         role="navigation"
       >
         <div class="border-on-surface/[0.08] px-x-lg flex h-16 shrink-0 items-center justify-between border-b">
@@ -123,7 +127,7 @@ onMounted(() => {
               :key="item.label"
               :to="item.to"
               class="gap-sm px-sm py-sm text-body-sm text-on-surface-dim duration-short hover:bg-on-surface/[0.06] hover:text-on-surface flex items-center rounded-lg font-medium transition-colors"
-              active-class="bg-neural-500/[0.15] text-neural-300"
+              active-class="bg-on-surface/[0.15] text-on-surface"
               @click="isMobileSidebarOpen = false"
             >
               <Icon
@@ -164,13 +168,13 @@ onMounted(() => {
           >
             <div class="h-x-huge w-x-huge relative">
               <div
-                class="absolute inset-0 rounded-lg bg-neural-500 opacity-70 blur-sm transition-opacity group-hover:opacity-100"
+                class="bg-on-surface absolute inset-0 rounded-lg opacity-50 blur-sm transition-opacity group-hover:opacity-80"
               />
               <div
-                class="h-x-huge w-x-huge relative flex items-center justify-center rounded-lg bg-gradient-to-br from-neural-500 to-neural-700"
+                class="h-x-huge w-x-huge from-on-surface-dim to-on-surface relative flex items-center justify-center rounded-lg bg-gradient-to-br"
               >
                 <svg
-                  class="h-x-lg w-x-lg text-white"
+                  class="h-x-lg w-x-lg text-surface"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -210,53 +214,30 @@ onMounted(() => {
         </div>
       </header>
 
-      <div class="flex flex-1 overflow-hidden">
-        <!-- Desktop sidebar -->
-        <aside
-          class="border-on-surface/[0.08] bg-surface/50 hidden w-[24rem] shrink-0 flex-col border-r backdrop-blur-xl md:flex"
+      <div class="pb-lg px-x-lg relative z-20 flex w-full shrink-0 justify-center pt-7">
+        <nav
+          class="gap-x-sm lg:gap-md xl:gap-x-lg glass-card px-md py-sm hidden items-center !rounded-full shadow-2xl md:flex"
+          role="navigation"
         >
-          <div class="px-x-lg py-x-lg flex flex-1 flex-col overflow-y-auto">
-            <p class="mb-sm px-sm text-body-x-sm text-on-surface-dim font-semibold uppercase tracking-wider">
-              {{ t('admin.navigation.section') }}
-            </p>
+          <NuxtLink
+            v-for="item in adminNavItems"
+            :key="item.label"
+            :to="item.to"
+            class="px-md py-sm text-body-sm duration-short text-on-surface-dim hover:bg-on-surface/5 hover:text-on-surface gap-sm flex shrink-0 items-center whitespace-nowrap rounded-full font-medium transition-colors ease-out"
+            active-class="bg-on-surface/10 text-on-surface font-semibold"
+          >
+            <Icon
+              :name="item.icon"
+              size="1.8rem"
+              class="shrink-0"
+            />
+            {{ item.label }}
+          </NuxtLink>
+        </nav>
+      </div>
 
-            <nav
-              class="gap-xx-sm flex flex-col"
-              role="navigation"
-            >
-              <NuxtLink
-                v-for="item in adminNavItems"
-                :key="item.label"
-                :to="item.to"
-                class="gap-sm px-sm py-sm text-body-sm text-on-surface-dim duration-short hover:bg-on-surface/[0.06] hover:text-on-surface flex items-center rounded-lg font-medium transition-colors"
-                active-class="bg-neural-500/[0.15] text-neural-300"
-              >
-                <Icon
-                  :name="item.icon"
-                  size="1.8rem"
-                  class="shrink-0"
-                />
-                <span>{{ item.label }}</span>
-              </NuxtLink>
-            </nav>
-          </div>
-
-          <div class="border-on-surface/[0.08] px-x-lg py-md border-t">
-            <NuxtLink
-              :to="localePath('/')"
-              class="gap-md px-md py-sm text-body-sm text-on-surface-dim duration-short hover:bg-on-surface/[0.06] hover:text-on-surface flex w-full items-center rounded-xl font-medium transition-colors"
-            >
-              <Icon
-                name="material-symbols:arrow-back"
-                size="1.8rem"
-              />
-              <span>{{ t('admin.navigation.backToSite') }}</span>
-            </NuxtLink>
-          </div>
-        </aside>
-
-        <!-- Main content -->
-        <main class="p-x-lg sm:p-xx-lg flex-1 overflow-y-auto">
+      <div class="flex flex-1 overflow-hidden">
+        <main class="px-x-lg sm:px-xx-lg pb-xx-lg flex-1 overflow-y-auto">
           <div class="mx-auto w-full max-w-[132rem]">
             <slot />
           </div>

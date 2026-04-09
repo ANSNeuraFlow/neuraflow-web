@@ -23,87 +23,123 @@ const overallHealth = computed(() => {
 </script>
 
 <template>
-  <div class="gap-md grid grid-cols-1 sm:grid-cols-3">
-    <div class="glass-card p-x-lg">
-      <div class="mb-md flex items-start justify-between">
-        <p class="text-body-x-sm font-semibold uppercase tracking-wider text-neural-400">
-          {{ $t('admin.cluster.summary.cpu') }}
+  <div class="gap-x-lg grid grid-cols-1 sm:grid-cols-3">
+    <div
+      class="glass-card p-x-lg duration-short hover:border-on-surface/20 group relative overflow-hidden transition-all hover:shadow-2xl"
+    >
+      <div
+        class="bg-on-surface/5 absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100"
+        aria-hidden="true"
+      />
+      <div class="relative z-10">
+        <div class="mb-md flex items-center justify-between">
+          <p class="text-body-x-sm text-on-surface-dim font-semibold uppercase tracking-wider">
+            {{ $t('admin.cluster.summary.cpu') }}
+          </p>
+          <div
+            class="bg-on-surface/5 group-hover:bg-on-surface/10 flex h-10 w-10 items-center justify-center rounded-xl transition-colors"
+          >
+            <Icon
+              name="material-symbols:speed"
+              size="2rem"
+              class="text-on-surface"
+            />
+          </div>
+        </div>
+        <p
+          class="text-heading-lg font-display font-bold tabular-nums"
+          :class="getMetricTextClass(summary.cpu.usagePercent)"
+        >
+          {{ toPercent(summary.cpu.usagePercent) }}
         </p>
-        <Icon
-          name="material-symbols:speed"
-          size="1.8rem"
-          class="text-on-surface-dim"
+        <AppProgressBar
+          :value="summary.cpu.usagePercent ?? 0"
+          :color="getMetricColor(summary.cpu.usagePercent)"
+          :label="$t('admin.cluster.summary.cpu')"
+          size="md"
+          class="mt-md"
         />
       </div>
-      <p
-        class="text-heading-lg font-display font-bold"
-        :class="getMetricTextClass(summary.cpu.usagePercent)"
-      >
-        {{ toPercent(summary.cpu.usagePercent) }}
-      </p>
-      <AppProgressBar
-        :value="summary.cpu.usagePercent ?? 0"
-        :color="getMetricColor(summary.cpu.usagePercent)"
-        :label="$t('admin.cluster.summary.cpu')"
-        size="md"
-        class="mt-md"
-      />
     </div>
 
-    <div class="glass-card p-x-lg">
-      <div class="mb-md flex items-start justify-between">
-        <p class="text-body-x-sm font-semibold uppercase tracking-wider text-neural-400">
-          {{ $t('admin.cluster.summary.ram') }}
+    <div
+      class="glass-card p-x-lg duration-short hover:border-on-surface/20 group relative overflow-hidden transition-all hover:shadow-2xl"
+    >
+      <div
+        class="bg-on-surface/5 absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100"
+        aria-hidden="true"
+      />
+      <div class="relative z-10">
+        <div class="mb-md flex items-center justify-between">
+          <p class="text-body-x-sm text-on-surface-dim font-semibold uppercase tracking-wider">
+            {{ $t('admin.cluster.summary.ram') }}
+          </p>
+          <div
+            class="bg-on-surface/5 group-hover:bg-on-surface/10 flex h-10 w-10 items-center justify-center rounded-xl transition-colors"
+          >
+            <Icon
+              name="material-symbols:memory"
+              size="2rem"
+              class="text-on-surface"
+            />
+          </div>
+        </div>
+        <p
+          class="text-heading-lg font-display font-bold tabular-nums"
+          :class="getMetricTextClass(summary.memory.usedPercent)"
+        >
+          {{ toGb(summary.memory.usedBytes) }}
+          <span class="text-body-lg text-on-surface-dim font-normal">
+            GB / {{ toGb(summary.memory.totalBytes) }} GB
+          </span>
         </p>
-        <Icon
-          name="material-symbols:memory"
-          size="1.8rem"
-          class="text-on-surface-dim"
+        <AppProgressBar
+          :value="summary.memory.usedPercent ?? 0"
+          :color="getMetricColor(summary.memory.usedPercent)"
+          :label="$t('admin.cluster.summary.ram')"
+          size="md"
+          class="mt-md"
         />
       </div>
-      <p
-        class="text-heading-lg font-display font-bold"
-        :class="getMetricTextClass(summary.memory.usedPercent)"
-      >
-        {{ toGb(summary.memory.usedBytes) }}
-        <span class="text-body-lg text-on-surface-dim font-normal">
-          GB / {{ toGb(summary.memory.totalBytes) }} GB
-        </span>
-      </p>
-      <AppProgressBar
-        :value="summary.memory.usedPercent ?? 0"
-        :color="getMetricColor(summary.memory.usedPercent)"
-        :label="$t('admin.cluster.summary.ram')"
-        size="md"
-        class="mt-md"
-      />
     </div>
 
-    <div class="glass-card p-x-lg">
-      <div class="mb-md flex items-start justify-between">
-        <p class="text-body-x-sm font-semibold uppercase tracking-wider text-neural-400">
-          {{ $t('admin.cluster.summary.health') }}
+    <div
+      class="glass-card p-x-lg duration-short hover:border-on-surface/20 group relative overflow-hidden transition-all hover:shadow-2xl"
+    >
+      <div
+        class="bg-on-surface/5 absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100"
+        aria-hidden="true"
+      />
+      <div class="relative z-10">
+        <div class="mb-md flex items-center justify-between">
+          <p class="text-body-x-sm text-on-surface-dim font-semibold uppercase tracking-wider">
+            {{ $t('admin.cluster.summary.health') }}
+          </p>
+          <div
+            class="bg-on-surface/5 group-hover:bg-on-surface/10 flex h-10 w-10 items-center justify-center rounded-xl transition-colors"
+          >
+            <Icon
+              name="material-symbols:monitor-heart"
+              size="2rem"
+              class="text-on-surface"
+            />
+          </div>
+        </div>
+        <p
+          class="text-heading-lg font-display font-bold"
+          :class="overallHealth.colorClass"
+        >
+          {{ overallHealth.label }}
         </p>
-        <Icon
-          name="material-symbols:monitor-heart"
-          size="1.8rem"
-          class="text-on-surface-dim"
-        />
+        <p class="text-body-sm mt-md text-on-surface-dim">
+          {{
+            $t('admin.cluster.summary.nodesOnline', {
+              online: summary.onlineNodes,
+              total: summary.totalNodes,
+            })
+          }}
+        </p>
       </div>
-      <p
-        class="text-heading-lg font-display font-bold"
-        :class="overallHealth.colorClass"
-      >
-        {{ overallHealth.label }}
-      </p>
-      <p class="text-body-sm mt-md text-on-surface-dim">
-        {{
-          $t('admin.cluster.summary.nodesOnline', {
-            online: summary.onlineNodes,
-            total: summary.totalNodes,
-          })
-        }}
-      </p>
     </div>
   </div>
 </template>

@@ -79,20 +79,14 @@ const justRegistered = computed(() => route.query.registered === 'true');
         />
       </AppFormField>
 
-      <button
+      <AppButton
         type="submit"
-        class="btn-primary w-full"
-        :disabled="isSubmitting"
-        :aria-busy="isSubmitting"
+        size="full"
+        :loading="isSubmitting"
+        class="bg-on-surface text-surface hover:bg-on-surface/90"
       >
-        <Icon
-          v-if="isSubmitting"
-          name="material-symbols:progress-activity"
-          class="h-x-lg w-x-lg shrink-0 animate-spin"
-          aria-hidden="true"
-        />
-        <span v-else>{{ $t('auth.login.submit') }}</span>
-      </button>
+        {{ $t('auth.login.submit') }}
+      </AppButton>
     </form>
 
     <p class="mt-x-lg text-body-sm text-on-surface-dim text-center">

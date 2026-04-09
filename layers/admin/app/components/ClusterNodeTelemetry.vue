@@ -14,13 +14,13 @@ defineProps<{
         <Icon
           name="material-symbols:grid-view"
           size="2rem"
-          class="text-neural-400"
+          class="text-on-surface-dim"
         />
-        <h2 class="text-body-md font-semibold uppercase tracking-wider text-neural-400">
+        <h2 class="text-body-md text-on-surface-dim font-semibold uppercase tracking-wider">
           {{ $t('admin.cluster.telemetry.title') }}
         </h2>
       </div>
-      <span class="text-body-x-sm font-semibold text-neural-400">
+      <span class="text-body-x-sm text-on-surface-dim font-semibold">
         {{ $t('admin.cluster.telemetry.activeNodes', { count: onlineCount }) }}
       </span>
     </div>
