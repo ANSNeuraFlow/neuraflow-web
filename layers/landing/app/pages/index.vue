@@ -18,14 +18,16 @@ useHead({
 </script>
 
 <template>
-  <div class="min-h-screen bg-dark-900 font-sans text-white">
+  <div
+    class="bg-surface text-on-surface selection:bg-on-surface/10 min-h-screen font-sans transition-colors duration-500"
+  >
     <div
       class="noise-overlay"
       aria-hidden="true"
     />
     <a
       href="#main-content"
-      class="focus:left-md focus:top-md focus:px-md focus:py-sm focus:text-body-sm sr-only focus:not-sr-only focus:fixed focus:z-50 focus:rounded-lg focus:bg-neural-600 focus:font-medium focus:text-white"
+      class="focus:left-md focus:top-md focus:px-md focus:py-sm focus:text-body-sm focus:bg-on-surface focus:text-surface sr-only focus:not-sr-only focus:fixed focus:z-50 focus:rounded-xl focus:font-medium"
     >
       Skip to main content
     </a>

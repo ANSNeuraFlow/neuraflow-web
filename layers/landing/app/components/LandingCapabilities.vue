@@ -80,43 +80,43 @@ const ShieldIcon = defineComponent({
 const features: Feature[] = [
   {
     key: 'streaming',
-    iconBg: 'bg-neural-950/80 border border-neural-500/30',
-    iconColor: 'text-neural-400',
+    iconBg: 'bg-on-surface/5 border border-on-surface/10',
+    iconColor: 'text-on-surface-dim',
     icon: ChartIcon,
     tags: ['WebSocket', 'Kafka', '256 Hz', 'OpenBCI'],
   },
   {
     key: 'sessions',
-    iconBg: 'bg-neural-950/80 border border-neural-500/30',
-    iconColor: 'text-neural-400',
+    iconBg: 'bg-on-surface/5 border border-on-surface/10',
+    iconColor: 'text-on-surface-dim',
     icon: BrainIcon,
     tags: ['PostgreSQL', 'Session Tracking', 'Protocols'],
   },
   {
     key: 'training',
-    iconBg: 'bg-purple-950/80 border border-purple-500/30',
-    iconColor: 'text-purple-400',
+    iconBg: 'bg-on-surface/5 border border-on-surface/10',
+    iconColor: 'text-accent',
     icon: CpuIcon,
     tags: ['Ray Cluster', 'PyTorch', 'S3', 'HDFS'],
   },
   {
     key: 'models',
-    iconBg: 'bg-cyan-950/80 border border-cyan-500/30',
-    iconColor: 'text-cyan-400',
+    iconBg: 'bg-on-surface/5 border border-on-surface/10',
+    iconColor: 'text-info',
     icon: DatabaseIcon,
     tags: ['Model Registry', 'Versioning', 'Accuracy Tracking'],
   },
   {
     key: 'spark',
-    iconBg: 'bg-orange-950/80 border border-orange-500/30',
-    iconColor: 'text-orange-400',
+    iconBg: 'bg-on-surface/5 border border-on-surface/10',
+    iconColor: 'text-warning',
     icon: ZapIcon,
     tags: ['Apache Spark', 'HDFS', 'Structured Streaming'],
   },
   {
     key: 'security',
-    iconBg: 'bg-green-950/80 border border-green-500/30',
-    iconColor: 'text-green-400',
+    iconBg: 'bg-on-surface/5 border border-on-surface/10',
+    iconColor: 'text-success',
     icon: ShieldIcon,
     tags: ['JWT', 'RBAC', 'AES-256-GCM', 'NestJS Guards'],
   },
@@ -129,15 +129,6 @@ const features: Feature[] = [
     class="py-huge sm:py-x-huge relative"
     aria-label="Platform features"
   >
-    <!-- Background blobs -->
-    <div
-      class="pointer-events-none absolute inset-0"
-      aria-hidden="true"
-    >
-      <div class="absolute left-0 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-neural-600/10 blur-3xl" />
-      <div class="absolute right-0 top-1/4 h-64 w-64 rounded-full bg-cyan-500/[0.08] blur-3xl" />
-    </div>
-
     <div class="px-md sm:px-x-lg lg:px-xx-lg relative mx-auto w-full max-w-landing">
       <!-- Section header -->
       <div class="mb-xxxx-lg text-center">
@@ -155,11 +146,11 @@ const features: Feature[] = [
           </svg>
           {{ t('landing.features.sectionLabel') }}
         </span>
-        <h2 class="mt-md mb-md text-heading-md sm:text-heading-lg font-display font-bold text-white">
+        <h2 class="mt-md mb-md text-heading-md sm:text-heading-lg text-on-surface font-display font-bold">
           {{ t('landing.features.title') }}
           <span class="gradient-text"> {{ t('landing.features.titleAccent') }}</span>
         </h2>
-        <p class="text-body-md sm:text-body-lg mx-auto max-w-landing-copy text-slate-400">
+        <p class="text-body-md sm:text-body-lg text-on-surface-dim mx-auto max-w-landing-copy">
           {{ t('landing.features.description') }}
         </p>
       </div>
@@ -169,13 +160,13 @@ const features: Feature[] = [
         <article
           v-for="(feature, index) in features"
           :key="feature.key"
-          class="glass-card p-xx-lg sm:p-xxx-lg group cursor-default"
+          class="glass-card p-xx-lg sm:p-xxx-lg group flex h-full cursor-default flex-col"
           :aria-label="`Feature: ${t(`landing.features.items.${feature.key}.title`)}`"
           :style="{ animationDelay: `${index * 0.1}s` }"
         >
           <!-- Icon -->
           <div
-            class="mb-xx-lg h-xxxx-lg w-xxxx-lg duration-medium flex items-center justify-center rounded-lg transition-transform group-hover:scale-110"
+            class="mb-xx-lg h-xxxx-lg w-xxxx-lg duration-medium flex shrink-0 items-center justify-center rounded-lg transition-transform group-hover:scale-110"
             :class="feature.iconBg"
           >
             <component
@@ -187,10 +178,10 @@ const features: Feature[] = [
           </div>
 
           <!-- Content -->
-          <h3 class="mb-sm text-heading-md font-display font-semibold text-white">
+          <h3 class="mb-sm text-heading-md text-on-surface font-display font-semibold">
             {{ t(`landing.features.items.${feature.key}.title`) }}
           </h3>
-          <p class="text-body-sm leading-relaxed text-slate-400">
+          <p class="text-body-sm text-on-surface-dim leading-relaxed">
             {{ t(`landing.features.items.${feature.key}.description`) }}
           </p>
 
@@ -199,7 +190,7 @@ const features: Feature[] = [
             <span
               v-for="tag in feature.tags"
               :key="tag"
-              class="px-sm py-xx-sm text-body-x-sm rounded-full border border-white/[0.08] bg-white/[0.04] font-medium text-slate-400"
+              class="px-sm py-xx-sm text-body-x-sm border-on-surface/10 bg-on-surface/5 text-on-surface-dim rounded-full border font-medium"
             >
               {{ tag }}
             </span>

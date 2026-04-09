@@ -118,11 +118,11 @@ onUnmounted(() => {
 
     <!-- Floating orbs -->
     <div
-      class="pointer-events-none absolute left-1/4 top-1/4 h-64 w-64 animate-pulse-slow rounded-full bg-neural-600/20 blur-3xl"
+      class="bg-on-surface/5 pointer-events-none absolute left-1/4 top-1/4 h-64 w-64 animate-pulse-slow rounded-full blur-3xl"
       aria-hidden="true"
     />
     <div
-      class="pointer-events-none absolute bottom-1/4 right-1/4 h-96 w-96 animate-pulse-slow rounded-full bg-cyan-500/10 blur-3xl"
+      class="bg-info/10 pointer-events-none absolute bottom-1/4 right-1/4 h-96 w-96 animate-pulse-slow rounded-full blur-3xl"
       style="animation-delay: 2s"
       aria-hidden="true"
     />
@@ -135,7 +135,7 @@ onUnmounted(() => {
           role="status"
         >
           <span
-            class="h-2 w-2 animate-pulse rounded-full bg-cyan-400"
+            class="bg-info h-2 w-2 animate-pulse rounded-full"
             aria-hidden="true"
           />
           {{ t('landing.hero.badge') }}
@@ -146,13 +146,13 @@ onUnmounted(() => {
       <h1
         class="mb-xx-lg text-heading-lg tracking-sm sm:text-heading-x-lg lg:text-heading-x-huge font-display font-bold leading-none"
       >
-        <span class="block text-white">{{ t('landing.hero.titleLine1') }}</span>
+        <span class="text-on-surface block">{{ t('landing.hero.titleLine1') }}</span>
         <span class="gradient-text mt-xx-sm block">{{ t('landing.hero.titleLine2') }}</span>
-        <span class="mt-xx-sm block text-white">{{ t('landing.hero.titleLine3') }}</span>
+        <span class="mt-xx-sm text-on-surface block">{{ t('landing.hero.titleLine3') }}</span>
       </h1>
 
       <!-- Subtitle -->
-      <p class="mb-xxx-lg text-body-md sm:text-body-lg mx-auto max-w-landing-copy leading-relaxed text-slate-400">
+      <p class="mb-xxx-lg text-body-md sm:text-body-lg text-on-surface-dim mx-auto max-w-landing-copy leading-relaxed">
         {{ t('landing.hero.description') }}
       </p>
 
@@ -215,7 +215,7 @@ onUnmounted(() => {
           <div class="mb-xx-lg gap-md flex flex-wrap items-center justify-between">
             <div class="gap-sm flex items-center">
               <div
-                class="h-2 w-2 animate-pulse rounded-full bg-green-400"
+                class="bg-success h-2 w-2 animate-pulse rounded-full"
                 aria-hidden="true"
               />
               <span class="text-body-x-sm font-mono text-slate-400">
@@ -225,7 +225,7 @@ onUnmounted(() => {
             <div class="gap-sm flex items-center">
               <div class="text-body-x-sm font-mono text-slate-500">{{ t('landing.hero.visualFreq') }}</div>
               <div
-                class="px-sm py-xx-sm text-body-x-sm rounded-lg border border-neural-500/30 bg-neural-950/80 font-mono text-neural-400"
+                class="px-sm py-xx-sm text-body-x-sm border-on-surface/10 bg-on-surface/5 text-on-surface-dim rounded-lg border font-mono"
               >
                 {{ t('landing.hero.visualLive') }}
               </div>
@@ -234,7 +234,7 @@ onUnmounted(() => {
 
           <!-- EEG Wave Visualization -->
           <div
-            class="p-md sm:p-lg relative min-h-[16rem] overflow-hidden rounded-lg bg-dark-800/60 sm:min-h-[18rem]"
+            class="p-md sm:p-lg bg-on-surface/5 relative min-h-[16rem] overflow-hidden rounded-lg sm:min-h-[18rem] dark:bg-white/10"
             role="img"
             :aria-label="t('landing.hero.visualTitle')"
           >

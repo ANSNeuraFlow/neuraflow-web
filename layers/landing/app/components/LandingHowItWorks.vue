@@ -7,11 +7,11 @@ interface Step {
 }
 
 const steps: Step[] = [
-  { key: 'session', dotColor: 'bg-neural-400' },
-  { key: 'streaming', dotColor: 'bg-cyan-400' },
-  { key: 'kafka', dotColor: 'bg-orange-400' },
-  { key: 'ray', dotColor: 'bg-purple-400' },
-  { key: 'model', dotColor: 'bg-green-400' },
+  { key: 'session', dotColor: 'bg-on-surface-dim' },
+  { key: 'streaming', dotColor: 'bg-info' },
+  { key: 'kafka', dotColor: 'bg-warning' },
+  { key: 'ray', dotColor: 'bg-accent' },
+  { key: 'model', dotColor: 'bg-success' },
 ];
 </script>
 
@@ -26,7 +26,7 @@ const steps: Step[] = [
       class="pointer-events-none absolute inset-0"
       aria-hidden="true"
     >
-      <div class="absolute bottom-0 right-0 h-[600px] w-[600px] rounded-full bg-neural-600/5 blur-3xl" />
+      <div class="bg-info/5 absolute right-1 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full blur-3xl"></div>
     </div>
 
     <div class="px-md sm:px-x-lg lg:px-xx-lg relative mx-auto w-full max-w-landing">
@@ -49,11 +49,11 @@ const steps: Step[] = [
           </svg>
           {{ t('landing.howItWorks.sectionLabel') }}
         </span>
-        <h2 class="mt-md mb-md text-heading-md sm:text-heading-lg font-display font-bold text-white">
+        <h2 class="mt-md mb-md text-heading-md sm:text-heading-lg text-on-surface font-display font-bold">
           {{ t('landing.howItWorks.title') }}
           <span class="gradient-text"> {{ t('landing.howItWorks.titleAccent') }}</span>
         </h2>
-        <p class="text-body-md sm:text-body-lg mx-auto max-w-landing-copy text-slate-400">
+        <p class="text-body-md sm:text-body-lg text-on-surface-dim mx-auto max-w-landing-copy">
           {{ t('landing.howItWorks.description') }}
         </p>
       </div>
@@ -62,7 +62,7 @@ const steps: Step[] = [
       <div class="relative">
         <!-- Desktop connecting line -->
         <div
-          class="absolute left-1/2 top-10 hidden h-px w-[calc(100%-8rem)] -translate-x-1/2 bg-gradient-to-r from-transparent via-neural-500/30 to-transparent lg:block"
+          class="via-on-surface/10 absolute left-1/2 top-10 hidden h-px w-[calc(100%-8rem)] -translate-x-1/2 bg-gradient-to-r from-transparent to-transparent lg:block"
           aria-hidden="true"
         />
 
@@ -74,29 +74,29 @@ const steps: Step[] = [
           >
             <!-- Desktop connector dot -->
             <div
-              class="absolute left-1/2 top-6 z-10 hidden h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-neural-500 bg-dark-900 lg:flex"
+              class="border-on-surface-dim bg-surface absolute left-1/2 top-6 z-10 hidden h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 lg:flex"
               aria-hidden="true"
             />
 
             <!-- Step card -->
             <article
-              class="glass-card mt-xx-lg p-xx-lg duration-medium sm:p-xxx-lg w-full transition-all hover:shadow-neural"
+              class="glass-card mt-xx-lg p-xx-lg duration-medium sm:p-xxx-lg hover:shadow-on-surface w-full transition-all"
               :aria-label="`Step ${index + 1}: ${t(`landing.howItWorks.steps.${step.key}.title`)}`"
             >
               <!-- Step number -->
               <div class="mb-md gap-sm flex items-center">
                 <div
-                  class="h-x-huge w-x-huge text-body-sm flex flex-shrink-0 items-center justify-center rounded-lg border border-neural-500/30 bg-neural-950/80 font-mono font-bold text-neural-400"
+                  class="h-x-huge w-x-huge text-body-sm border-on-surface/10 bg-on-surface/5 text-on-surface-dim flex flex-shrink-0 items-center justify-center rounded-lg border font-mono font-bold"
                   aria-hidden="true"
                 >
                   {{ String(index + 1).padStart(2, '0') }}
                 </div>
-                <h3 class="text-body-md font-display font-semibold text-white">
+                <h3 class="text-body-md text-on-surface font-display font-semibold">
                   {{ t(`landing.howItWorks.steps.${step.key}.title`) }}
                 </h3>
               </div>
 
-              <p class="mb-md text-body-sm leading-relaxed text-slate-400">
+              <p class="mb-md text-body-sm text-on-surface-dim leading-relaxed">
                 {{ t(`landing.howItWorks.steps.${step.key}.description`) }}
               </p>
 
@@ -107,7 +107,7 @@ const steps: Step[] = [
                   :class="step.dotColor"
                   aria-hidden="true"
                 />
-                <span class="text-slate-500">{{ t(`landing.howItWorks.steps.${step.key}.tech`) }}</span>
+                <span class="text-on-surface-dim">{{ t(`landing.howItWorks.steps.${step.key}.tech`) }}</span>
               </div>
             </article>
 

@@ -22,11 +22,7 @@ const localePath = useLocalePath();
 </script>
 
 <template>
-  <AppCard
-    border
-    padding="xl"
-    class="w-full max-w-[48rem]"
-  >
+  <div class="glass-card p-xx-lg sm:p-xxx-lg w-full sm:mx-auto">
     <div class="mb-xx-lg text-center">
       <BrandLogo
         size="default"
@@ -147,5 +143,5 @@ const localePath = useLocalePath();
         {{ $t('auth.register.loginLink') }}
       </NuxtLink>
     </p>
-  </AppCard>
+  </div>
 </template>

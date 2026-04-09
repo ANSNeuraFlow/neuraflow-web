@@ -49,9 +49,9 @@ const handleFormSubmit = async (): Promise<void> => {
       class="pointer-events-none absolute inset-0"
       aria-hidden="true"
     >
-      <div class="absolute inset-0 bg-gradient-to-br from-neural-950/60 via-dark-900 to-dark-900" />
+      <div class="bg-surface/50 absolute inset-0 sm:bg-transparent" />
       <div
-        class="absolute left-1/2 top-1/2 h-[400px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-neural-600/10 blur-3xl"
+        class="bg-on-surface/5 absolute left-1/2 top-1/2 h-[400px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl dark:bg-white/[0.015]"
       />
     </div>
 
@@ -68,14 +68,16 @@ const handleFormSubmit = async (): Promise<void> => {
       </div>
 
       <!-- Title -->
-      <h2 class="mb-xx-lg text-heading-md sm:text-heading-lg lg:text-heading-x-lg font-display font-bold text-white">
+      <h2
+        class="mb-xx-lg text-heading-md sm:text-heading-lg lg:text-heading-x-lg text-on-surface font-display font-bold"
+      >
         {{ t('landing.cta.title') }}
         <span class="gradient-text"> {{ t('landing.cta.titleAccent') }}</span>
         {{ t('landing.cta.titleSuffix') }}
       </h2>
 
       <!-- Description -->
-      <p class="mb-xxx-lg text-body-md sm:text-body-lg mx-auto max-w-landing-copy leading-relaxed text-slate-400">
+      <p class="mb-xxx-lg text-body-md sm:text-body-lg text-on-surface-dim mx-auto max-w-landing-copy leading-relaxed">
         {{ t('landing.cta.description') }}
       </p>
 
@@ -102,7 +104,7 @@ const handleFormSubmit = async (): Promise<void> => {
             aria-required="true"
             :aria-invalid="isEmailInvalid"
             aria-describedby="cta-email-error"
-            class="px-md py-md text-body-md duration-short w-full rounded-lg border border-white/[0.10] bg-white/[0.04] text-white placeholder-slate-500 transition-colors focus:border-neural-500 focus:outline-none focus:ring-2 focus:ring-neural-500/20"
+            class="px-md py-md text-body-md duration-short border-on-surface/10 bg-on-surface/5 text-on-surface placeholder-on-surface-dim/50 focus:border-on-surface focus:ring-on-surface/20 w-full rounded-lg border transition-colors focus:outline-none focus:ring-2"
             :class="isEmailInvalid ? 'border-red-500/60' : ''"
             @input="handleEmailInput"
           />
