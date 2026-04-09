@@ -7,6 +7,43 @@
       "editRole": "Zmień rolę",
       "retry": "Spróbuj ponownie"
     },
+    "cluster": {
+      "errors": {
+        "fetchFailed": "Nie udało się pobrać metryk klastra"
+      },
+      "health": {
+        "critical": "KRYTYCZNY",
+        "excellent": "DOSKONAŁY",
+        "good": "DOBRY",
+        "warning": "OSTRZEŻENIE"
+      },
+      "kicker": "Strefa infrastruktury",
+      "lastUpdate": "Ostatnia aktualizacja",
+      "node": {
+        "active": "AKTYWNY",
+        "cpu": "CPU",
+        "disk": "DYSK",
+        "down": "OFFLINE",
+        "ram": "RAM",
+        "status": "STATUS"
+      },
+      "subtitle": "Łącznie {count} węzłów",
+      "summary": {
+        "cpu": "CPU KLASTRA",
+        "health": "OGÓLNA KONDYCJA",
+        "nodesOnline": "{online} / {total} węzłów online",
+        "ram": "WYKORZYSTANIE RAM"
+      },
+      "telemetry": {
+        "activeNodes": "{count} AKTYWNYCH WĘZŁÓW",
+        "title": "TELEMETRIA WĘZŁÓW"
+      },
+      "title": "Metryki klastra"
+    },
+    "connection": {
+      "live": "Aktywne",
+      "polling": "Pobieranie"
+    },
     "createUser": {
       "passwordChangeNote": "Użytkownik zostanie poproszony o zmianę hasła przy pierwszym logowaniu.",
       "submit": "Utwórz konto",
