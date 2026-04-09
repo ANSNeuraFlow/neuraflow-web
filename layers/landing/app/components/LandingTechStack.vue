@@ -3,7 +3,7 @@ const { t } = useI18n();
 
 interface Tech {
   name: string;
-  emoji: string;
+  icon: string;
   desc: string;
 }
 
@@ -15,67 +15,96 @@ interface TechLayer {
 
 interface ArchNode {
   label: string;
+  icon: string;
   classes: string;
 }
 
 const techLayers: TechLayer[] = [
   {
     name: 'Frontend',
-    dotColor: 'bg-cyan-400',
+    dotColor: 'bg-accent',
     techs: [
-      { name: 'Nuxt 3', emoji: '💚', desc: 'Vue.js framework' },
-      { name: 'TailwindCSS', emoji: '🎨', desc: 'Utility CSS' },
-      { name: 'TypeScript', emoji: '🔷', desc: 'Type safety' },
+      { name: 'Nuxt 3', icon: 'logos:nuxt-icon', desc: 'Vue.js framework' },
+      { name: 'TailwindCSS', icon: 'logos:tailwindcss-icon', desc: 'Utility CSS' },
+      { name: 'TypeScript', icon: 'logos:typescript-icon', desc: 'Type safety' },
     ],
   },
   {
     name: 'Backend',
-    dotColor: 'bg-neural-400',
+    dotColor: 'bg-on-surface-dim',
     techs: [
-      { name: 'NestJS', emoji: '🐈', desc: 'Node.js framework' },
-      { name: 'TypeScript', emoji: '🔷', desc: 'Type safety' },
-      { name: 'Kysely', emoji: '🗄️', desc: 'SQL query builder' },
-      { name: 'PostgreSQL', emoji: '🐘', desc: 'Relational DB' },
-      { name: 'WebSocket', emoji: '🔌', desc: 'Real-time stream' },
+      { name: 'NestJS', icon: 'logos:nestjs', desc: 'Node.js framework' },
+      { name: 'TypeScript', icon: 'logos:typescript-icon', desc: 'Type safety' },
+      { name: 'Kysely', icon: 'mdi:database-search-outline', desc: 'SQL query builder' },
+      { name: 'PostgreSQL', icon: 'logos:postgresql', desc: 'Relational DB' },
+      { name: 'WebSocket', icon: 'mdi:power-plug-outline', desc: 'Real-time stream' },
     ],
   },
   {
     name: 'Messaging',
-    dotColor: 'bg-orange-400',
+    dotColor: 'bg-warning',
     techs: [
-      { name: 'Apache Kafka', emoji: '📨', desc: 'Event streaming' },
-      { name: 'PySpark', emoji: '⚡', desc: 'Stream processing' },
-      { name: 'HDFS', emoji: '💾', desc: 'Distributed storage' },
+      { name: 'Apache Kafka', icon: 'mdi:apache-kafka', desc: 'Event streaming' },
+      { name: 'PySpark', icon: 'logos:apache-spark', desc: 'Stream processing' },
+      { name: 'HDFS', icon: 'logos:hadoop', desc: 'Distributed storage' },
     ],
   },
   {
     name: 'ML / AI',
-    dotColor: 'bg-purple-400',
+    dotColor: 'bg-info',
     techs: [
-      { name: 'Ray', emoji: '☀️', desc: 'Distributed compute' },
-      { name: 'PyTorch', emoji: '🔥', desc: 'Deep learning' },
-      { name: 'S3', emoji: '🪣', desc: 'Model artifacts' },
+      { name: 'Ray', icon: 'mingcute:lightning-fill', desc: 'Distributed compute' },
+      { name: 'PyTorch', icon: 'logos:pytorch-icon', desc: 'Deep learning' },
+      { name: 'S3', icon: 'logos:aws-s3', desc: 'Model artifacts' },
     ],
   },
   {
     name: 'Infrastructure',
-    dotColor: 'bg-green-400',
+    dotColor: 'bg-success',
     techs: [
-      { name: 'Docker', emoji: '🐳', desc: 'Containerization' },
-      { name: 'JWT / JWE', emoji: '🔒', desc: 'Auth & security' },
-      { name: 'Swagger', emoji: '📖', desc: 'API docs' },
+      { name: 'Docker', icon: 'logos:docker-icon', desc: 'Containerization' },
+      { name: 'JWT / JWE', icon: 'logos:jwt-icon', desc: 'Auth & security' },
+      { name: 'Swagger', icon: 'logos:swagger', desc: 'API docs' },
     ],
   },
 ];
 
 const archNodes: ArchNode[] = [
-  { label: 'OpenBCI', classes: 'border-cyan-500/40 text-cyan-400 bg-cyan-950/30' },
-  { label: 'WebSocket', classes: 'border-neural-500/40 text-neural-400 bg-neural-950/30' },
-  { label: 'Kafka', classes: 'border-orange-500/40 text-orange-400 bg-orange-950/30' },
-  { label: 'Spark', classes: 'border-orange-500/40 text-orange-400 bg-orange-950/30' },
-  { label: 'HDFS', classes: 'border-slate-500/40 text-slate-400 bg-slate-950/30' },
-  { label: 'Ray', classes: 'border-purple-500/40 text-purple-400 bg-purple-950/30' },
-  { label: 'Model', classes: 'border-green-500/40 text-green-400 bg-green-950/30' },
+  {
+    label: 'OpenBCI',
+    icon: 'mdi:brain',
+    classes: 'border-on-surface/10 text-on-surface bg-on-surface/5 hover:bg-on-surface/10 hover:border-on-surface/30',
+  },
+  {
+    label: 'WebSocket',
+    icon: 'mdi:power-plug-outline',
+    classes: 'border-on-surface/10 text-on-surface bg-on-surface/5 hover:bg-on-surface/10 hover:border-on-surface/30',
+  },
+  {
+    label: 'Kafka',
+    icon: 'mdi:apache-kafka',
+    classes: 'border-on-surface/10 text-on-surface bg-on-surface/5 hover:bg-on-surface/10 hover:border-on-surface/30',
+  },
+  {
+    label: 'Spark',
+    icon: 'mdi:lightning-bolt',
+    classes: 'border-on-surface/10 text-on-surface bg-on-surface/5 hover:bg-on-surface/10 hover:border-on-surface/30',
+  },
+  {
+    label: 'HDFS',
+    icon: 'mdi:database-outline',
+    classes: 'border-on-surface/10 text-on-surface bg-on-surface/5 hover:bg-on-surface/10 hover:border-on-surface/30',
+  },
+  {
+    label: 'Ray',
+    icon: 'mdi:cpu-64-bit',
+    classes: 'border-on-surface/10 text-on-surface bg-on-surface/5 hover:bg-on-surface/10 hover:border-on-surface/30',
+  },
+  {
+    label: 'Model',
+    icon: 'mdi:cube-outline',
+    classes: 'border-on-surface/10 text-on-surface bg-on-surface/5 hover:bg-on-surface/10 hover:border-on-surface/30',
+  },
 ];
 </script>
 
@@ -87,10 +116,11 @@ const archNodes: ArchNode[] = [
   >
     <!-- Background -->
     <div
-      class="pointer-events-none absolute inset-0"
+      class="pointer-events-none absolute inset-0 overflow-hidden"
       aria-hidden="true"
     >
-      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-neural-950/20 to-transparent" />
+      <div class="bg-info/[0.04] absolute -left-64 top-1/3 h-[500px] w-[500px] rounded-full blur-3xl" />
+      <div class="bg-info/[0.015] absolute -right-64 top-2/3 h-[400px] w-[400px] rounded-full blur-3xl" />
     </div>
 
     <div class="px-md sm:px-x-lg lg:px-xx-lg relative mx-auto w-full max-w-landing">
@@ -113,12 +143,12 @@ const archNodes: ArchNode[] = [
           </svg>
           {{ t('landing.tech.sectionLabel') }}
         </span>
-        <h2 class="mt-md mb-md text-heading-md sm:text-heading-lg font-display font-bold text-white">
+        <h2 class="mt-md mb-md text-heading-md sm:text-heading-lg text-on-surface font-display font-bold">
           {{ t('landing.tech.title') }}
           <span class="gradient-text"> {{ t('landing.tech.titleAccent') }}</span>
           {{ t('landing.tech.titleSuffix') }}
         </h2>
-        <p class="text-body-md sm:text-body-lg mx-auto max-w-landing-copy text-slate-400">
+        <p class="text-body-md sm:text-body-lg text-on-surface-dim mx-auto max-w-landing-copy">
           {{ t('landing.tech.description') }}
         </p>
       </div>
@@ -139,7 +169,7 @@ const archNodes: ArchNode[] = [
                   :class="layer.dotColor"
                   aria-hidden="true"
                 />
-                <span class="text-body-x-sm font-mono font-medium uppercase tracking-widest text-slate-500">
+                <span class="text-body-x-sm text-on-surface-dim/80 font-mono font-medium uppercase tracking-widest">
                   {{ layer.name }}
                 </span>
               </div>
@@ -158,18 +188,18 @@ const archNodes: ArchNode[] = [
                 role="listitem"
                 :aria-label="tech.name"
               >
-                <span
-                  class="text-heading-md leading-none"
+                <Icon
+                  :name="tech.icon"
+                  class="text-heading-md duration-short leading-none transition-transform group-hover/tech:-translate-y-0.5 group-hover/tech:scale-110"
                   aria-hidden="true"
-                  >{{ tech.emoji }}</span
-                >
+                />
                 <div>
                   <div
-                    class="text-body-sm duration-short font-medium text-slate-200 transition-colors group-hover/tech:text-white"
+                    class="text-body-sm duration-short text-on-surface-dim group-hover/tech:text-on-surface font-medium transition-colors"
                   >
                     {{ tech.name }}
                   </div>
-                  <div class="text-body-x-sm text-slate-600">{{ tech.desc }}</div>
+                  <div class="text-body-x-sm text-on-surface-dim">{{ tech.desc }}</div>
                 </div>
               </div>
             </div>
@@ -178,41 +208,51 @@ const archNodes: ArchNode[] = [
       </div>
 
       <!-- Architecture diagram -->
-      <div class="glass-card mt-xxxx-lg p-xx-lg sm:p-xxx-lg text-center">
+      <div class="glass-card mt-xxxx-lg p-xx-lg sm:p-xxx-lg relative overflow-hidden text-center">
         <div
-          class="mb-xx-lg flex justify-center"
+          class="mb-xx-lg relative z-10 flex justify-center"
           aria-hidden="true"
         >
           <div class="gap-sm sm:gap-md flex flex-wrap items-center justify-center">
             <div
               v-for="(node, i) in archNodes"
               :key="node.label"
-              class="gap-sm sm:gap-md flex items-center"
+              class="group/node gap-sm sm:gap-md flex items-center"
             >
               <div
-                class="px-md py-sm text-body-x-sm duration-medium rounded-lg border font-mono transition-all hover:scale-105"
+                class="duration-medium gap-xx-sm flex h-24 w-24 flex-col items-center justify-center rounded-xl border backdrop-blur-md transition-all hover:-translate-y-1 hover:scale-105 sm:h-28 sm:w-28"
                 :class="node.classes"
               >
-                {{ node.label }}
-              </div>
-              <svg
-                v-if="i < archNodes.length - 1"
-                class="h-md w-md hidden text-slate-600 sm:block"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                <Icon
+                  :name="node.icon"
+                  class="h-[2rem] w-[2rem] sm:h-[2.5rem] sm:w-[2.5rem]"
                 />
-              </svg>
+                <span class="text-body-x-sm font-mono font-bold tracking-tight">{{ node.label }}</span>
+              </div>
+
+              <!-- Connection arrow -->
+              <div
+                v-if="i < archNodes.length - 1"
+                class="relative hidden items-center justify-center lg:flex"
+              >
+                <svg
+                  class="h-md w-md text-on-surface/20 duration-medium group-hover/node:text-on-surface/50 transition-colors"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  />
+                </svg>
+              </div>
             </div>
           </div>
         </div>
-        <p class="text-body-sm text-slate-500">{{ t('landing.tech.archCaption') }}</p>
+        <p class="text-body-sm text-on-surface-dim font-medium">{{ t('landing.tech.archCaption') }}</p>
       </div>
     </div>
   </section>

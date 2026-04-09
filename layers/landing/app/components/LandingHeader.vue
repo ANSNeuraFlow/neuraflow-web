@@ -37,8 +37,8 @@ onUnmounted(() => {
 
 <template>
   <header
-    class="fixed left-0 right-0 top-0 z-50 transition-all duration-300"
-    :class="isScrolled ? 'border-b border-white/[0.06] bg-dark-900/90 backdrop-blur-xl' : 'bg-transparent'"
+    class="fixed left-0 right-0 top-0 z-50 border-b transition-all duration-300"
+    :class="isScrolled ? 'border-on-surface/10 bg-surface/90 backdrop-blur-xl' : 'border-transparent bg-transparent'"
   >
     <div class="px-md sm:px-x-lg lg:px-xx-lg mx-auto w-full max-w-landing">
       <div class="min-h-x-huge py-sm relative flex items-center justify-between">
@@ -51,13 +51,13 @@ onUnmounted(() => {
         >
           <div class="h-x-huge w-x-huge relative">
             <div
-              class="absolute inset-0 rounded-lg bg-neural-500 opacity-70 blur-sm transition-opacity group-hover:opacity-100"
+              class="bg-on-surface absolute inset-0 rounded-lg opacity-50 blur-sm transition-opacity group-hover:opacity-80"
             />
             <div
-              class="h-x-huge w-x-huge relative flex items-center justify-center rounded-lg bg-gradient-to-br from-neural-500 to-neural-700"
+              class="h-x-huge w-x-huge from-on-surface-dim to-on-surface relative flex items-center justify-center rounded-lg bg-gradient-to-br"
             >
               <svg
-                class="h-x-lg w-x-lg text-white"
+                class="h-x-lg w-x-lg text-surface"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -73,7 +73,7 @@ onUnmounted(() => {
               </svg>
             </div>
           </div>
-          <span class="text-body-lg tracking-sm font-display font-bold text-white">
+          <span class="text-body-lg tracking-sm text-on-surface font-display font-bold">
             Neura<span class="gradient-text">Flow</span>
           </span>
         </a>
@@ -88,7 +88,7 @@ onUnmounted(() => {
             v-for="item in navItems"
             :key="item.href"
             :href="item.href"
-            class="px-sm py-sm text-body-sm duration-short lg:px-md shrink-0 whitespace-nowrap rounded-lg font-medium text-slate-400 transition-colors ease-out hover:bg-white/[0.05] hover:text-white"
+            class="px-sm py-sm text-body-sm duration-short lg:px-md text-on-surface-dim hover:bg-on-surface/5 hover:text-on-surface shrink-0 whitespace-nowrap rounded-lg font-medium transition-colors ease-out"
           >
             {{ item.label }}
           </a>
@@ -157,7 +157,7 @@ onUnmounted(() => {
     <Transition name="slide-down">
       <div
         v-if="isMobileMenuOpen"
-        class="border-t border-white/[0.06] bg-dark-900/95 backdrop-blur-xl md:hidden"
+        class="border-on-surface/10 bg-surface/95 border-t backdrop-blur-xl md:hidden"
       >
         <nav
           class="gap-xx-sm px-md py-md mx-auto flex w-full max-w-landing flex-col"

@@ -22,11 +22,11 @@ const footerLinks = computed(() => [
         <!-- Logo & tagline -->
         <div class="gap-md flex items-center">
           <div
-            class="h-x-huge w-x-huge flex items-center justify-center rounded-lg bg-gradient-to-br from-neural-500 to-neural-700"
+            class="h-x-huge w-x-huge from-on-surface-dim to-on-surface flex items-center justify-center rounded-lg bg-gradient-to-br"
             aria-hidden="true"
           >
             <svg
-              class="h-md w-md text-white"
+              class="h-md w-md text-surface"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -41,10 +41,10 @@ const footerLinks = computed(() => [
             </svg>
           </div>
           <div>
-            <span class="text-body-md font-display font-semibold text-white">
+            <span class="text-body-md text-on-surface font-display font-semibold">
               Neura<span class="gradient-text">Flow</span>
             </span>
-            <p class="text-body-x-sm text-slate-600">{{ t('landing.footer.tagline') }}</p>
+            <p class="text-body-x-sm text-on-surface-dim/60">{{ t('landing.footer.tagline') }}</p>
           </div>
         </div>
 
@@ -57,7 +57,7 @@ const footerLinks = computed(() => [
             v-for="link in footerLinks"
             :key="link.label"
             :href="link.href"
-            class="text-body-sm duration-short text-slate-500 transition-colors hover:text-slate-300"
+            class="text-body-sm duration-short text-on-surface-dim/80 hover:text-on-surface/80 transition-colors"
           >
             {{ link.label }}
           </a>
@@ -65,7 +65,7 @@ const footerLinks = computed(() => [
 
         <!-- Copyright -->
         <p
-          class="text-body-x-sm text-slate-600"
+          class="text-body-x-sm text-on-surface-dim/60"
           aria-label="Copyright"
         >
           © {{ currentYear }} {{ t('landing.footer.copyright') }}
@@ -73,25 +73,25 @@ const footerLinks = computed(() => [
       </div>
 
       <!-- API status bar -->
-      <div class="mt-xx-lg gap-xx-lg pt-xx-lg flex flex-wrap items-center border-t border-white/[0.04]">
-        <div class="gap-sm text-body-x-sm flex items-center text-slate-600">
+      <div class="mt-xx-lg gap-xx-lg pt-xx-lg border-on-surface/5 flex flex-wrap items-center border-t">
+        <div class="gap-sm text-body-x-sm text-on-surface-dim/60 flex items-center">
           <span aria-hidden="true">{{ t('landing.footer.apiLabel') }}</span>
-          <code class="text-body-x-sm font-mono text-slate-500">{{ t('landing.footer.apiEndpoint') }}</code>
+          <code class="text-body-x-sm text-on-surface-dim/80 font-mono">{{ t('landing.footer.apiEndpoint') }}</code>
         </div>
-        <div class="gap-sm text-body-x-sm flex items-center text-slate-600">
+        <div class="gap-sm text-body-x-sm text-on-surface-dim/60 flex items-center">
           <div
-            class="h-1.5 w-1.5 rounded-full bg-green-400"
+            class="bg-success h-1.5 w-1.5 rounded-full"
             aria-hidden="true"
           />
           <span>{{ t('landing.footer.apiDocsAvailable') }}</span>
         </div>
-        <div class="gap-sm text-body-x-sm flex items-center text-slate-600">
+        <div class="gap-sm text-body-x-sm text-on-surface-dim/60 flex items-center">
           <span>NestJS</span>
-          <span class="text-slate-700">•</span>
+          <span class="text-on-surface-dim/40">•</span>
           <span>PostgreSQL</span>
-          <span class="text-slate-700">•</span>
+          <span class="text-on-surface-dim/40">•</span>
           <span>Kafka</span>
-          <span class="text-slate-700">•</span>
+          <span class="text-on-surface-dim/40">•</span>
           <span>Ray</span>
         </div>
       </div>

@@ -39,12 +39,12 @@ const stats = computed<Stat[]>(() => [
   >
     <!-- Top divider -->
     <div
-      class="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-neural-500/30 to-transparent"
+      class="via-on-surface/10 absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent"
       aria-hidden="true"
     />
     <!-- Bottom divider -->
     <div
-      class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-neural-500/30 to-transparent"
+      class="via-on-surface/10 absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent to-transparent"
       aria-hidden="true"
     />
 
@@ -62,8 +62,8 @@ const stats = computed<Stat[]>(() => [
           >
             {{ stat.value }}
           </div>
-          <div class="text-body-sm text-slate-400">{{ stat.label }}</div>
-          <div class="mt-xx-sm text-body-x-sm text-slate-600">{{ stat.sub }}</div>
+          <div class="text-body-sm text-on-surface-dim">{{ stat.label }}</div>
+          <div class="mt-xx-sm text-body-x-sm text-on-surface-dim/60">{{ stat.sub }}</div>
         </div>
       </div>
     </div>

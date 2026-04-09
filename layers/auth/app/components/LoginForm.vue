@@ -10,11 +10,7 @@ const justRegistered = computed(() => route.query.registered === 'true');
 </script>
 
 <template>
-  <AppCard
-    border
-    padding="xl"
-    class="w-full max-w-[44rem]"
-  >
+  <div class="glass-card p-xx-lg sm:p-xxx-lg w-full sm:mx-auto">
     <div class="mb-xx-lg text-center">
       <BrandLogo
         size="default"
@@ -101,5 +97,5 @@ const justRegistered = computed(() => route.query.registered === 'true');
         {{ $t('auth.login.registerLink') }}
       </NuxtLink>
     </p>
-  </AppCard>
+  </div>
 </template>
