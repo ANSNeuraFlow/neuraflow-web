@@ -30,14 +30,14 @@ const handleLogout = async () => {
   <template v-if="!sessionStore.isAuthenticated">
     <template v-if="variant === 'desktop'">
       <button
-        class="px-md py-xx-sm text-body-x-sm duration-short inline-flex items-center rounded-lg border border-white/[0.15] bg-white/[0.04] font-semibold text-slate-300 backdrop-blur-sm transition-colors hover:border-white/[0.3] hover:bg-white/[0.07] hover:text-white focus-visible:outline-none"
+        class="px-md py-xx-sm text-body-x-sm duration-short border-on-surface/10 bg-on-surface/[0.04] text-on-surface hover:border-on-surface/20 hover:bg-on-surface/[0.07] inline-flex items-center rounded-lg border font-semibold backdrop-blur-sm transition-colors focus-visible:outline-none"
         :aria-label="t('landing.nav.login')"
         @click="navigateTo(localePath('/login'))"
       >
         {{ t('landing.nav.login') }}
       </button>
       <button
-        class="px-md py-xx-sm text-body-x-sm duration-short inline-flex items-center rounded-lg bg-neural-600 font-semibold text-white transition-colors hover:bg-neural-500 focus-visible:outline-none"
+        class="px-md py-xx-sm text-body-x-sm duration-short bg-on-surface text-surface hover:bg-on-surface/90 inline-flex items-center rounded-lg font-semibold transition-colors hover:scale-[1.02] focus-visible:outline-none active:scale-[0.98]"
         :aria-label="t('landing.nav.register')"
         @click="navigateTo(localePath('/register'))"
       >
@@ -66,13 +66,13 @@ const handleLogout = async () => {
       <NuxtLink
         v-if="canAccessAdmin"
         :to="localePath('/admin/users')"
-        class="px-md py-xx-sm text-body-x-sm duration-short inline-flex items-center rounded-lg border border-white/[0.15] bg-white/[0.04] font-semibold text-slate-300 backdrop-blur-sm transition-colors hover:border-white/[0.3] hover:bg-white/[0.07] hover:text-white focus-visible:outline-none"
+        class="px-md py-xx-sm text-body-x-sm duration-short border-on-surface/10 bg-on-surface/[0.04] text-on-surface hover:border-on-surface/20 hover:bg-on-surface/[0.07] inline-flex items-center rounded-lg border font-semibold backdrop-blur-sm transition-colors focus-visible:outline-none"
       >
         {{ t('landing.nav.adminPanel') }}
       </NuxtLink>
       <button
         v-else
-        class="px-md py-xx-sm text-body-x-sm duration-short inline-flex items-center rounded-lg border border-white/[0.15] bg-white/[0.04] font-semibold text-slate-300 backdrop-blur-sm transition-colors hover:border-white/[0.3] hover:bg-white/[0.07] hover:text-white focus-visible:outline-none"
+        class="px-md py-xx-sm text-body-x-sm duration-short border-on-surface/10 bg-on-surface/[0.04] text-on-surface hover:border-on-surface/20 hover:bg-on-surface/[0.07] inline-flex items-center rounded-lg border font-semibold backdrop-blur-sm transition-colors focus-visible:outline-none"
         :aria-label="t('landing.nav.profile')"
         @click="navigateTo(localePath('/'))"
       >
@@ -80,7 +80,7 @@ const handleLogout = async () => {
       </button>
 
       <button
-        class="px-md py-xx-sm text-body-x-sm duration-short inline-flex items-center rounded-lg bg-neural-600 font-semibold text-white transition-colors hover:bg-neural-500 focus-visible:outline-none"
+        class="px-md py-xx-sm text-body-x-sm duration-short bg-on-surface text-surface hover:bg-on-surface/90 inline-flex items-center rounded-lg font-semibold transition-colors hover:scale-[1.02] focus-visible:outline-none active:scale-[0.98]"
         :aria-label="t('landing.nav.logout')"
         @click="handleLogout"
       >

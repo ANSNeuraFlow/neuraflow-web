@@ -37,10 +37,14 @@ const roleOptions = computed<AppSelectOption[]>(() =>
 
 <template>
   <div class="mx-auto w-full max-w-[120rem]">
-    <section class="glass-card mb-x-lg p-md sm:p-x-lg">
-      <div class="gap-sm flex flex-wrap items-start justify-between">
+    <section class="glass-card mb-x-lg p-md sm:p-x-lg relative overflow-hidden">
+      <div
+        class="bg-info/5 pointer-events-none absolute -right-20 -top-20 h-[200px] w-[200px] rounded-full blur-3xl"
+        aria-hidden="true"
+      />
+      <div class="gap-sm relative z-10 flex flex-wrap items-center justify-between">
         <div>
-          <p class="text-body-x-sm mb-xx-sm font-semibold uppercase tracking-wider text-neural-400">
+          <p class="text-body-x-sm mb-xx-sm text-on-surface-dim font-semibold uppercase tracking-wider">
             {{ $t('admin.users.kicker') }}
           </p>
           <h1 class="text-heading-lg tracking-sm text-on-surface font-display font-bold">
@@ -51,7 +55,7 @@ const roleOptions = computed<AppSelectOption[]>(() =>
           </p>
         </div>
         <button
-          class="gap-x-sm px-x-lg py-sm text-body-sm duration-short inline-flex items-center rounded-lg bg-neural-600 font-semibold text-white transition-colors hover:bg-neural-500 focus-visible:outline-none"
+          class="gap-x-sm px-x-lg py-sm text-body-sm duration-short bg-on-surface text-surface hover:bg-on-surface/90 inline-flex items-center rounded-lg focus-visible:outline-none"
           @click="isCreateOpen = true"
         >
           <Icon
@@ -90,17 +94,14 @@ const roleOptions = computed<AppSelectOption[]>(() =>
       </AppButton>
     </div>
 
-    <AppCard
-      border
-      class="border-on-surface/10 bg-surface/60 backdrop-blur-xl"
-    >
+    <div class="glass-card overflow-hidden">
       <AdminUsersTable
         :users="users"
         :is-loading="isLoading"
         @edit-role="openEditRole"
         @delete-user="openDelete"
       />
-    </AppCard>
+    </div>
 
     <CreateUserModal
       v-model:open="isCreateOpen"

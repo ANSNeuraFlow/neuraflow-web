@@ -1,5 +1,8 @@
 <script setup lang="ts">
-definePageMeta({ title: 'auth.register.title' });
+definePageMeta({
+  title: 'auth.register.title',
+  layout: false,
+});
 </script>
 
 <template>

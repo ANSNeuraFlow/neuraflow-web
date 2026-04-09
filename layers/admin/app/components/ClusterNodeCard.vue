@@ -37,71 +37,83 @@ const metricRows = computed(() => [
 </script>
 
 <template>
-  <div class="glass-card p-x-lg">
-    <div class="border-on-surface/10 mb-md gap-sm pb-md flex items-center border-b">
-      <Icon
-        :name="roleIcon"
-        size="2rem"
-        :class="node.isOnline ? 'text-neural-400' : 'text-error'"
-      />
-      <div class="min-w-0 flex-1">
-        <span class="text-body-sm text-on-surface block font-semibold uppercase tracking-wider">
-          {{ nodeLabel }}
-        </span>
-        <span class="text-body-x-sm text-on-surface-dim font-mono">
-          {{ node.address }}
-        </span>
-      </div>
-    </div>
-
-    <div class="mb-sm flex items-center justify-between">
-      <div class="gap-xx-sm flex items-center">
-        <Icon
-          :name="node.isOnline ? 'material-symbols:check-circle' : 'material-symbols:cancel'"
-          size="1.4rem"
-          :class="node.isOnline ? 'text-success' : 'text-error'"
-        />
-        <span class="text-body-x-sm text-on-surface-dim uppercase tracking-wider">
-          {{ $t('admin.cluster.node.status') }}
-        </span>
-      </div>
-      <span
-        class="text-body-x-sm font-semibold uppercase"
-        :class="node.isOnline ? 'text-success' : 'text-error'"
-      >
-        {{ node.isOnline ? $t('admin.cluster.node.active') : $t('admin.cluster.node.down') }}
-      </span>
-    </div>
-
+  <div
+    class="glass-card p-x-lg duration-short hover:shadow-on-surface/5 hover:border-on-surface/20 group relative overflow-hidden transition-all hover:-translate-y-1 hover:shadow-2xl"
+  >
     <div
-      v-for="(metric, index) in metricRows"
-      :key="metric.key"
-      :class="{ 'mb-sm': index < metricRows.length - 1 }"
-    >
-      <div class="mb-tiny flex items-center justify-between">
+      class="bg-on-surface/5 absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100"
+      aria-hidden="true"
+    />
+    <div class="relative z-10">
+      <div class="border-on-surface/10 mb-md gap-sm pb-md flex items-center border-b">
+        <div
+          class="bg-on-surface/5 group-hover:bg-on-surface/10 flex h-12 w-12 items-center justify-center rounded-xl transition-colors"
+        >
+          <Icon
+            :name="roleIcon"
+            size="2.4rem"
+            :class="node.isOnline ? 'text-on-surface' : 'text-error'"
+          />
+        </div>
+        <div class="min-w-0 flex-1">
+          <span class="text-body-sm text-on-surface block font-semibold uppercase tracking-wider">
+            {{ nodeLabel }}
+          </span>
+          <span class="text-body-x-sm text-on-surface-dim font-mono">
+            {{ node.address }}
+          </span>
+        </div>
+      </div>
+
+      <div class="mb-sm flex items-center justify-between">
         <div class="gap-xx-sm flex items-center">
           <Icon
-            :name="metric.icon"
+            :name="node.isOnline ? 'material-symbols:check-circle' : 'material-symbols:cancel'"
             size="1.4rem"
-            class="text-on-surface-dim"
+            :class="node.isOnline ? 'text-success drop-shadow-[0_0_6px_rgba(20,184,166,0.8)]' : 'text-error'"
           />
           <span class="text-body-x-sm text-on-surface-dim uppercase tracking-wider">
-            {{ $t(metric.labelKey) }}
+            {{ $t('admin.cluster.node.status') }}
           </span>
         </div>
         <span
-          class="text-body-x-sm font-semibold"
-          :class="node.isOnline ? getMetricTextClass(metric.pct) : 'text-on-surface-dim'"
+          class="text-body-x-sm font-semibold uppercase"
+          :class="node.isOnline ? 'text-success' : 'text-error'"
         >
-          {{ node.isOnline ? toPercent(metric.pct) : toPercent(null) }}
+          {{ node.isOnline ? $t('admin.cluster.node.active') : $t('admin.cluster.node.down') }}
         </span>
       </div>
-      <AppProgressBar
-        :value="node.isOnline ? (metric.pct ?? 0) : 0"
-        :color="node.isOnline ? getMetricColor(metric.pct) : 'default'"
-        :label="$t(metric.labelKey)"
-        size="sm"
-      />
+
+      <div
+        v-for="(metric, index) in metricRows"
+        :key="metric.key"
+        :class="{ 'mb-sm': index < metricRows.length - 1 }"
+      >
+        <div class="mb-tiny flex items-center justify-between">
+          <div class="gap-xx-sm flex items-center">
+            <Icon
+              :name="metric.icon"
+              size="1.4rem"
+              class="text-on-surface-dim"
+            />
+            <span class="text-body-x-sm text-on-surface-dim uppercase tracking-wider">
+              {{ $t(metric.labelKey) }}
+            </span>
+          </div>
+          <span
+            class="text-body-x-sm font-semibold"
+            :class="node.isOnline ? getMetricTextClass(metric.pct) : 'text-on-surface-dim'"
+          >
+            {{ node.isOnline ? toPercent(metric.pct) : toPercent(null) }}
+          </span>
+        </div>
+        <AppProgressBar
+          :value="node.isOnline ? (metric.pct ?? 0) : 0"
+          :color="node.isOnline ? getMetricColor(metric.pct) : 'default'"
+          :label="$t(metric.labelKey)"
+          size="sm"
+        />
+      </div>
     </div>
   </div>
 </template>
