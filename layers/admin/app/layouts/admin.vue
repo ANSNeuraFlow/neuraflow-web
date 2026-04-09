@@ -32,7 +32,7 @@ const adminNavItems = computed(() => [
     icon: 'material-symbols:group',
   },
   {
-    to: localePath('/admin/users'),
+    to: localePath('/admin/cluster'),
     label: t('admin.navigation.clusters'),
     icon: 'material-symbols:dns',
   },

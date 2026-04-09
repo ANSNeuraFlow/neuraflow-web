@@ -7,6 +7,43 @@
       "editRole": "Change role",
       "retry": "Try again"
     },
+    "cluster": {
+      "errors": {
+        "fetchFailed": "Failed to fetch cluster metrics"
+      },
+      "health": {
+        "critical": "CRITICAL",
+        "excellent": "EXCELLENT",
+        "good": "GOOD",
+        "warning": "WARNING"
+      },
+      "kicker": "Infrastructure zone",
+      "lastUpdate": "Last update",
+      "node": {
+        "active": "ACTIVE",
+        "cpu": "CPU",
+        "disk": "DISK",
+        "down": "DOWN",
+        "ram": "RAM",
+        "status": "STATUS"
+      },
+      "subtitle": "{count} nodes total",
+      "summary": {
+        "cpu": "CLUSTER CPU",
+        "health": "OVERALL HEALTH",
+        "nodesOnline": "{online} / {total} nodes online",
+        "ram": "RAM UTILIZATION"
+      },
+      "telemetry": {
+        "activeNodes": "{count} ACTIVE NODES",
+        "title": "NODE TELEMETRY"
+      },
+      "title": "Cluster metrics"
+    },
+    "connection": {
+      "live": "LIVE",
+      "polling": "POLLING"
+    },
     "createUser": {
       "passwordChangeNote": "The user will be prompted to change their password on first login.",
       "submit": "Create account",
