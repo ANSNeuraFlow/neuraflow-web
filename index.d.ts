@@ -5,6 +5,7 @@ import type { Permission } from './layers/auth/app/models/user.domain';
 declare module '#app' {
   interface NuxtApp {
     $clusterSocket: Socket;
+    $eegDisplaySocket: Socket;
   }
 
   interface PageMeta {
@@ -16,6 +17,7 @@ declare module '#app' {
 declare module 'vue' {
   interface ComponentCustomProperties {
     $clusterSocket: Socket;
+    $eegDisplaySocket: Socket;
   }
 }
 

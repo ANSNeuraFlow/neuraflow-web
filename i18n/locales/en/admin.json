@@ -58,6 +58,21 @@
       "submit": "Save changes",
       "title": "Change user role"
     },
+    "eeg": {
+      "hideChannel": "Hide channel",
+      "kicker": "EEG Signals",
+      "samples": "samples",
+      "showChannel": "Show channel",
+      "streamLabel": "EEG Display",
+      "subtitle": "Real-time data stream from BCI module",
+      "tiles": {
+        "tile1": "CHANNELS 1–2",
+        "tile2": "CHANNELS 3–4",
+        "tile3": "CHANNELS 5–6",
+        "tile4": "CHANNELS 7–8"
+      },
+      "title": "EEG Live View"
+    },
     "errors": {
       "createFailed": "Failed to create user",
       "deleteFailed": "Failed to delete user",
