@@ -1,0 +1,28 @@
+{
+  "machineLearning": {
+    "models": {
+      "kicker": "ML Module",
+      "pageTitle": "machineLearning.models.title",
+      "subtitle": "Trained machine learning models.",
+      "title": "Models"
+    },
+    "navigation": {
+      "backToSite": "Back to site",
+      "closeMenu": "Close menu",
+      "models": "Models",
+      "openMenu": "Open menu",
+      "section": "Navigation",
+      "sessions": "Sessions"
+    },
+    "sessions": {
+      "kicker": "ML Module",
+      "pageTitle": "machineLearning.sessions.title",
+      "subtitle": "Manage EEG recording sessions for machine learning.",
+      "title": "EEG Sessions"
+    },
+    "theme": {
+      "switchToDark": "Dark mode",
+      "switchToLight": "Light mode"
+    }
+  }
+}

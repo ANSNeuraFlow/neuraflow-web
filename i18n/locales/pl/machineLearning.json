@@ -1,0 +1,28 @@
+{
+  "machineLearning": {
+    "models": {
+      "kicker": "Moduł ML",
+      "pageTitle": "machineLearning.models.title",
+      "subtitle": "Wytrenowane modele uczenia maszynowego.",
+      "title": "Modele"
+    },
+    "navigation": {
+      "backToSite": "Wróć do strony",
+      "closeMenu": "Zamknij menu",
+      "models": "Modele",
+      "openMenu": "Otwórz menu",
+      "section": "Nawigacja",
+      "sessions": "Sesje"
+    },
+    "sessions": {
+      "kicker": "Moduł ML",
+      "pageTitle": "machineLearning.sessions.title",
+      "subtitle": "Zarządzaj sesjami rejestracji sygnału EEG do uczenia maszynowego.",
+      "title": "Sesje EEG"
+    },
+    "theme": {
+      "switchToDark": "Tryb ciemny",
+      "switchToLight": "Tryb jasny"
+    }
+  }
+}

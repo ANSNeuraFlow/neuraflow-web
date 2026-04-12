@@ -1,0 +1,75 @@
+{
+  "eegSessions": {
+    "actions": {
+      "cancel": "Cancel",
+      "create": "New Session",
+      "delete": "Delete",
+      "refresh": "Refresh",
+      "retry": "Try again",
+      "stop": "Stop"
+    },
+    "createSession": {
+      "note": "The session will be initialized and transition to ACTIVE once the device connects.",
+      "submit": "Create Session",
+      "title": "New EEG Session"
+    },
+    "deleteSession": {
+      "confirm": "Are you sure you want to delete the session for device \"{device}\"? This action cannot be undone.",
+      "submit": "Delete Session",
+      "title": "Delete Session"
+    },
+    "errors": {
+      "createFailed": "Failed to create session",
+      "deleteFailed": "Failed to delete session",
+      "fetchFailed": "Failed to load sessions",
+      "stopFailed": "Failed to stop session"
+    },
+    "fields": {
+      "deviceName": "Device Name",
+      "protocol": "Select protocol"
+    },
+    "kicker": "EEG Module",
+    "pageTitle": "EEG Sessions",
+    "placeholders": {
+      "deviceName": "e.g. OpenBCI Cyton"
+    },
+    "protocols": {
+      "move_backward": "move backward",
+      "move_down": "move down",
+      "move_forward": "move forward",
+      "move_left": "move left",
+      "move_right": "move right",
+      "move_up": "move up"
+    },
+    "status": {
+      "ACTIVE": "Active",
+      "COMPLETED": "Completed",
+      "FAILED": "Failed",
+      "INITIALIZED": "Initialized"
+    },
+    "stopSession": {
+      "confirm": "Are you sure you want to stop the session for device \"{device}\"? The session will be marked as completed.",
+      "submit": "Stop Session",
+      "title": "Stop Session"
+    },
+    "subtitle": "{count} sessions total",
+    "table": {
+      "actions": "Actions",
+      "createdAt": "Created At",
+      "device": "Device",
+      "duration": "Duration",
+      "empty": "No EEG sessions found",
+      "inProgress": "In progress",
+      "protocol": "Protocol",
+      "status": "Status"
+    },
+    "tableSubtitle": "All your EEG signal recording sessions.",
+    "tableTitle": "Session History",
+    "title": "EEG Sessions",
+    "validation": {
+      "deviceNameMax": "Device name can be at most 128 characters",
+      "deviceNameRequired": "Device name is required",
+      "protocolRequired": "Protocol is required"
+    }
+  }
+}

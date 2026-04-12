@@ -1,0 +1,75 @@
+{
+  "eegSessions": {
+    "actions": {
+      "cancel": "Anuluj",
+      "create": "Nowa sesja",
+      "delete": "Usuń",
+      "refresh": "Odśwież",
+      "retry": "Spróbuj ponownie",
+      "stop": "Zatrzymaj"
+    },
+    "createSession": {
+      "note": "Sesja zostanie zainicjowana i przejdzie w stan ACTIVE po połączeniu urządzenia.",
+      "submit": "Utwórz sesję",
+      "title": "Nowa sesja EEG"
+    },
+    "deleteSession": {
+      "confirm": "Czy na pewno chcesz usunąć sesję urządzenia \"{device}\"? Tej operacji nie można cofnąć.",
+      "submit": "Usuń sesję",
+      "title": "Usuń sesję"
+    },
+    "errors": {
+      "createFailed": "Nie udało się utworzyć sesji",
+      "deleteFailed": "Nie udało się usunąć sesji",
+      "fetchFailed": "Nie udało się pobrać listy sesji",
+      "stopFailed": "Nie udało się zatrzymać sesji"
+    },
+    "fields": {
+      "deviceName": "Nazwa urządzenia",
+      "protocol": "Wybierz protokół"
+    },
+    "kicker": "Moduł EEG",
+    "pageTitle": "Sesje EEG",
+    "placeholders": {
+      "deviceName": "np. OpenBCI Cyton"
+    },
+    "protocols": {
+      "move_backward": "Ruch w tył",
+      "move_down": "Ruch w dół",
+      "move_forward": "Ruch do przodu",
+      "move_left": "Ruch w lewo",
+      "move_right": "Ruch w prawo",
+      "move_up": "Ruch w górę"
+    },
+    "status": {
+      "ACTIVE": "Aktywna",
+      "COMPLETED": "Zakończona",
+      "FAILED": "Błąd",
+      "INITIALIZED": "Zainicjowana"
+    },
+    "stopSession": {
+      "confirm": "Czy na pewno chcesz zatrzymać sesję urządzenia \"{device}\"? Sesja zostanie oznaczona jako zakończona.",
+      "submit": "Zatrzymaj sesję",
+      "title": "Zatrzymaj sesję"
+    },
+    "subtitle": "Łącznie {count} sesji",
+    "table": {
+      "actions": "Akcje",
+      "createdAt": "Data utworzenia",
+      "device": "Urządzenie",
+      "duration": "Czas trwania",
+      "empty": "Brak sesji EEG",
+      "inProgress": "W trakcie",
+      "protocol": "Protokół",
+      "status": "Status"
+    },
+    "tableSubtitle": "Lista wszystkich Twoich sesji rejestracji sygnału EEG.",
+    "tableTitle": "Historia sesji",
+    "title": "Sesje EEG",
+    "validation": {
+      "deviceNameMax": "Nazwa urządzenia może mieć maksymalnie 128 znaków",
+      "deviceNameRequired": "Nazwa urządzenia jest wymagana",
+      "protocolRequired": "Protokół jest wymagany"
+    }
+  }
+}
