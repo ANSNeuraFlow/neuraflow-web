@@ -61,17 +61,45 @@ onMounted(() => {
 <template>
   <div class="bg-surface text-on-surface relative min-h-screen overflow-x-hidden">
     <div
-      class="pointer-events-none absolute inset-0 bg-hero-pattern opacity-50"
+      class="pointer-events-none absolute inset-0 bg-hero-pattern"
       aria-hidden="true"
     />
     <div
-      class="bg-info/5 dark:bg-info/10 pointer-events-none absolute left-0 top-1/4 h-[500px] w-[500px] -translate-x-1/2 rounded-full blur-3xl"
+      class="pointer-events-none absolute inset-0 bg-neural-glow"
       aria-hidden="true"
     />
+
     <div
-      class="bg-accent/5 dark:bg-accent/10 pointer-events-none absolute bottom-0 right-0 h-[600px] w-[600px] translate-x-1/3 translate-y-1/3 rounded-full blur-3xl"
+      class="pointer-events-none absolute inset-0"
       aria-hidden="true"
-    />
+    >
+      <svg
+        class="absolute inset-0 h-full w-full opacity-[0.04]"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <pattern
+            id="admin-grid"
+            width="60"
+            height="60"
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d="M 60 0 L 0 0 0 60"
+              fill="none"
+              stroke="#6366f1"
+              stroke-width="1"
+            />
+          </pattern>
+        </defs>
+        <rect
+          width="100%"
+          height="100%"
+          fill="url(#admin-grid)"
+        />
+      </svg>
+    </div>
+
     <div
       class="noise-overlay"
       aria-hidden="true"
