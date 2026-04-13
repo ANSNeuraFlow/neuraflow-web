@@ -1,10 +1,15 @@
 {
   "machineLearning": {
     "models": {
+      "dataForModelSubtitle": "Ukończone sesje EEG, które możesz wykorzystać jako dane treningowe. Nowe nagrania zaczniesz na stronie Sesje.",
+      "dataForModelSubtitlePicking": "Zaznacz sesje do uwzględnienia, potem wybierz Trenuj model.",
+      "dataForModelTitle": "Dane pod model",
       "kicker": "Moduł ML",
+      "newModel": "Nowy model",
       "pageTitle": "machineLearning.models.title",
       "subtitle": "Wytrenowane modele uczenia maszynowego.",
-      "title": "Modele"
+      "title": "Modele",
+      "trainModel": "Trenuj model"
     },
     "navigation": {
       "backToSite": "Wróć do strony",
@@ -15,7 +20,10 @@
       "sessions": "Sesje"
     },
     "sessions": {
+      "activeSession": "Aktywna sesja",
+      "endSession": "Zakończ sesję",
       "kicker": "Moduł ML",
+      "noActiveSession": "Brak aktywnej sesji EEG. Rozpocznij nową, aby zacząć nagrywanie.",
       "pageTitle": "machineLearning.sessions.title",
       "subtitle": "Zarządzaj sesjami rejestracji sygnału EEG do uczenia maszynowego.",
       "title": "Sesje EEG"

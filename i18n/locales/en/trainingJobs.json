@@ -1,0 +1,53 @@
+{
+  "trainingJobs": {
+    "actions": {
+      "cancel": "Cancel",
+      "dispatch": "Dispatch Training",
+      "refresh": "Refresh",
+      "viewDetails": "View details"
+    },
+    "details": {
+      "createdAt": "Created At",
+      "error": "Error Message",
+      "id": "Job ID",
+      "noRayJob": "Not assigned yet",
+      "rayJobId": "Ray Job ID",
+      "sessions": "Session IDs",
+      "status": "Status",
+      "title": "Training Job Details",
+      "updatedAt": "Updated At"
+    },
+    "dispatch": {
+      "noSessions": "No completed EEG sessions available. Complete a session first.",
+      "note": "Select one or more completed EEG sessions to use as training data.",
+      "selected": "{count} session(s) selected",
+      "submit": "Start Training",
+      "title": "Dispatch Training Job"
+    },
+    "errors": {
+      "dispatchFailed": "Failed to dispatch training job",
+      "fetchFailed": "Failed to load training jobs"
+    },
+    "kicker": "ML Module",
+    "status": {
+      "COMPLETED": "Completed",
+      "FAILED": "Failed",
+      "PENDING": "Pending",
+      "RUNNING": "Running"
+    },
+    "subtitle": "{count} training jobs total",
+    "table": {
+      "actions": "Actions",
+      "createdAt": "Created At",
+      "empty": "No training jobs yet. Dispatch your first job.",
+      "id": "Job ID",
+      "rayJobId": "Ray Job ID",
+      "sessions": "Sessions",
+      "status": "Status"
+    },
+    "title": "Training Jobs",
+    "validation": {
+      "sessionIdsRequired": "Select at least one session"
+    }
+  }
+}

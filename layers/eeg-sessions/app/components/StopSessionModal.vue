@@ -68,7 +68,7 @@ const handleOpenChange = (val: boolean) => {
                 v-if="session"
                 class="mt-xx-sm text-body-sm text-on-surface-dim"
               >
-                {{ $t('eegSessions.stopSession.confirm', { device: session.deviceName }) }}
+                {{ $t('eegSessions.stopSession.confirm', { name: session.sessionName }) }}
               </p>
             </div>
             <DialogClose as-child>

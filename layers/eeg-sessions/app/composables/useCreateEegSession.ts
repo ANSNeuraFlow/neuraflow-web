@@ -13,12 +13,12 @@ export const useCreateEegSession = (onSuccess: () => void) => {
   const { defineField, handleSubmit, errors, isSubmitting, resetForm } = useForm({
     validationSchema: schema,
     initialValues: {
-      deviceName: '',
+      sessionName: '',
       protocolName: undefined,
     },
   });
 
-  const [deviceName, deviceNameAttrs] = defineField('deviceName');
+  const [sessionName, sessionNameAttrs] = defineField('sessionName');
   const [protocolName, protocolNameAttrs] = defineField('protocolName');
 
   const onSubmit = handleSubmit(async (values) => {
@@ -35,8 +35,8 @@ export const useCreateEegSession = (onSuccess: () => void) => {
   });
 
   return {
-    deviceName,
-    deviceNameAttrs,
+    sessionName,
+    sessionNameAttrs,
     protocolName,
     protocolNameAttrs,
     errors,

@@ -14,7 +14,7 @@
       "title": "New EEG Session"
     },
     "deleteSession": {
-      "confirm": "Are you sure you want to delete the session for device \"{device}\"? This action cannot be undone.",
+      "confirm": "Are you sure you want to delete the session \"{name}\"? This action cannot be undone.",
       "submit": "Delete Session",
       "title": "Delete Session"
     },
@@ -25,13 +25,14 @@
       "stopFailed": "Failed to stop session"
     },
     "fields": {
-      "deviceName": "Device Name",
-      "protocol": "Select protocol"
+      "protocol": "Select protocol",
+      "sessionName": "Session name"
     },
     "kicker": "EEG Module",
     "pageTitle": "EEG Sessions",
     "placeholders": {
-      "deviceName": "e.g. OpenBCI Cyton"
+      "protocol": "Choose a protocol",
+      "sessionName": "e.g. Morning run — subject A"
     },
     "protocols": {
       "move_backward": "move backward",
@@ -48,7 +49,7 @@
       "INITIALIZED": "Initialized"
     },
     "stopSession": {
-      "confirm": "Are you sure you want to stop the session for device \"{device}\"? The session will be marked as completed.",
+      "confirm": "Are you sure you want to stop the session \"{name}\"? The session will be marked as completed.",
       "submit": "Stop Session",
       "title": "Stop Session"
     },
@@ -56,20 +57,23 @@
     "table": {
       "actions": "Actions",
       "createdAt": "Created At",
-      "device": "Device",
       "duration": "Duration",
       "empty": "No EEG sessions found",
       "inProgress": "In progress",
+      "includeForTraining": "Train",
+      "includeForTrainingAria": "Include session {name} in model training",
+      "includeForTrainingDisabled": "Only completed sessions can be used for training",
       "protocol": "Protocol",
+      "sessionName": "Session",
       "status": "Status"
     },
     "tableSubtitle": "All your EEG signal recording sessions.",
     "tableTitle": "Session History",
     "title": "EEG Sessions",
     "validation": {
-      "deviceNameMax": "Device name can be at most 128 characters",
-      "deviceNameRequired": "Device name is required",
-      "protocolRequired": "Protocol is required"
+      "protocolRequired": "Protocol is required",
+      "sessionNameMax": "Session name can be at most 128 characters",
+      "sessionNameRequired": "Session name is required"
     }
   }
 }

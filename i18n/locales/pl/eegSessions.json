@@ -14,7 +14,7 @@
       "title": "Nowa sesja EEG"
     },
     "deleteSession": {
-      "confirm": "Czy na pewno chcesz usunąć sesję urządzenia \"{device}\"? Tej operacji nie można cofnąć.",
+      "confirm": "Czy na pewno chcesz usunąć sesję „{name}”? Tej operacji nie można cofnąć.",
       "submit": "Usuń sesję",
       "title": "Usuń sesję"
     },
@@ -25,13 +25,14 @@
       "stopFailed": "Nie udało się zatrzymać sesji"
     },
     "fields": {
-      "deviceName": "Nazwa urządzenia",
-      "protocol": "Wybierz protokół"
+      "protocol": "Wybierz protokół",
+      "sessionName": "Nazwa sesji"
     },
     "kicker": "Moduł EEG",
     "pageTitle": "Sesje EEG",
     "placeholders": {
-      "deviceName": "np. OpenBCI Cyton"
+      "protocol": "Wybierz protokół",
+      "sessionName": "np. Pomiar poranny — osoba A"
     },
     "protocols": {
       "move_backward": "Ruch w tył",
@@ -48,7 +49,7 @@
       "INITIALIZED": "Zainicjowana"
     },
     "stopSession": {
-      "confirm": "Czy na pewno chcesz zatrzymać sesję urządzenia \"{device}\"? Sesja zostanie oznaczona jako zakończona.",
+      "confirm": "Czy na pewno chcesz zatrzymać sesję „{name}”? Sesja zostanie oznaczona jako zakończona.",
       "submit": "Zatrzymaj sesję",
       "title": "Zatrzymaj sesję"
     },
@@ -56,20 +57,23 @@
     "table": {
       "actions": "Akcje",
       "createdAt": "Data utworzenia",
-      "device": "Urządzenie",
       "duration": "Czas trwania",
       "empty": "Brak sesji EEG",
       "inProgress": "W trakcie",
+      "includeForTraining": "Trening",
+      "includeForTrainingAria": "Uwzględnij sesję {name} w treningu modelu",
+      "includeForTrainingDisabled": "Tylko ukończone sesje mogą być użyte do treningu",
       "protocol": "Protokół",
+      "sessionName": "Sesja",
       "status": "Status"
     },
     "tableSubtitle": "Lista wszystkich Twoich sesji rejestracji sygnału EEG.",
     "tableTitle": "Historia sesji",
     "title": "Sesje EEG",
     "validation": {
-      "deviceNameMax": "Nazwa urządzenia może mieć maksymalnie 128 znaków",
-      "deviceNameRequired": "Nazwa urządzenia jest wymagana",
-      "protocolRequired": "Protokół jest wymagany"
+      "protocolRequired": "Protokół jest wymagany",
+      "sessionNameMax": "Nazwa sesji może mieć maksymalnie 128 znaków",
+      "sessionNameRequired": "Nazwa sesji jest wymagana"
     }
   }
 }

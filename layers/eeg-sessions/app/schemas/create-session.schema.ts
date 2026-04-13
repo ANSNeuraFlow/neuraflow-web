@@ -3,10 +3,10 @@ import { z } from 'zod';
 import { EEG_PROTOCOL_IDS } from '../constants/eeg-protocols.const';
 
 export const createSessionSchema = z.object({
-  deviceName: z
+  sessionName: z
     .string()
-    .min(1, 'eegSessions.validation.deviceNameRequired')
-    .max(128, 'eegSessions.validation.deviceNameMax'),
+    .min(1, 'eegSessions.validation.sessionNameRequired')
+    .max(128, 'eegSessions.validation.sessionNameMax'),
   protocolName: z.enum(EEG_PROTOCOL_IDS, {
     message: 'eegSessions.validation.protocolRequired',
   }),

@@ -1,0 +1,49 @@
+{
+  "mlModels": {
+    "actions": {
+      "delete": "Usuń",
+      "refresh": "Odśwież",
+      "viewDetails": "Szczegóły"
+    },
+    "deleteModel": {
+      "confirm": "Czy na pewno chcesz usunąć model „{name}”? Tej operacji nie da się cofnąć.",
+      "submit": "Usuń model",
+      "title": "Usuń model"
+    },
+    "details": {
+      "accuracy": "Dokładność",
+      "createdAt": "Data utworzenia",
+      "filePath": "Ścieżka pliku",
+      "fileSize": "Rozmiar pliku",
+      "id": "ID modelu",
+      "name": "Nazwa",
+      "noFile": "Niedostępna",
+      "sessionId": "ID sesji",
+      "status": "Status",
+      "title": "Szczegóły modelu",
+      "trainedAt": "Wytrenowano",
+      "trainingJob": "ID zadania treningowego",
+      "updatedAt": "Data aktualizacji"
+    },
+    "errors": {
+      "deleteFailed": "Nie udało się usunąć modelu",
+      "fetchFailed": "Nie udało się załadować modeli"
+    },
+    "status": {
+      "FAILED": "Błąd",
+      "PENDING": "Oczekujący",
+      "READY": "Gotowy",
+      "TRAINING": "Trening"
+    },
+    "subtitle": "{count} modeli łącznie",
+    "table": {
+      "accuracy": "Dokładność",
+      "actions": "Akcje",
+      "empty": "Brak wytrenowanych modeli. Najpierw uruchom zadanie treningowe.",
+      "name": "Nazwa",
+      "status": "Status",
+      "trainedAt": "Wytrenowano"
+    },
+    "title": "Wytrenowane modele"
+  }
+}
