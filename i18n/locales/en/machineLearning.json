@@ -13,6 +13,7 @@
     },
     "navigation": {
       "backToSite": "Back to site",
+      "bciCalibration": "BCI Calibration",
       "closeMenu": "Close menu",
       "models": "Models",
       "openMenu": "Open menu",
