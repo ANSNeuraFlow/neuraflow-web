@@ -33,6 +33,11 @@ const mlNavItems = computed(() => [
     label: t('machineLearning.navigation.models'),
     icon: 'material-symbols:model-training',
   },
+  {
+    to: localePath('/machine-learning/bci-calibration'),
+    label: t('machineLearning.navigation.bciCalibration'),
+    icon: 'material-symbols:psychology',
+  },
 ]);
 const toggleTheme = () => {
   isDark.value = !isDark.value;
