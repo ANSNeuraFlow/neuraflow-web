@@ -19,8 +19,8 @@ const handleSuccess = () => {
 };
 
 const {
-  deviceName,
-  deviceNameAttrs,
+  sessionName,
+  sessionNameAttrs,
   protocolName,
   protocolNameAttrs,
   errors,
@@ -103,17 +103,17 @@ const handleOpenChange = (val: boolean) => {
             @submit="onSubmit"
           >
             <AppFormField
-              :label="$t('eegSessions.fields.deviceName')"
-              :error="errors.deviceName ? $t(errors.deviceName) : undefined"
-              html-for="session-device-name"
+              :label="$t('eegSessions.fields.sessionName')"
+              :error="errors.sessionName ? $t(errors.sessionName) : undefined"
+              html-for="session-name-input"
               required
             >
               <AppInput
-                id="session-device-name"
-                v-model="deviceName"
-                v-bind="deviceNameAttrs"
-                :placeholder="$t('eegSessions.placeholders.deviceName')"
-                :error="!!errors.deviceName"
+                id="session-name-input"
+                v-model="sessionName"
+                v-bind="sessionNameAttrs"
+                :placeholder="$t('eegSessions.placeholders.sessionName')"
+                :error="!!errors.sessionName"
               />
             </AppFormField>
 

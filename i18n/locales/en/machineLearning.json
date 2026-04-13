@@ -1,10 +1,15 @@
 {
   "machineLearning": {
     "models": {
+      "dataForModelSubtitle": "Completed EEG sessions you can use as training data. Record new sessions on the Sessions page.",
+      "dataForModelSubtitlePicking": "Tick the sessions to include, then tap Train model.",
+      "dataForModelTitle": "Data for your model",
       "kicker": "ML Module",
+      "newModel": "New model",
       "pageTitle": "machineLearning.models.title",
       "subtitle": "Trained machine learning models.",
-      "title": "Models"
+      "title": "Models",
+      "trainModel": "Train model"
     },
     "navigation": {
       "backToSite": "Back to site",
@@ -15,7 +20,10 @@
       "sessions": "Sessions"
     },
     "sessions": {
+      "activeSession": "Active session",
+      "endSession": "End Session",
       "kicker": "ML Module",
+      "noActiveSession": "No active EEG session. Start a new one to begin recording.",
       "pageTitle": "machineLearning.sessions.title",
       "subtitle": "Manage EEG recording sessions for machine learning.",
       "title": "EEG Sessions"

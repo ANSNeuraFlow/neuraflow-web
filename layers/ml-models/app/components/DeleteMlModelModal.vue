@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useDeleteEegSession } from '../composables/useDeleteEegSession';
-import type { EegSession } from '../models/eeg-session.domain';
+import { useDeleteMlModel } from '../composables/useDeleteMlModel';
+import type { MlModel } from '../models/ml-model.domain';
 
 const props = defineProps<{
   open: boolean;
-  session: EegSession | null;
+  model: MlModel | null;
 }>();
 
 const emit = defineEmits<{
@@ -17,12 +17,12 @@ const handleSuccess = () => {
   emit('update:open', false);
 };
 
-const { isDeleting, apiError, confirm, close, open: openDelete } = useDeleteEegSession(handleSuccess);
+const { isDeleting, apiError, confirm, close, open: openDelete } = useDeleteMlModel(handleSuccess);
 
 watch(
-  () => props.session,
-  (session) => {
-    if (session) openDelete(session);
+  () => props.model,
+  (model) => {
+    if (model) openDelete(model);
   },
 );
 
@@ -62,13 +62,13 @@ const handleOpenChange = (val: boolean) => {
             </div>
             <div class="flex-1">
               <DialogTitle class="text-heading-md tracking-sm text-on-surface font-display font-bold">
-                {{ $t('eegSessions.deleteSession.title') }}
+                {{ $t('mlModels.deleteModel.title') }}
               </DialogTitle>
               <p
-                v-if="session"
+                v-if="model"
                 class="mt-xx-sm text-body-sm text-on-surface-dim"
               >
-                {{ $t('eegSessions.deleteSession.confirm', { name: session.sessionName }) }}
+                {{ $t('mlModels.deleteModel.confirm', { name: model.name }) }}
               </p>
             </div>
             <DialogClose as-child>
@@ -106,7 +106,7 @@ const handleOpenChange = (val: boolean) => {
               :loading="isDeleting"
               @click="confirm"
             >
-              {{ $t('eegSessions.deleteSession.submit') }}
+              {{ $t('mlModels.deleteModel.submit') }}
             </AppButton>
           </div>
         </div>

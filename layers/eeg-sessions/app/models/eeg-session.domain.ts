@@ -5,7 +5,7 @@ export type SessionStatus = 'INITIALIZED' | 'ACTIVE' | 'COMPLETED' | 'FAILED';
 export type EegSession = {
   id: string;
   userId: string;
-  deviceName: string;
+  sessionName: string;
   protocolName: string;
   status: SessionStatus;
   createdAt: string;
@@ -15,6 +15,6 @@ export type EegSession = {
 };
 
 export type CreateEegSessionPayload = {
-  deviceName: string;
+  sessionName: string;
   protocolName: EegProtocolId;
 };

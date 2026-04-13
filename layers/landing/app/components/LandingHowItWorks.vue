@@ -164,7 +164,7 @@ const steps: Step[] = [
 <span class="text-slate-500">Authorization: Bearer &lt;token&gt;</span>
 
 <span class="text-cyan-400">{</span>
-  <span class="text-green-400">"deviceName"</span><span class="text-slate-400">: </span><span class="text-yellow-400">"OpenBCI"</span><span class="text-slate-400">,</span>
+  <span class="text-green-400">"sessionName"</span><span class="text-slate-400">: </span><span class="text-yellow-400">"Morning run — subject A"</span><span class="text-slate-400">,</span>
   <span class="text-green-400">"protocolName"</span><span class="text-slate-400">: </span><span class="text-yellow-400">"LEFT_HAND"</span>
 <span class="text-cyan-400">}</span></code></pre>
           </div>

@@ -1,0 +1,49 @@
+{
+  "mlModels": {
+    "actions": {
+      "delete": "Delete",
+      "refresh": "Refresh",
+      "viewDetails": "View details"
+    },
+    "deleteModel": {
+      "confirm": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+      "submit": "Delete Model",
+      "title": "Delete Model"
+    },
+    "details": {
+      "accuracy": "Accuracy",
+      "createdAt": "Created At",
+      "filePath": "File Path",
+      "fileSize": "File Size",
+      "id": "Model ID",
+      "name": "Name",
+      "noFile": "Not available",
+      "sessionId": "Session ID",
+      "status": "Status",
+      "title": "Model Details",
+      "trainedAt": "Trained At",
+      "trainingJob": "Training Job ID",
+      "updatedAt": "Updated At"
+    },
+    "errors": {
+      "deleteFailed": "Failed to delete model",
+      "fetchFailed": "Failed to load models"
+    },
+    "status": {
+      "FAILED": "Failed",
+      "PENDING": "Pending",
+      "READY": "Ready",
+      "TRAINING": "Training"
+    },
+    "subtitle": "{count} models total",
+    "table": {
+      "accuracy": "Accuracy",
+      "actions": "Actions",
+      "empty": "No trained models yet. Dispatch a training job first.",
+      "name": "Name",
+      "status": "Status",
+      "trainedAt": "Trained At"
+    },
+    "title": "Trained Models"
+  }
+}

@@ -42,6 +42,8 @@ const toggleTheme = () => {
   }
 };
 onMounted(() => {
+  document.body.classList.add('overflow-hidden');
+
   const saved = localStorage.getItem('neuraflow-ml-theme');
   if (saved === 'light') {
     isDark.value = false;
@@ -51,10 +53,14 @@ onMounted(() => {
     document.documentElement.setAttribute('data-theme', 'dark');
   }
 });
+
+onBeforeUnmount(() => {
+  document.body.classList.remove('overflow-hidden');
+});
 </script>
 
 <template>
-  <div class="bg-surface text-on-surface relative min-h-screen overflow-x-hidden">
+  <div class="bg-surface text-on-surface relative h-dvh max-h-dvh min-h-0 overflow-hidden">
     <div
       class="pointer-events-none absolute inset-0 bg-hero-pattern opacity-50"
       aria-hidden="true"
@@ -137,7 +143,7 @@ onMounted(() => {
       </aside>
     </Transition>
 
-    <div class="relative z-10 flex h-screen flex-col">
+    <div class="relative z-10 flex h-full min-h-0 flex-col">
       <header
         class="border-on-surface/[0.08] bg-surface/80 px-x-lg sm:px-xx-lg flex h-[6.8rem] shrink-0 items-center justify-between border-b backdrop-blur-xl"
       >
@@ -205,31 +211,39 @@ onMounted(() => {
         </div>
       </header>
 
-      <div class="pb-lg px-x-lg relative z-20 flex w-full shrink-0 justify-center pt-7">
-        <nav
-          class="gap-x-sm lg:gap-md xl:gap-x-lg glass-card px-md py-sm hidden items-center !rounded-full shadow-2xl md:flex"
+      <div class="flex min-h-0 flex-1 overflow-hidden">
+        <aside
+          class="border-on-surface/[0.08] bg-surface/70 hidden min-h-0 w-[22rem] shrink-0 flex-col overflow-hidden border-r backdrop-blur-xl md:flex"
           role="navigation"
+          :aria-label="t('machineLearning.navigation.section')"
         >
-          <NuxtLink
-            v-for="item in mlNavItems"
-            :key="item.label"
-            :to="item.to"
-            class="px-md py-sm text-body-sm duration-short text-on-surface-dim hover:bg-on-surface/5 hover:text-on-surface gap-sm flex shrink-0 items-center whitespace-nowrap rounded-full font-medium transition-colors ease-out"
-            active-class="bg-on-surface/10 text-on-surface font-semibold"
-          >
-            <Icon
-              :name="item.icon"
-              size="1.8rem"
-              class="shrink-0"
-            />
-            {{ item.label }}
-          </NuxtLink>
-        </nav>
-      </div>
+          <div class="px-md py-x-lg flex flex-1 flex-col">
+            <p class="text-body-x-sm mb-x-sm px-sm text-on-surface-dim font-semibold uppercase tracking-wider">
+              {{ t('machineLearning.navigation.section') }}
+            </p>
+            <nav class="gap-xx-sm flex flex-col">
+              <NuxtLink
+                v-for="item in mlNavItems"
+                :key="item.label"
+                :to="item.to"
+                class="gap-sm px-sm py-sm text-body-sm text-on-surface-dim duration-short hover:bg-on-surface/[0.06] hover:text-on-surface flex items-center rounded-lg font-medium transition-colors"
+                active-class="bg-on-surface/[0.12] text-on-surface font-semibold"
+              >
+                <Icon
+                  :name="item.icon"
+                  size="1.8rem"
+                  class="shrink-0"
+                />
+                <span>{{ item.label }}</span>
+              </NuxtLink>
+            </nav>
+          </div>
+        </aside>
 
-      <div class="flex flex-1 overflow-hidden">
-        <main class="px-x-lg sm:px-xx-lg pb-xx-lg flex-1 overflow-y-auto">
-          <div class="mx-auto w-full max-w-[132rem]">
+        <main
+          class="px-x-lg sm:px-xx-lg pb-xx-lg pt-x-lg min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain"
+        >
+          <div class="mx-auto min-h-0 w-full max-w-[132rem]">
             <slot />
           </div>
         </main>

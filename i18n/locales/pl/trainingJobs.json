@@ -1,0 +1,53 @@
+{
+  "trainingJobs": {
+    "actions": {
+      "cancel": "Anuluj",
+      "dispatch": "Uruchom Trening",
+      "refresh": "Odśwież",
+      "viewDetails": "Szczegóły"
+    },
+    "details": {
+      "createdAt": "Data utworzenia",
+      "error": "Komunikat błędu",
+      "id": "ID zadania",
+      "noRayJob": "Jeszcze nie przypisano",
+      "rayJobId": "Ray Job ID",
+      "sessions": "ID sesji",
+      "status": "Status",
+      "title": "Szczegóły zadania treningowego",
+      "updatedAt": "Data aktualizacji"
+    },
+    "dispatch": {
+      "noSessions": "Brak ukończonych sesji EEG. Najpierw ukończ sesję.",
+      "note": "Wybierz jedną lub więcej ukończonych sesji EEG jako dane treningowe.",
+      "selected": "Wybrano {count} sesji",
+      "submit": "Rozpocznij Trening",
+      "title": "Uruchom Zadanie Treningowe"
+    },
+    "errors": {
+      "dispatchFailed": "Nie udało się uruchomić zadania treningowego",
+      "fetchFailed": "Nie udało się załadować zadań treningowych"
+    },
+    "kicker": "Moduł ML",
+    "status": {
+      "COMPLETED": "Zakończone",
+      "FAILED": "Błąd",
+      "PENDING": "Oczekujące",
+      "RUNNING": "W trakcie"
+    },
+    "subtitle": "{count} zadań treningowych łącznie",
+    "table": {
+      "actions": "Akcje",
+      "createdAt": "Data Utworzenia",
+      "empty": "Brak zadań treningowych. Uruchom pierwsze zadanie.",
+      "id": "ID Zadania",
+      "rayJobId": "Ray Job ID",
+      "sessions": "Sesje",
+      "status": "Status"
+    },
+    "title": "Zadania Treningowe",
+    "validation": {
+      "sessionIdsRequired": "Wybierz co najmniej jedną sesję"
+    }
+  }
+}
