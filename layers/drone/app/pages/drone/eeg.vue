@@ -1,9 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 definePageMeta({
-  layout: 'admin',
-  requiredPermissions: ['VIEW_ADMIN_PANEL'],
-  title: 'admin.eeg.title',
+  layout: 'drone',
+  title: 'drone.eeg.pageTitle',
 });
 </script>
 
@@ -13,13 +12,13 @@ definePageMeta({
       <div class="gap-sm flex flex-wrap items-start justify-between">
         <div>
           <p class="text-body-x-sm mb-xx-sm font-semibold uppercase tracking-wider text-neural-400">
-            {{ $t('admin.eeg.kicker') }}
+            {{ $t('drone.eeg.kicker') }}
           </p>
           <h1 class="text-heading-lg tracking-sm text-on-surface font-display font-bold">
-            {{ $t('admin.eeg.title') }}
+            {{ $t('drone.eeg.title') }}
           </h1>
           <p class="text-body-md mt-xx-sm text-on-surface-dim">
-            {{ $t('admin.eeg.subtitle') }}
+            {{ $t('drone.eeg.subtitle') }}
           </p>
         </div>
         <Icon

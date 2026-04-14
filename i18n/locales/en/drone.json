@@ -1,0 +1,20 @@
+{
+  "drone": {
+    "eeg": {
+      "kicker": "Drone module",
+      "pageTitle": "drone.eeg.title",
+      "subtitle": "Live EEG signal dashboard for drone-related features.",
+      "title": "EEG charts"
+    },
+    "navigation": {
+      "closeMenu": "Close menu",
+      "eeg": "EEG charts",
+      "openMenu": "Open menu",
+      "section": "Navigation"
+    },
+    "theme": {
+      "switchToDark": "Dark mode",
+      "switchToLight": "Light mode"
+    }
+  }
+}

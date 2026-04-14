@@ -23,7 +23,7 @@ export const useAuthRedirects = () => {
     );
 
     if (!userHasAllRequiredPermissions) {
-      return abortNavigation({ message: 'Insufficient permissions' });
+      return navigateTo(localePath('/'));
     }
   };
 
