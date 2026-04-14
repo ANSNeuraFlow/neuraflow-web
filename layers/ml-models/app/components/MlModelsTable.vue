@@ -66,10 +66,10 @@ const isTraining = (s: ModelStatus) => s === 'TRAINING';
     >
       <thead>
         <tr class="text-body-sm text-on-surface-dim text-left">
-          <th class="border-on-surface/10 py-sm pl-md pr-sm min-w-0 border-b font-medium">
+          <th class="border-on-surface/10 py-sm pl-md min-w-0 border-b pr-0 font-medium">
             {{ $t('mlModels.table.name') }}
           </th>
-          <th class="border-on-surface/10 py-sm pl-sm pr-md whitespace-nowrap border-b font-medium">
+          <th class="border-on-surface/10 py-sm pr-md whitespace-nowrap border-b pl-0 font-medium">
             {{ $t('mlModels.table.status') }}
           </th>
           <th class="border-on-surface/10 px-md py-sm whitespace-nowrap border-b font-medium">
@@ -78,7 +78,7 @@ const isTraining = (s: ModelStatus) => s === 'TRAINING';
           <th class="border-on-surface/10 px-md py-sm whitespace-nowrap border-b font-medium">
             {{ $t('mlModels.table.trainedAt') }}
           </th>
-          <th class="border-on-surface/10 px-md py-sm w-[1%] whitespace-nowrap border-b text-left font-medium">
+          <th class="border-on-surface/10 px-md py-sm w-[1%] whitespace-nowrap border-b text-center font-medium">
             {{ $t('mlModels.table.actions') }}
           </th>
         </tr>
@@ -90,7 +90,7 @@ const isTraining = (s: ModelStatus) => s === 'TRAINING';
           :key="model.id"
           class="duration-short hover:bg-on-surface/[0.04] transition-colors"
         >
-          <td class="border-on-surface/[0.06] py-sm pl-md pr-sm text-body-md text-on-surface min-w-0 border-b">
+          <td class="border-on-surface/[0.06] py-sm pl-md text-body-md text-on-surface min-w-0 border-b pr-0">
             <span
               class="block truncate"
               :title="model.name"
@@ -99,7 +99,7 @@ const isTraining = (s: ModelStatus) => s === 'TRAINING';
             </span>
           </td>
 
-          <td class="border-on-surface/[0.06] py-sm pl-sm pr-md whitespace-nowrap border-b">
+          <td class="border-on-surface/[0.06] py-sm pr-md whitespace-nowrap border-b pl-0">
             <span
               :class="[
                 'gap-xs px-sm py-x-tiny text-body-x-sm inline-flex items-center rounded-full font-medium',
@@ -123,8 +123,8 @@ const isTraining = (s: ModelStatus) => s === 'TRAINING';
             {{ formatDate(model.trainedAt) }}
           </td>
 
-          <td class="border-on-surface/[0.06] px-md py-sm w-[1%] whitespace-nowrap border-b align-middle">
-            <div class="gap-xx-sm inline-flex items-center">
+          <td class="border-on-surface/[0.06] px-md py-sm w-[1%] whitespace-nowrap border-b text-center align-middle">
+            <div class="gap-xx-sm inline-flex items-center justify-center">
               <AppButton
                 variant="ghost"
                 size="sm"

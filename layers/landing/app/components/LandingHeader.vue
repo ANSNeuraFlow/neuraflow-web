@@ -1,14 +1,31 @@
 <script setup lang="ts">
 const { t } = useI18n();
+const localePath = useLocalePath();
 const isScrolled = ref(false);
 const isMobileMenuOpen = ref(false);
 
 const navItems = computed(() => [
-  { href: '#features', label: t('landing.nav.features') },
-  { href: '#how-it-works', label: t('landing.nav.howItWorks') },
-  { href: '#tech', label: t('landing.nav.technology') },
-  { href: '#stats', label: t('landing.nav.stats') },
+  { href: '/#features', label: t('landing.nav.features') },
+  { href: '/#how-it-works', label: t('landing.nav.howItWorks') },
+  { href: '/#tech', label: t('landing.nav.technology') },
+  { href: '/#stats', label: t('landing.nav.stats') },
 ]);
+
+const machineLearningNav = computed(() => ({
+  to: localePath('/machine-learning'),
+  label: t('landing.nav.machineLearning'),
+}));
+
+/** Wire up when the drone module is ready (navigation, modal, external URL, etc.). */
+const onDroneNavClick = (): void => {
+  //
+};
+
+const navLinkClass =
+  'px-sm py-sm text-body-sm duration-short lg:px-md text-on-surface-dim hover:bg-on-surface/5 hover:text-on-surface shrink-0 whitespace-nowrap rounded-lg font-medium transition-colors ease-out';
+
+const navLinkClassMobile =
+  'px-md py-md text-body-sm duration-short rounded-lg font-medium text-slate-400 transition-colors hover:bg-white/[0.05] hover:text-white';
 
 const handleScroll = (): void => {
   isScrolled.value = window.scrollY > 20;
@@ -24,6 +41,11 @@ const handleMobileMenuToggle = (): void => {
 
 const closeMenu = (): void => {
   isMobileMenuOpen.value = false;
+};
+
+const onDroneNavMobile = (): void => {
+  onDroneNavClick();
+  closeMenu();
 };
 
 onMounted(() => {
@@ -44,7 +66,7 @@ onUnmounted(() => {
       <div class="min-h-x-huge py-sm relative flex items-center justify-between">
         <!-- Logo -->
         <a
-          href="#home"
+          href="/"
           class="gap-md group relative z-10 flex shrink-0 items-center"
           :aria-label="t('landing.hero.badge')"
           @click="handleLogoClick"
@@ -88,10 +110,29 @@ onUnmounted(() => {
             v-for="item in navItems"
             :key="item.href"
             :href="item.href"
-            class="px-sm py-sm text-body-sm duration-short lg:px-md text-on-surface-dim hover:bg-on-surface/5 hover:text-on-surface shrink-0 whitespace-nowrap rounded-lg font-medium transition-colors ease-out"
+            :class="navLinkClass"
           >
             {{ item.label }}
           </a>
+          <span
+            class="bg-on-surface/10 mx-xx-sm hidden h-6 w-px shrink-0 md:block"
+            aria-hidden="true"
+          />
+          <NuxtLink
+            :to="machineLearningNav.to"
+            :class="navLinkClass"
+            active-class="bg-on-surface/10 text-on-surface font-semibold"
+          >
+            {{ machineLearningNav.label }}
+          </NuxtLink>
+          <button
+            type="button"
+            :class="navLinkClass"
+            :aria-label="t('landing.nav.drone')"
+            @click="onDroneNavClick"
+          >
+            {{ t('landing.nav.drone') }}
+          </button>
         </nav>
 
         <div class="gap-sm lg:gap-md relative z-10 ml-auto hidden shrink-0 items-center md:flex">
@@ -154,11 +195,30 @@ onUnmounted(() => {
             v-for="item in navItems"
             :key="item.href"
             :href="item.href"
-            class="px-md py-md text-body-sm duration-short rounded-lg font-medium text-slate-400 transition-colors hover:bg-white/[0.05] hover:text-white"
+            :class="navLinkClassMobile"
             @click="closeMenu"
           >
             {{ item.label }}
           </a>
+          <p class="text-body-x-sm px-md text-on-surface-dim/70 mt-sm font-semibold uppercase tracking-wider">
+            {{ t('landing.nav.appsSection') }}
+          </p>
+          <NuxtLink
+            :to="machineLearningNav.to"
+            :class="navLinkClassMobile"
+            active-class="bg-white/[0.08] text-white"
+            @click="closeMenu"
+          >
+            {{ machineLearningNav.label }}
+          </NuxtLink>
+          <button
+            type="button"
+            :class="navLinkClassMobile"
+            :aria-label="t('landing.nav.drone')"
+            @click="onDroneNavMobile"
+          >
+            {{ t('landing.nav.drone') }}
+          </button>
 
           <div class="mt-md gap-sm pt-md flex flex-col border-t border-white/[0.06]">
             <AppNavActions variant="mobile" />

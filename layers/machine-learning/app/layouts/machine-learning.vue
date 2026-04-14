@@ -151,7 +151,9 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="px-md py-x-lg flex flex-1 flex-col overflow-y-auto">
-          {{ t('machineLearning.navigation.section') }}
+          <p class="mb-sm px-sm text-body-x-sm text-on-surface-dim font-semibold uppercase tracking-wider">
+            {{ t('machineLearning.navigation.section') }}
+          </p>
           <nav class="gap-xx-sm flex flex-col">
             <NuxtLink
               v-for="item in mlNavItems"
