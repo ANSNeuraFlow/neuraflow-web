@@ -63,6 +63,12 @@
       "includeForTraining": "Trening",
       "includeForTrainingAria": "Uwzględnij sesję {name} w treningu modelu",
       "includeForTrainingDisabled": "Tylko ukończone sesje mogą być użyte do treningu",
+      "pagination": {
+        "next": "Następna",
+        "pageOf": "Strona {current} z {total}",
+        "previous": "Poprzednia",
+        "showing": "Widoczne {from}–{to} z {total}"
+      },
       "protocol": "Protokół",
       "sessionName": "Sesja",
       "status": "Status"

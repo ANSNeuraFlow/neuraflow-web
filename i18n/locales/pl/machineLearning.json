@@ -22,10 +22,15 @@
     },
     "sessions": {
       "activeSession": "Aktywna sesja",
+      "calibrationSubtitle": "Utwórz nową sesję, nadaj jej nazwę i uruchom rejestrację w pełnym ekranie (Motor Imagery, 40 prób).",
+      "calibrationTitle": "Nowa sesja — rejestracja EEG",
       "endSession": "Zakończ sesję",
+      "historySubtitle": "Zarejestrowano {count} sesji",
+      "historyTitle": "Historia sesji",
       "kicker": "Moduł ML",
       "noActiveSession": "Brak aktywnej sesji EEG. Rozpocznij nową, aby zacząć nagrywanie.",
       "pageTitle": "machineLearning.sessions.title",
+      "startCalibration": "Rozpocznij kalibrację BCI",
       "subtitle": "Zarządzaj sesjami rejestracji sygnału EEG do uczenia maszynowego.",
       "title": "Sesje EEG"
     },

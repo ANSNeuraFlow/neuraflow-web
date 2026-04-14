@@ -137,11 +137,12 @@ export const useBciCalibration = (
   const ws = new BridgeWebSocket('ws://127.0.0.1:8765');
   const abortController = ref<AbortController | null>(null);
 
-  type ProtocolState = 'idle' | 'relaxation' | 'cue' | 'execution' | 'rest' | 'iti' | 'finished';
+  type ProtocolState = 'idle' | 'relaxation' | 'cue' | 'execution' | 'rest' | 'iti';
   const currentState = ref<ProtocolState>('idle');
   const currentTrial = ref(0);
   const activeCue = ref('');
   const isFullscreen = ref(false);
+  const protocolEndReason = ref<'success' | 'abort' | null>(null);
 
   const containerRef = ref<HTMLElement | null>(null);
 
@@ -154,7 +155,7 @@ export const useBciCalibration = (
     }
   };
 
-  const runProtocol = async () => {
+  const runProtocol = async (sessionName = 'Sesja EEG') => {
     const sessionStore = useUserSessionStore();
     const token = sessionStore.user?.token;
 
@@ -167,7 +168,7 @@ export const useBciCalibration = (
 
     try {
       const session = await createSession({
-        sessionName: 'BCI Calibration Data',
+        sessionName,
         protocolName: 'move_left',
       });
       sessionId = session.id;
@@ -190,6 +191,8 @@ export const useBciCalibration = (
     });
 
     const sequence = generateSequence(config.classes, config.totalTrials);
+
+    let completedSuccessfully = false;
 
     try {
       await exactWait(2000, signal);
@@ -222,16 +225,16 @@ export const useBciCalibration = (
         await exactWait(itiTime, signal);
       }
 
-      currentState.value = 'finished';
       ws.sendEvent('SESSION_END', { sessionId });
 
       if (sessionId && !sessionId.startsWith('local-test-session')) {
         await stopSession(sessionId);
       }
+
+      completedSuccessfully = true;
     } catch (err: unknown) {
       if (err instanceof Error && err.message === 'Aborted') {
         console.log('Protocol manually aborted early.');
-        currentState.value = 'idle';
       } else {
         console.error(err);
       }
@@ -239,11 +242,22 @@ export const useBciCalibration = (
       if (sessionId && !sessionId.startsWith('local-test-session')) {
         await stopSession(sessionId).catch(() => {});
       }
+      currentTrial.value = 0;
+      activeCue.value = '';
+      currentState.value = 'idle';
+      protocolEndReason.value = 'abort';
     } finally {
       if (document.fullscreenElement) {
         document.exitFullscreen();
         isFullscreen.value = false;
       }
+    }
+
+    if (completedSuccessfully) {
+      currentTrial.value = 0;
+      activeCue.value = '';
+      currentState.value = 'idle';
+      protocolEndReason.value = 'success';
     }
   };
 
@@ -280,6 +294,7 @@ export const useBciCalibration = (
     currentTrial,
     activeCue,
     isFullscreen,
+    protocolEndReason,
     containerRef,
     runProtocol,
     abortProtocol,

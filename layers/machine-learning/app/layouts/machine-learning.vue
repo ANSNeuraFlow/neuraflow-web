@@ -33,11 +33,6 @@ const mlNavItems = computed(() => [
     label: t('machineLearning.navigation.models'),
     icon: 'material-symbols:model-training',
   },
-  {
-    to: localePath('/machine-learning/bci-calibration'),
-    label: t('machineLearning.navigation.bciCalibration'),
-    icon: 'material-symbols:psychology',
-  },
 ]);
 const toggleTheme = () => {
   isDark.value = !isDark.value;
@@ -70,6 +65,40 @@ onBeforeUnmount(() => {
       class="pointer-events-none absolute inset-0 bg-hero-pattern opacity-50"
       aria-hidden="true"
     />
+    <div
+      class="pointer-events-none absolute inset-0 bg-neural-glow"
+      aria-hidden="true"
+    />
+    <div
+      class="pointer-events-none absolute inset-0"
+      aria-hidden="true"
+    >
+      <svg
+        class="absolute inset-0 h-full w-full opacity-[0.04]"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <pattern
+            id="ml-grid"
+            width="60"
+            height="60"
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d="M 60 0 L 0 0 0 60"
+              fill="none"
+              stroke="#6366f1"
+              stroke-width="1"
+            />
+          </pattern>
+        </defs>
+        <rect
+          width="100%"
+          height="100%"
+          fill="url(#ml-grid)"
+        />
+      </svg>
+    </div>
     <div
       class="bg-info/5 dark:bg-info/10 pointer-events-none absolute left-0 top-1/4 h-[500px] w-[500px] -translate-x-1/2 rounded-full blur-3xl"
       aria-hidden="true"

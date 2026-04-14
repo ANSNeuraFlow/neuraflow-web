@@ -63,6 +63,12 @@
       "includeForTraining": "Train",
       "includeForTrainingAria": "Include session {name} in model training",
       "includeForTrainingDisabled": "Only completed sessions can be used for training",
+      "pagination": {
+        "next": "Next",
+        "pageOf": "Page {current} of {total}",
+        "previous": "Previous",
+        "showing": "Showing {from}–{to} of {total}"
+      },
       "protocol": "Protocol",
       "sessionName": "Session",
       "status": "Status"
