@@ -1,12 +1,20 @@
 <script setup lang="ts">
 const { t } = useI18n();
+const localePath = useLocalePath();
 
 const currentYear = new Date().getFullYear();
 
-const footerLinks = computed(() => [
-  { href: '#features', label: t('landing.footer.links.features') },
-  { href: '#how-it-works', label: t('landing.footer.links.howItWorks') },
-  { href: '#tech', label: t('landing.footer.links.tech') },
+const footerAnchorLinks = computed(() => [
+  { href: '/#features', label: t('landing.footer.links.features') },
+  { href: '/#how-it-works', label: t('landing.footer.links.howItWorks') },
+  { href: '/#tech', label: t('landing.footer.links.tech') },
+]);
+
+const footerRouteLinks = computed(() => [
+  { to: localePath('/machine-learning'), label: t('landing.footer.links.machineLearning') },
+]);
+
+const footerExternalLinks = computed(() => [
   { href: 'http://localhost:4000/api-docs', label: t('landing.footer.links.apiDocs') },
 ]);
 </script>
@@ -50,12 +58,28 @@ const footerLinks = computed(() => [
 
         <!-- Links -->
         <nav
-          class="gap-xx-lg flex flex-wrap items-center"
+          class="gap-x-lg gap-y-md flex flex-wrap items-center"
           :aria-label="t('landing.nav.openMenu')"
         >
           <a
-            v-for="link in footerLinks"
+            v-for="link in footerAnchorLinks"
+            :key="link.href"
+            :href="link.href"
+            class="text-body-sm duration-short text-on-surface-dim/80 hover:text-on-surface/80 transition-colors"
+          >
+            {{ link.label }}
+          </a>
+          <NuxtLink
+            v-for="link in footerRouteLinks"
             :key="link.label"
+            :to="link.to"
+            class="text-body-sm duration-short text-on-surface-dim/80 hover:text-on-surface/80 transition-colors"
+          >
+            {{ link.label }}
+          </NuxtLink>
+          <a
+            v-for="link in footerExternalLinks"
+            :key="link.href"
             :href="link.href"
             class="text-body-sm duration-short text-on-surface-dim/80 hover:text-on-surface/80 transition-colors"
           >
