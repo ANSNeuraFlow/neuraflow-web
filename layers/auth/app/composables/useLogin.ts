@@ -37,6 +37,10 @@ export const useLogin = () => {
         return;
       }
 
+      if (!('token' in response)) {
+        throw new Error('Invalid login response');
+      }
+
       const me = await authService.me();
       const sessionStore = useUserSessionStore();
       sessionStore.setUser({
@@ -46,6 +50,7 @@ export const useLogin = () => {
         email: me.email,
         role: me.role,
         permissions: me.permissions,
+        token: response.token,
       });
 
       await navigateTo(localePath('/'));
