@@ -1,33 +1,61 @@
 import { computed, onBeforeUnmount, ref } from 'vue';
 
-class BCIWebSocket {
-  private connected = false;
+import { useUserSessionStore } from '#layers/auth/app/store/user-session.store';
+import { useEegSessionService } from '#layers/eeg-sessions/app/services/eeg-session.service';
+
+class BridgeWebSocket {
+  private ws: WebSocket | null = null;
   private url: string;
+  public connected = false;
 
   constructor(url: string) {
     this.url = url;
-    console.log(`[BCI WebSocket] Initializing connection to ${url}...`);
-    setTimeout(() => {
-      this.connected = true;
-      console.log('[BCI WebSocket] Connected successfully.');
-    }, 500);
+    this.connect();
   }
 
-  send(marker: string) {
+  private connect() {
+    console.log(`[Bridge WS] Connecting to local bridge at ${this.url}...`);
+    this.ws = new WebSocket(this.url);
+
+    this.ws.onopen = () => {
+      this.connected = true;
+      console.log('[Bridge WS] Connected to bridge successfully.');
+    };
+
+    this.ws.onclose = () => {
+      this.connected = false;
+      console.log('[Bridge WS] Connection closed. Reconnecting in 2s...');
+      setTimeout(() => this.connect(), 2000);
+    };
+
+    this.ws.onerror = (err) => {
+      console.error('[Bridge WS] Connection error:', err);
+    };
+  }
+
+  sendEvent(type: string, payloadExtras: Record<string, unknown> = {}) {
     const payload = {
-      marker,
+      type,
+      ...payloadExtras,
       timestamp: Date.now(),
     };
-    if (this.connected) {
-      console.log('%c[BCI WebSocket SEND]', 'color: #4ade80; font-weight: bold;', JSON.stringify(payload));
+
+    if (this.ws && this.connected) {
+      this.ws.send(JSON.stringify(payload));
     } else {
-      console.warn('[BCI WebSocket WARN] Cannot send, not connected:', payload);
+      console.warn('[Bridge WS WARN] Cannot send event, not connected:', payload);
     }
   }
 
+  send(marker: string) {
+    this.sendEvent('MARKER', { marker });
+  }
+
   close() {
-    this.connected = false;
-    console.log('[BCI WebSocket] Connection closed.');
+    if (this.ws) {
+      this.ws.onclose = null;
+      this.ws.close();
+    }
   }
 }
 
@@ -106,8 +134,7 @@ export const useBciCalibration = (
     },
   },
 ) => {
-  // TODO: Websocek do bci dodać trzeba.
-  const ws = new BCIWebSocket('ws://localhost:1337/eeg-sync');
+  const ws = new BridgeWebSocket('ws://127.0.0.1:8765');
   const abortController = ref<AbortController | null>(null);
 
   type ProtocolState = 'idle' | 'relaxation' | 'cue' | 'execution' | 'rest' | 'iti' | 'finished';
@@ -128,6 +155,27 @@ export const useBciCalibration = (
   };
 
   const runProtocol = async () => {
+    const sessionStore = useUserSessionStore();
+    const token = sessionStore.user?.token;
+
+    if (!token) {
+      console.warn('Brak tokenu użytkownika. Możesz napotkać problemy z autoryzacją w bridge.');
+    }
+
+    const { createSession, stopSession } = useEegSessionService();
+    let sessionId: string | null = null;
+
+    try {
+      const session = await createSession({
+        sessionName: 'BCI Calibration Data',
+        protocolName: 'move_left',
+      });
+      sessionId = session.id;
+    } catch (err) {
+      console.error('Failed to create an EEG session via API:', err);
+      sessionId = 'local-test-session-' + Date.now();
+    }
+
     await toggleFullscreen();
 
     abortController.value = new AbortController();
@@ -135,6 +183,11 @@ export const useBciCalibration = (
 
     currentState.value = 'iti';
     currentTrial.value = 0;
+
+    ws.sendEvent('SESSION_START', {
+      sessionId,
+      token,
+    });
 
     const sequence = generateSequence(config.classes, config.totalTrials);
 
@@ -151,8 +204,9 @@ export const useBciCalibration = (
         currentState.value = 'cue';
         playBeep();
 
-        // TODO: Wysłanie flagi (triggera / markera) rozpoczęcia ruchu wyobrażonego (np. LEFT_START) do Kafki
-        ws.send(`${activeCue.value}_START`);
+        const mapMarker: Record<string, string> = { LEFT: 'LEFT_HAND', RIGHT: 'RIGHT_HAND' };
+
+        ws.send(mapMarker[activeCue.value] || 'IDLE');
         await exactWait(config.timing.cue, signal);
 
         currentState.value = 'execution';
@@ -160,7 +214,6 @@ export const useBciCalibration = (
 
         currentState.value = 'rest';
 
-        // TODO: Wysłanie markera oznaczającego REST do bazy treningowej
         ws.send('REST');
         await exactWait(config.timing.rest, signal);
 
@@ -170,13 +223,21 @@ export const useBciCalibration = (
       }
 
       currentState.value = 'finished';
-      // TODO: W tym miejscu wysłanie requesta na kafke sygnału CALIBRATION_END
+      ws.sendEvent('SESSION_END', { sessionId });
+
+      if (sessionId && !sessionId.startsWith('local-test-session')) {
+        await stopSession(sessionId);
+      }
     } catch (err: unknown) {
       if (err instanceof Error && err.message === 'Aborted') {
         console.log('Protocol manually aborted early.');
         currentState.value = 'idle';
       } else {
         console.error(err);
+      }
+      ws.sendEvent('SESSION_ABORTED', { sessionId });
+      if (sessionId && !sessionId.startsWith('local-test-session')) {
+        await stopSession(sessionId).catch(() => {});
       }
     } finally {
       if (document.fullscreenElement) {

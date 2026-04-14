@@ -5,4 +5,5 @@ export type LoggedInUser = {
   email: string;
   role: { id: number; name: string } | null;
   permissions: string[];
+  token?: string;
 };
