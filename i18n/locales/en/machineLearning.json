@@ -22,10 +22,15 @@
     },
     "sessions": {
       "activeSession": "Active session",
+      "calibrationSubtitle": "Create a new session, name it, and start fullscreen recording (Motor Imagery, 40 trials).",
+      "calibrationTitle": "New session — EEG recording",
       "endSession": "End Session",
+      "historySubtitle": "{count} sessions recorded",
+      "historyTitle": "Session History",
       "kicker": "ML Module",
       "noActiveSession": "No active EEG session. Start a new one to begin recording.",
       "pageTitle": "machineLearning.sessions.title",
+      "startCalibration": "Start BCI Calibration",
       "subtitle": "Manage EEG recording sessions for machine learning.",
       "title": "EEG Sessions"
     },
