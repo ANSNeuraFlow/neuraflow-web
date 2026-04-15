@@ -56,7 +56,6 @@ const footerExternalLinks = computed(() => [
           </div>
         </div>
 
-        <!-- Links -->
         <nav
           class="gap-x-lg gap-y-md flex flex-wrap items-center"
           :aria-label="t('landing.nav.openMenu')"
@@ -96,7 +95,6 @@ const footerExternalLinks = computed(() => [
         </p>
       </div>
 
-      <!-- API status bar -->
       <div class="mt-xx-lg gap-xx-lg pt-xx-lg border-on-surface/5 flex flex-wrap items-center border-t">
         <div class="gap-sm text-body-x-sm text-on-surface-dim/60 flex items-center">
           <span aria-hidden="true">{{ t('landing.footer.apiLabel') }}</span>
