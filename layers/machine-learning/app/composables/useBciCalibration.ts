@@ -157,6 +157,7 @@ export const useBciCalibration = (
 
   const runProtocol = async (sessionName = 'Sesja EEG') => {
     const sessionStore = useUserSessionStore();
+    // @ts-expect-error - TODO: WIP bridge auth
     const token = sessionStore.user?.token;
 
     if (!token) {
