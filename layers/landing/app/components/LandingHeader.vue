@@ -1,8 +1,16 @@
 <script setup lang="ts">
+import { onClickOutside } from '@vueuse/core';
+
 const { t } = useI18n();
 const localePath = useLocalePath();
 const isScrolled = ref(false);
 const isMobileMenuOpen = ref(false);
+const appsMenuOpen = ref(false);
+const appsMenuRoot = ref<HTMLElement | null>(null);
+
+onClickOutside(appsMenuRoot, () => {
+  appsMenuOpen.value = false;
+});
 
 const navItems = computed(() => [
   { href: '/#features', label: t('landing.nav.features') },
@@ -16,10 +24,10 @@ const machineLearningNav = computed(() => ({
   label: t('landing.nav.machineLearning'),
 }));
 
-/** Wire up when the drone module is ready (navigation, modal, external URL, etc.). */
-const onDroneNavClick = (): void => {
-  //
-};
+const remoteVehiclesNav = computed(() => ({
+  to: localePath('/remote'),
+  label: t('landing.nav.remoteVehicles'),
+}));
 
 const navLinkClass =
   'px-sm py-sm text-body-sm duration-short lg:px-md text-on-surface-dim hover:bg-on-surface/5 hover:text-on-surface shrink-0 whitespace-nowrap rounded-lg font-medium transition-colors ease-out';
@@ -43,9 +51,12 @@ const closeMenu = (): void => {
   isMobileMenuOpen.value = false;
 };
 
-const onDroneNavMobile = (): void => {
-  onDroneNavClick();
-  closeMenu();
+const closeAppsMenu = (): void => {
+  appsMenuOpen.value = false;
+};
+
+const toggleAppsMenu = (): void => {
+  appsMenuOpen.value = !appsMenuOpen.value;
 };
 
 onMounted(() => {
@@ -63,11 +74,11 @@ onUnmounted(() => {
     :class="isScrolled ? 'border-on-surface/10 bg-surface/90 backdrop-blur-xl' : 'border-transparent bg-transparent'"
   >
     <div class="px-md sm:px-x-lg lg:px-xx-lg mx-auto w-full max-w-landing">
-      <div class="min-h-x-huge py-sm relative flex items-center justify-between">
+      <div class="min-h-x-huge py-sm gap-x-sm relative flex items-center justify-between">
         <!-- Logo -->
         <a
           href="/"
-          class="gap-md group relative z-10 flex shrink-0 items-center"
+          class="gap-md group relative z-10 flex min-w-0 shrink-0 items-center"
           :aria-label="t('landing.hero.badge')"
           @click="handleLogoClick"
         >
@@ -100,46 +111,81 @@ onUnmounted(() => {
           </span>
         </a>
 
-        <!-- Desktop nav (centered in bar — avoids overlap when container uses px max-width) -->
         <nav
-          class="gap-x-sm lg:gap-md xl:gap-x-lg absolute left-1/2 top-1/2 z-0 hidden -translate-x-1/2 -translate-y-1/2 items-center md:flex"
+          class="text-body-x-sm lg:text-body-sm gap-x-sm lg:gap-x-md xl:gap-x-lg hidden min-w-0 flex-1 items-center justify-center md:flex"
           role="navigation"
           :aria-label="t('landing.nav.openMenu')"
         >
-          <a
-            v-for="item in navItems"
-            :key="item.href"
-            :href="item.href"
-            :class="navLinkClass"
+          <div
+            class="gap-x-sm lg:gap-x-md xl:gap-x-lg flex min-w-0 max-w-full items-center overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
-            {{ item.label }}
-          </a>
+            <a
+              v-for="item in navItems"
+              :key="item.href"
+              :href="item.href"
+              :class="navLinkClass"
+            >
+              {{ item.label }}
+            </a>
+          </div>
           <span
             class="bg-on-surface/10 mx-xx-sm hidden h-6 w-px shrink-0 md:block"
             aria-hidden="true"
           />
-          <NuxtLink
-            :to="machineLearningNav.to"
-            :class="navLinkClass"
-            active-class="bg-on-surface/10 text-on-surface font-semibold"
+          <div
+            ref="appsMenuRoot"
+            class="relative z-[60] shrink-0"
           >
-            {{ machineLearningNav.label }}
-          </NuxtLink>
-          <button
-            type="button"
-            :class="navLinkClass"
-            :aria-label="t('landing.nav.drone')"
-            @click="onDroneNavClick"
-          >
-            {{ t('landing.nav.drone') }}
-          </button>
+            <button
+              type="button"
+              class="gap-xx-sm px-sm py-sm text-body-sm duration-short lg:px-md text-on-surface-dim hover:bg-on-surface/5 hover:text-on-surface inline-flex shrink-0 items-center whitespace-nowrap rounded-lg font-medium transition-colors ease-out"
+              :aria-expanded="appsMenuOpen"
+              :aria-haspopup="true"
+              :aria-label="t('landing.nav.appsSection')"
+              @click.stop="toggleAppsMenu"
+            >
+              {{ t('landing.nav.appsSection') }}
+              <Icon
+                name="material-symbols:keyboard-arrow-down"
+                size="1.25rem"
+                class="transition-transform"
+                :class="appsMenuOpen ? 'rotate-180' : ''"
+                aria-hidden="true"
+              />
+            </button>
+            <Transition name="fade-scale">
+              <div
+                v-if="appsMenuOpen"
+                class="border-on-surface/10 bg-surface/95 py-xx-sm absolute left-1/2 top-[calc(100%+0.6rem)] z-[70] min-w-[14rem] -translate-x-1/2 rounded-xl border shadow-xl backdrop-blur-xl"
+                role="menu"
+              >
+                <NuxtLink
+                  :to="machineLearningNav.to"
+                  role="menuitem"
+                  class="px-md py-sm text-on-surface-dim hover:bg-on-surface/8 hover:text-on-surface block font-medium transition-colors"
+                  active-class="!bg-on-surface/10 !text-on-surface"
+                  @click="closeAppsMenu"
+                >
+                  {{ machineLearningNav.label }}
+                </NuxtLink>
+                <NuxtLink
+                  :to="remoteVehiclesNav.to"
+                  role="menuitem"
+                  class="px-md py-sm text-on-surface-dim hover:bg-on-surface/8 hover:text-on-surface block font-medium transition-colors"
+                  active-class="!bg-on-surface/10 !text-on-surface"
+                  @click="closeAppsMenu"
+                >
+                  {{ remoteVehiclesNav.label }}
+                </NuxtLink>
+              </div>
+            </Transition>
+          </div>
         </nav>
 
-        <div class="gap-sm lg:gap-md relative z-10 ml-auto hidden shrink-0 items-center md:flex">
+        <div class="gap-sm lg:gap-md relative z-10 hidden shrink-0 items-center md:flex">
           <AppNavActions variant="desktop" />
         </div>
 
-        <!-- Mobile hamburger -->
         <button
           class="p-sm duration-short relative z-10 ml-auto shrink-0 rounded-lg text-slate-400 transition-colors hover:bg-white/[0.05] hover:text-white md:hidden"
           :aria-label="isMobileMenuOpen ? t('landing.nav.closeMenu') : t('landing.nav.openMenu')"
@@ -180,7 +226,6 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Mobile menu -->
     <Transition name="slide-down">
       <div
         v-if="isMobileMenuOpen"
@@ -211,14 +256,15 @@ onUnmounted(() => {
           >
             {{ machineLearningNav.label }}
           </NuxtLink>
-          <button
-            type="button"
+          <NuxtLink
+            :to="remoteVehiclesNav.to"
             :class="navLinkClassMobile"
-            :aria-label="t('landing.nav.drone')"
-            @click="onDroneNavMobile"
+            active-class="bg-white/[0.08] text-white"
+            :aria-label="remoteVehiclesNav.label"
+            @click="closeMenu"
           >
-            {{ t('landing.nav.drone') }}
-          </button>
+            {{ remoteVehiclesNav.label }}
+          </NuxtLink>
 
           <div class="mt-md gap-sm pt-md flex flex-col border-t border-white/[0.06]">
             <AppNavActions variant="mobile" />
@@ -239,5 +285,15 @@ onUnmounted(() => {
 .slide-down-leave-to {
   opacity: 0;
   transform: translateY(-10px);
+}
+
+.fade-scale-enter-active,
+.fade-scale-leave-active {
+  transition: opacity 0.15s ease;
+}
+
+.fade-scale-enter-from,
+.fade-scale-leave-to {
+  opacity: 0;
 }
 </style>

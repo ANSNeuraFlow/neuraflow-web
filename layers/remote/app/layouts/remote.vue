@@ -10,7 +10,7 @@ const title = computed(() => {
   if (route.meta.title && te(route.meta.title as string)) {
     return t(route.meta.title as string);
   }
-  return 'NeuraFlow Drone';
+  return t('remote.meta.defaultTitle');
 });
 
 useHead({
@@ -25,26 +25,49 @@ useHead({
   },
 });
 
-const droneNavItems = computed(() => [
+type RemoteNavItem = {
+  path: '/remote/drone' | '/remote/car' | '/remote/eeg';
+  label: string;
+  icon: string;
+};
+
+const remoteNavItems = computed<RemoteNavItem[]>(() => [
   {
-    to: localePath('/drone/eeg'),
-    label: t('drone.navigation.eeg'),
+    path: '/remote/drone',
+    label: t('remote.navigation.drone'),
+    icon: 'material-symbols:flight',
+  },
+  {
+    path: '/remote/car',
+    label: t('remote.navigation.car'),
+    icon: 'material-symbols:directions-car',
+  },
+  {
+    path: '/remote/eeg',
+    label: t('remote.navigation.eeg'),
     icon: 'material-symbols:monitor-heart',
   },
 ]);
+
+const normalizedPath = computed(() => route.path.replace(/\/$/, '') || '/');
+
+const isNavActive = (item: RemoteNavItem): boolean => {
+  const target = item.path.replace(/\/$/, '') || '/';
+  return normalizedPath.value === target;
+};
 
 const toggleTheme = () => {
   isDark.value = !isDark.value;
   if (typeof document !== 'undefined') {
     document.documentElement.setAttribute('data-theme', isDark.value ? 'dark' : 'light');
-    localStorage.setItem('neuraflow-drone-theme', isDark.value ? 'dark' : 'light');
+    localStorage.setItem('neuraflow-remote-theme', isDark.value ? 'dark' : 'light');
   }
 };
 
 onMounted(() => {
   document.body.classList.add('overflow-hidden');
 
-  const saved = localStorage.getItem('neuraflow-drone-theme');
+  const saved = localStorage.getItem('neuraflow-remote-theme');
   if (saved === 'light') {
     isDark.value = false;
     document.documentElement.setAttribute('data-theme', 'light');
@@ -79,7 +102,7 @@ onBeforeUnmount(() => {
       >
         <defs>
           <pattern
-            id="drone-grid"
+            id="remote-grid"
             width="60"
             height="60"
             patternUnits="userSpaceOnUse"
@@ -95,7 +118,7 @@ onBeforeUnmount(() => {
         <rect
           width="100%"
           height="100%"
-          fill="url(#drone-grid)"
+          fill="url(#remote-grid)"
         />
       </svg>
     </div>
@@ -132,7 +155,7 @@ onBeforeUnmount(() => {
           </NuxtLink>
           <button
             class="p-xx-sm text-on-surface-dim duration-short hover:bg-on-surface/10 hover:text-on-surface rounded-lg transition-colors"
-            :aria-label="t('drone.navigation.closeMenu')"
+            :aria-label="t('remote.navigation.closeMenu')"
             @click="isMobileSidebarOpen = false"
           >
             <Icon
@@ -144,15 +167,15 @@ onBeforeUnmount(() => {
 
         <div class="px-md py-x-lg flex flex-1 flex-col overflow-y-auto">
           <p class="text-body-x-sm mb-x-sm px-sm text-on-surface-dim font-semibold uppercase tracking-wider">
-            {{ t('drone.navigation.section') }}
+            {{ t('remote.navigation.section') }}
           </p>
           <nav class="gap-xx-sm flex flex-col">
             <NuxtLink
-              v-for="item in droneNavItems"
-              :key="item.label"
-              :to="item.to"
+              v-for="item in remoteNavItems"
+              :key="item.path"
+              :to="localePath(item.path)"
               class="gap-sm px-sm py-sm text-body-sm text-on-surface-dim duration-short hover:bg-on-surface/[0.06] hover:text-on-surface flex items-center rounded-lg font-medium transition-colors"
-              active-class="bg-on-surface/[0.15] text-on-surface"
+              :class="isNavActive(item) ? 'bg-on-surface/[0.15] text-on-surface' : ''"
               @click="isMobileSidebarOpen = false"
             >
               <Icon
@@ -178,7 +201,7 @@ onBeforeUnmount(() => {
         <div class="gap-md flex items-center">
           <button
             class="p-xx-sm text-on-surface-dim duration-short hover:bg-on-surface/10 hover:text-on-surface rounded-lg transition-colors md:hidden"
-            :aria-label="t('drone.navigation.openMenu')"
+            :aria-label="t('remote.navigation.openMenu')"
             @click="isMobileSidebarOpen = true"
           >
             <Icon
@@ -224,7 +247,7 @@ onBeforeUnmount(() => {
         <div class="gap-sm flex items-center">
           <button
             class="p-xx-sm text-on-surface-dim duration-short hover:bg-on-surface/10 hover:text-on-surface rounded-lg transition-colors"
-            :aria-label="isDark ? t('drone.theme.switchToLight') : t('drone.theme.switchToDark')"
+            :aria-label="isDark ? t('remote.theme.switchToLight') : t('remote.theme.switchToDark')"
             @click="toggleTheme"
           >
             <Icon
@@ -243,19 +266,19 @@ onBeforeUnmount(() => {
         <aside
           class="border-on-surface/[0.08] bg-surface/70 hidden min-h-0 w-[22rem] shrink-0 flex-col overflow-hidden border-r backdrop-blur-xl md:flex"
           role="navigation"
-          :aria-label="t('drone.navigation.section')"
+          :aria-label="t('remote.navigation.section')"
         >
           <div class="px-md py-x-lg flex flex-1 flex-col">
             <p class="text-body-x-sm mb-x-sm px-sm text-on-surface-dim font-semibold uppercase tracking-wider">
-              {{ t('drone.navigation.section') }}
+              {{ t('remote.navigation.section') }}
             </p>
             <nav class="gap-xx-sm flex flex-col">
               <NuxtLink
-                v-for="item in droneNavItems"
-                :key="item.label"
-                :to="item.to"
+                v-for="item in remoteNavItems"
+                :key="item.path"
+                :to="localePath(item.path)"
                 class="gap-sm px-sm py-sm text-body-sm text-on-surface-dim duration-short hover:bg-on-surface/[0.06] hover:text-on-surface flex items-center rounded-lg font-medium transition-colors"
-                active-class="bg-on-surface/[0.12] text-on-surface font-semibold"
+                :class="isNavActive(item) ? 'bg-on-surface/[0.12] text-on-surface font-semibold' : ''"
               >
                 <Icon
                   :name="item.icon"
