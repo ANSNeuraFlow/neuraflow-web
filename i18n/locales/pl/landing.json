@@ -202,7 +202,6 @@
       "capabilities": "Możliwości",
       "closeMenu": "Zamknij menu nawigacji",
       "contact": "Kontakt",
-      "drone": "Dron",
       "features": "Funkcje",
       "highlights": "Korzyści",
       "howItWorks": "Jak to działa",
@@ -212,6 +211,7 @@
       "openMenu": "Otwórz menu nawigacji",
       "profile": "Profil",
       "register": "Zacznij za darmo",
+      "remoteVehicles": "Pojazdy RC",
       "stats": "Statystyki",
       "technology": "Technologia"
     },

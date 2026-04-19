@@ -1,0 +1,106 @@
+{
+  "remote": {
+    "carPage": {
+      "body": "Moduł sterowania pojazdem RC przez NeuraFlow — w przygotowaniu.",
+      "kicker": "Samochód RC",
+      "pageTitle": "Sterowanie samochodem RC — NeuraFlow",
+      "title": "Sterowanie samochodem"
+    },
+    "control": {
+      "endSession": "Zakończ sesję",
+      "placeholder": {
+        "body": "Intensywne prace",
+        "title": "XXXX"
+      },
+      "readyHint": "Model działa — możesz rozpocząć sesję.",
+      "sessionActive": "Sesja aktywna",
+      "startHint": "Najpierw uruchom model, żeby rozpocząć sesję.",
+      "startSession": "Rozpocznij sesję",
+      "vehicle": {
+        "car": "Samochód RC",
+        "drone": "Dron"
+      }
+    },
+    "deployment": {
+      "errors": {
+        "deployFailed": "Nie udało się uruchomić modelu.",
+        "fetchFailed": "Nie udało się pobrać wdrożeń.",
+        "modelsFetchFailed": "Nie udało się pobrać modeli.",
+        "stopFailed": "Nie udało się zatrzymać wdrożenia."
+      },
+      "modelSelector": {
+        "accuracy": "Dokładność",
+        "empty": "Brak dostępnych wytrenowanych modeli. Najpierw ukończ sesję treningową.",
+        "trainedOn": "Wytrenowano",
+        "unknownDate": "Nieznana data"
+      },
+      "panel": {
+        "activeDeployment": "Wdrożenie w toku",
+        "deploy": "Uruchom model",
+        "deployHint": "Wybierz model powyżej, żeby go uruchomić.",
+        "noModels": {
+          "body": "Ukończ sesję treningową, aby model był dostępny do wdrożenia.",
+          "title": "Brak wytrenowanych modeli"
+        },
+        "readyToStart": "Model działa — gotowy do startu",
+        "selectModel": "Wybierz model do uruchomienia",
+        "step1": "Wybierz model",
+        "step2": "Uruchom",
+        "stop": "Zatrzymaj",
+        "subtitle": "Wybierz i uruchom wytrenowany model przed rozpoczęciem sterowania.",
+        "title": "Konfiguracja modelu"
+      },
+      "status": {
+        "FAILED": "Błąd",
+        "PENDING": "Oczekujące",
+        "RUNNING": "Działa",
+        "STARTING": "Uruchamianie",
+        "STOPPED": "Zatrzymano",
+        "STOPPING": "Zatrzymywanie"
+      }
+    },
+    "dronePage": {
+      "body": "Panel sterowania dronem i powiązanymi funkcjami BCI.",
+      "kicker": "Dron",
+      "pageTitle": "Sterowanie dronem — NeuraFlow",
+      "title": "Sterowanie dronem"
+    },
+    "eeg": {
+      "kicker": "EEG",
+      "pageTitle": "Wykresy EEG — NeuraFlow",
+      "placeholder": "Tu pojawi się wizualizacja sygnału — moduł w przygotowaniu.",
+      "subtitle": "Osobna przestrzeń na podgląd i analizę EEG w module sterowania zdalnego (bez powiązania z konkretnym pojazdem).",
+      "title": "Wykresy EEG"
+    },
+    "hub": {
+      "carDescription": "Sterowanie pojazdem zdalnie sterowanym z interfejsu NeuraFlow.",
+      "carTitle": "Samochód RC",
+      "droneDescription": "Sterowanie dronem z poziomu NeuraFlow.",
+      "droneTitle": "Dron",
+      "eegDescription": "Podgląd EEG dla całego modułu zdalnego sterowania.",
+      "eegTitle": "Wykresy EEG",
+      "open": "Otwórz",
+      "pageTitle": "Sterowanie pojazdami — NeuraFlow",
+      "subtitle": "Wybierz pojazd albo przejdź do sekcji EEG.",
+      "title": "Sterowanie pojazdami"
+    },
+    "meta": {
+      "defaultTitle": "NeuraFlow — pojazdy RC"
+    },
+    "navigation": {
+      "car": "Samochód RC",
+      "closeMenu": "Zamknij menu",
+      "drone": "Dron",
+      "eeg": "EEG",
+      "openMenu": "Otwórz menu",
+      "section": "Sterowanie"
+    },
+    "session": {
+      "wip": "XXXX"
+    },
+    "theme": {
+      "switchToDark": "Tryb ciemny",
+      "switchToLight": "Tryb jasny"
+    }
+  }
+}

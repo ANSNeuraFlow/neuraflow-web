@@ -22,6 +22,8 @@ export default defineEventHandler(async (event: H3Event) => {
       headers: proxyHeaders,
     });
   } catch (error) {
+    console.log(error);
+
     if (error && typeof error === 'object' && 'response' in error) {
       const fetchError = error as { response: Response; data: unknown };
 

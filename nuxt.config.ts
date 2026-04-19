@@ -75,6 +75,7 @@ export default defineNuxtConfig({
         install: true,
       },
     ],
+    './layers/remote',
   ],
 
   piniaPluginPersistedstate: {

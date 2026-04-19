@@ -1,0 +1,106 @@
+{
+  "remote": {
+    "carPage": {
+      "body": "RC car control through NeuraFlow — coming soon.",
+      "kicker": "RC car",
+      "pageTitle": "RC car control — NeuraFlow",
+      "title": "Car control"
+    },
+    "control": {
+      "endSession": "End session",
+      "placeholder": {
+        "body": "The vehicle control components are being developed. The model is running and ready.",
+        "title": "Control panel coming soon"
+      },
+      "readyHint": "Model is running — you can start the session.",
+      "sessionActive": "Session active",
+      "startHint": "Launch the model first to begin a session.",
+      "startSession": "Start session",
+      "vehicle": {
+        "car": "RC car",
+        "drone": "Drone"
+      }
+    },
+    "deployment": {
+      "errors": {
+        "deployFailed": "Failed to launch the model.",
+        "fetchFailed": "Failed to load deployments.",
+        "modelsFetchFailed": "Failed to load models.",
+        "stopFailed": "Failed to stop the deployment."
+      },
+      "modelSelector": {
+        "accuracy": "Accuracy",
+        "empty": "No trained models available. Complete a training session first.",
+        "trainedOn": "Trained",
+        "unknownDate": "Unknown date"
+      },
+      "panel": {
+        "activeDeployment": "Deployment in progress",
+        "deploy": "Launch model",
+        "deployHint": "Select a model above to launch it.",
+        "noModels": {
+          "body": "Complete a training session to make a model available for deployment.",
+          "title": "No trained models"
+        },
+        "readyToStart": "Model running — ready to start",
+        "selectModel": "Select a model to deploy",
+        "step1": "Select model",
+        "step2": "Launch",
+        "stop": "Stop",
+        "subtitle": "Select and launch a trained model before starting control.",
+        "title": "Model configuration"
+      },
+      "status": {
+        "FAILED": "Failed",
+        "PENDING": "Pending",
+        "RUNNING": "Running",
+        "STARTING": "Starting",
+        "STOPPED": "Stopped",
+        "STOPPING": "Stopping"
+      }
+    },
+    "dronePage": {
+      "body": "Drone control and related BCI features.",
+      "kicker": "Drone",
+      "pageTitle": "Drone control — NeuraFlow",
+      "title": "Drone control"
+    },
+    "eeg": {
+      "kicker": "EEG",
+      "pageTitle": "EEG charts — NeuraFlow",
+      "placeholder": "Signal visualization will appear here — module under construction.",
+      "subtitle": "A dedicated EEG view for the remote-control workspace, not tied to a specific vehicle.",
+      "title": "EEG charts"
+    },
+    "hub": {
+      "carDescription": "Drive an RC car from the NeuraFlow interface.",
+      "carTitle": "RC car",
+      "droneDescription": "Fly the drone from NeuraFlow.",
+      "droneTitle": "Drone",
+      "eegDescription": "EEG overview for the whole remote-control module.",
+      "eegTitle": "EEG charts",
+      "open": "Open",
+      "pageTitle": "Vehicle control — NeuraFlow",
+      "subtitle": "Pick a vehicle or open the EEG section.",
+      "title": "Vehicle control"
+    },
+    "meta": {
+      "defaultTitle": "NeuraFlow — RC vehicles"
+    },
+    "navigation": {
+      "car": "RC car",
+      "closeMenu": "Close menu",
+      "drone": "Drone",
+      "eeg": "EEG",
+      "openMenu": "Open menu",
+      "section": "Control"
+    },
+    "session": {
+      "wip": "XXXX"
+    },
+    "theme": {
+      "switchToDark": "Dark mode",
+      "switchToLight": "Light mode"
+    }
+  }
+}

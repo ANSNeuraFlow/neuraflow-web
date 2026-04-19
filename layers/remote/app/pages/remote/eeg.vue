@@ -1,8 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 definePageMeta({
-  layout: 'drone',
-  title: 'drone.eeg.pageTitle',
+  layout: 'remote',
+  title: 'remote.eeg.pageTitle',
 });
 </script>
 
@@ -12,13 +12,16 @@ definePageMeta({
       <div class="gap-sm flex flex-wrap items-start justify-between">
         <div>
           <p class="text-body-x-sm mb-xx-sm font-semibold uppercase tracking-wider text-neural-400">
-            {{ $t('drone.eeg.kicker') }}
+            {{ $t('remote.eeg.kicker') }}
           </p>
           <h1 class="text-heading-lg tracking-sm text-on-surface font-display font-bold">
-            {{ $t('drone.eeg.title') }}
+            {{ $t('remote.eeg.title') }}
           </h1>
-          <p class="text-body-md mt-xx-sm text-on-surface-dim">
-            {{ $t('drone.eeg.subtitle') }}
+          <p class="text-body-md mt-xx-sm text-on-surface-dim max-w-[64rem]">
+            {{ $t('remote.eeg.subtitle') }}
+          </p>
+          <p class="text-body-sm text-on-surface-dim/80 mt-x-lg">
+            {{ $t('remote.eeg.placeholder') }}
           </p>
         </div>
         <Icon
@@ -28,7 +31,5 @@ definePageMeta({
         />
       </div>
     </section>
-
-    <EegDisplayGrid />
   </div>
 </template>

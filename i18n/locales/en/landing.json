@@ -201,7 +201,6 @@
       "capabilities": "Capabilities",
       "closeMenu": "Close navigation menu",
       "contact": "Contact",
-      "drone": "Drone",
       "features": "Features",
       "highlights": "Highlights",
       "howItWorks": "How it works",
@@ -211,6 +210,7 @@
       "openMenu": "Open navigation menu",
       "profile": "Profile",
       "register": "Get started",
+      "remoteVehicles": "RC vehicles",
       "stats": "Stats",
       "technology": "Technology"
     },
