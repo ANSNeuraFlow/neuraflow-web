@@ -1,0 +1,25 @@
+{
+  "bridgeAuth": {
+    "actions": {
+      "retry": "Spróbuj ponownie"
+    },
+    "connecting": {
+      "subtitle": "Autoryzujemy dostęp urządzenia — za chwilę wrócisz do aplikacji desktopowej.",
+      "title": "Łączenie z aplikacją Bridge"
+    },
+    "errors": {
+      "backendFailure": "Serwer odrzucił żądanie autoryzacyjne. Spróbuj ponownie.",
+      "backendFailureTitle": "Nie udało się zautoryzować",
+      "invalidQuery": "Link, w który kliknąłeś, jest nieprawidłowy.",
+      "invalidQueryHint": "Otwórz autoryzację ponownie z poziomu aplikacji Bridge.",
+      "invalidQueryTitle": "Nieprawidłowe parametry autoryzacji",
+      "invalidRedirect": "Adres zwrotny musi wskazywać na localhost."
+    },
+    "title": "Autoryzacja aplikacji Bridge",
+    "validation": {
+      "clientIdRequired": "Brak identyfikatora klienta.",
+      "invalidRedirect": "Adres zwrotny musi wskazywać na localhost.",
+      "stateRequired": "Brak parametru state."
+    }
+  }
+}
