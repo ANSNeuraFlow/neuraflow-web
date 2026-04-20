@@ -1,0 +1,25 @@
+{
+  "bridgeAuth": {
+    "actions": {
+      "retry": "Try again"
+    },
+    "connecting": {
+      "subtitle": "Authorizing device access — you will be returned to the desktop app in a moment.",
+      "title": "Connecting the Bridge app"
+    },
+    "errors": {
+      "backendFailure": "The server rejected the authorization request. Please try again.",
+      "backendFailureTitle": "Authorization failed",
+      "invalidQuery": "The link you followed is invalid.",
+      "invalidQueryHint": "Please reopen authorization from the Bridge desktop app.",
+      "invalidQueryTitle": "Invalid authorization parameters",
+      "invalidRedirect": "Redirect URI must point to localhost."
+    },
+    "title": "Bridge application authorization",
+    "validation": {
+      "clientIdRequired": "Missing client identifier.",
+      "invalidRedirect": "Redirect URI must point to localhost.",
+      "stateRequired": "Missing state parameter."
+    }
+  }
+}

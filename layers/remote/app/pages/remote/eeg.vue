@@ -20,9 +20,6 @@ definePageMeta({
           <p class="text-body-md mt-xx-sm text-on-surface-dim max-w-[64rem]">
             {{ $t('remote.eeg.subtitle') }}
           </p>
-          <p class="text-body-sm text-on-surface-dim/80 mt-x-lg">
-            {{ $t('remote.eeg.placeholder') }}
-          </p>
         </div>
         <Icon
           name="material-symbols:monitor-heart"
@@ -30,6 +27,10 @@ definePageMeta({
           class="text-neural-400"
         />
       </div>
+    </section>
+
+    <section class="mt-x-lg">
+      <EegDisplayGrid />
     </section>
   </div>
 </template>

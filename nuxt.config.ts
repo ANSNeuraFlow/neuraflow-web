@@ -75,7 +75,9 @@ export default defineNuxtConfig({
         install: true,
       },
     ],
+    './layers/eeg-live',
     './layers/remote',
+    './layers/bridge-auth',
   ],
 
   piniaPluginPersistedstate: {

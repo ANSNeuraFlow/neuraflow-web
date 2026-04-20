@@ -6,10 +6,15 @@ import { useUserSessionStore } from '../store/user-session.store';
 
 const schema = toTypedSchema(loginSchema);
 
+const isSafeRedirectTarget = (target: unknown): target is string => {
+  return typeof target === 'string' && target.startsWith('/') && !target.startsWith('//');
+};
+
 export const useLogin = () => {
   const { t } = useI18n();
   const authService = useAuthService();
   const localePath = useLocalePath();
+  const route = useRoute();
 
   const apiError = ref<string | null>(null);
   const passwordChangeEmail = ref<string | null>(null);
@@ -48,7 +53,12 @@ export const useLogin = () => {
         permissions: me.permissions,
       });
 
-      await navigateTo(localePath('/'));
+      const redirectTarget = route.query.redirect;
+      if (isSafeRedirectTarget(redirectTarget)) {
+        await navigateTo(redirectTarget);
+      } else {
+        await navigateTo(localePath('/'));
+      }
     } catch (err: unknown) {
       console.error('[useLogin] error:', err);
       const error = err as { data?: { message?: string } };
