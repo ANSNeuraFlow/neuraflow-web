@@ -37,9 +37,11 @@ const isSelectDisabled = computed(() => props.isRunning || props.isTransitional 
 <template>
   <div class="glass-card p-x-lg gap-x-lg flex flex-col">
     <div class="gap-md flex items-center">
-      <div class="bg-accent/10 text-accent flex h-[4rem] w-[4rem] shrink-0 items-center justify-center rounded-full">
+      <div
+        class="bg-on-surface/10 text-on-surface flex h-[4rem] w-[4rem] shrink-0 items-center justify-center rounded-full"
+      >
         <Icon
-          name="material-symbols:rocket-launch-outline"
+          name="lucide:rocket"
           size="2rem"
         />
       </div>
@@ -109,7 +111,7 @@ const isSelectDisabled = computed(() => props.isRunning || props.isTransitional 
           </div>
           <div
             v-else
-            class="bg-accent/10 text-accent flex h-[2.8rem] w-[2.8rem] shrink-0 items-center justify-center rounded-full"
+            class="bg-on-surface/10 text-on-surface flex h-[2.8rem] w-[2.8rem] shrink-0 items-center justify-center rounded-full"
           >
             <Icon
               name="material-symbols:sync"
@@ -162,13 +164,13 @@ const isSelectDisabled = computed(() => props.isRunning || props.isTransitional 
     <div class="border-on-surface/[0.06] pt-sm flex min-h-[3.6rem] items-center justify-end border-t">
       <AppButton
         v-if="!isRunning && !isTransitional"
-        variant="primary"
+        variant="inverse"
         :loading="isDeploying"
         :disabled="!canDeploy"
         @click="emit('deploy')"
       >
         <Icon
-          name="material-symbols:rocket-launch-outline"
+          name="lucide:rocket"
           size="1.8rem"
           class="mr-xs"
         />

@@ -35,17 +35,17 @@ const remoteNavItems = computed<RemoteNavItem[]>(() => [
   {
     path: '/remote/drone',
     label: t('remote.navigation.drone'),
-    icon: 'material-symbols:flight',
+    icon: 'mdi:quadcopter',
   },
   {
     path: '/remote/car',
     label: t('remote.navigation.car'),
-    icon: 'material-symbols:directions-car',
+    icon: 'lucide:car',
   },
   {
     path: '/remote/eeg',
     label: t('remote.navigation.eeg'),
-    icon: 'material-symbols:monitor-heart',
+    icon: 'lucide:brain-circuit',
   },
 ]);
 

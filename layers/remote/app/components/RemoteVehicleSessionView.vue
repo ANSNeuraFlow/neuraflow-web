@@ -16,13 +16,13 @@ const header = computed(() => {
     return {
       kicker: t('remote.dronePage.kicker'),
       title: t('remote.dronePage.title'),
-      icon: 'material-symbols:flight',
+      icon: 'mdi:quadcopter',
     };
   }
   return {
     kicker: t('remote.carPage.kicker'),
     title: t('remote.carPage.title'),
-    icon: 'material-symbols:directions-car',
+    icon: 'lucide:car',
   };
 });
 
@@ -41,7 +41,7 @@ const endSession = async () => {
     <section class="glass-card mb-x-lg p-md sm:p-x-lg">
       <div class="gap-sm flex flex-wrap items-start justify-between">
         <div>
-          <p class="text-body-x-sm mb-xx-sm font-semibold uppercase tracking-wider text-neural-400">
+          <p class="text-body-x-sm mb-xx-sm text-on-surface font-semibold uppercase tracking-wider">
             {{ header.kicker }}
           </p>
           <h1 class="text-heading-lg tracking-sm text-on-surface font-display font-bold">
@@ -51,7 +51,7 @@ const endSession = async () => {
         <Icon
           :name="header.icon"
           size="2.4rem"
-          class="text-neural-400"
+          class="text-on-surface"
         />
       </div>
     </section>
@@ -126,7 +126,7 @@ const endSession = async () => {
           </div>
 
           <AppButton
-            variant="primary"
+            variant="inverse"
             size="md"
             :disabled="!session.canStartControl.value"
             @click="startControl"

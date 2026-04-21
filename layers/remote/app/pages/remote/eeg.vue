@@ -11,7 +11,7 @@ definePageMeta({
     <section class="glass-card mb-x-lg p-md sm:p-x-lg">
       <div class="gap-sm flex flex-wrap items-start justify-between">
         <div>
-          <p class="text-body-x-sm mb-xx-sm font-semibold uppercase tracking-wider text-neural-400">
+          <p class="text-body-x-sm mb-xx-sm text-on-surface font-semibold uppercase tracking-wider">
             {{ $t('remote.eeg.kicker') }}
           </p>
           <h1 class="text-heading-lg tracking-sm text-on-surface font-display font-bold">
@@ -22,9 +22,9 @@ definePageMeta({
           </p>
         </div>
         <Icon
-          name="material-symbols:monitor-heart"
+          name="lucide:brain-circuit"
           size="2.4rem"
-          class="text-neural-400"
+          class="text-on-surface"
         />
       </div>
     </section>
