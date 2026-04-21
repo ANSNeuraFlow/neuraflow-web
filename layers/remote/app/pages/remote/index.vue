@@ -23,11 +23,11 @@ definePageMeta({
     <div class="gap-x-lg gap-y-lg grid sm:grid-cols-2 lg:grid-cols-3">
       <NuxtLink
         :to="localePath('/remote/drone')"
-        class="glass-card p-md sm:p-x-lg group border border-transparent transition-colors hover:border-neural-500/40"
+        class="glass-card p-md sm:p-x-lg hover:border-on-surface-inverted/40 group border border-transparent transition-colors"
       >
         <div class="gap-md flex items-start justify-between">
           <div>
-            <p class="text-body-x-sm mb-xx-sm font-semibold uppercase tracking-wider text-neural-400">
+            <p class="text-body-x-sm mb-xx-sm text-on-surface font-semibold uppercase tracking-wider">
               {{ t('remote.dronePage.kicker') }}
             </p>
             <h2 class="text-heading-md text-on-surface font-display font-bold">
@@ -38,12 +38,12 @@ definePageMeta({
             </p>
           </div>
           <Icon
-            name="material-symbols:flight"
+            name="mdi:quadcopter"
             size="2.4rem"
-            class="shrink-0 text-neural-400 transition-transform group-hover:scale-110"
+            class="text-on-surface shrink-0 transition-transform group-hover:scale-110"
           />
         </div>
-        <p class="text-body-sm mt-x-lg font-semibold text-neural-400">
+        <p class="text-body-sm mt-x-lg text-on-surface font-semibold">
           {{ t('remote.hub.open') }}
           <span aria-hidden="true"> →</span>
         </p>
@@ -51,11 +51,11 @@ definePageMeta({
 
       <NuxtLink
         :to="localePath('/remote/car')"
-        class="glass-card p-md sm:p-x-lg group border border-transparent transition-colors hover:border-neural-500/40"
+        class="glass-card p-md sm:p-x-lg hover:border-on-surface-inverted/40 group border border-transparent transition-colors"
       >
         <div class="gap-md flex items-start justify-between">
           <div>
-            <p class="text-body-x-sm mb-xx-sm font-semibold uppercase tracking-wider text-neural-400">
+            <p class="text-body-x-sm mb-xx-sm text-on-surface font-semibold uppercase tracking-wider">
               {{ t('remote.carPage.kicker') }}
             </p>
             <h2 class="text-heading-md text-on-surface font-display font-bold">
@@ -66,12 +66,12 @@ definePageMeta({
             </p>
           </div>
           <Icon
-            name="material-symbols:directions-car"
+            name="lucide:car"
             size="2.4rem"
-            class="shrink-0 text-neural-400 transition-transform group-hover:scale-110"
+            class="text-on-surface shrink-0 transition-transform group-hover:scale-110"
           />
         </div>
-        <p class="text-body-sm mt-x-lg font-semibold text-neural-400">
+        <p class="text-body-sm mt-x-lg text-on-surface font-semibold">
           {{ t('remote.hub.open') }}
           <span aria-hidden="true"> →</span>
         </p>
@@ -79,11 +79,11 @@ definePageMeta({
 
       <NuxtLink
         :to="localePath('/remote/eeg')"
-        class="glass-card p-md sm:p-x-lg group border border-transparent transition-colors hover:border-neural-500/40 sm:col-span-2 lg:col-span-1"
+        class="glass-card p-md sm:p-x-lg hover:border-on-surface-inverted/40 group border border-transparent transition-colors sm:col-span-2 lg:col-span-1"
       >
         <div class="gap-md flex items-start justify-between">
           <div>
-            <p class="text-body-x-sm mb-xx-sm font-semibold uppercase tracking-wider text-neural-400">
+            <p class="text-body-x-sm mb-xx-sm text-on-surface font-semibold uppercase tracking-wider">
               {{ t('remote.eeg.kicker') }}
             </p>
             <h2 class="text-heading-md text-on-surface font-display font-bold">
@@ -94,12 +94,12 @@ definePageMeta({
             </p>
           </div>
           <Icon
-            name="material-symbols:monitor-heart"
+            name="lucide:brain-circuit"
             size="2.4rem"
-            class="shrink-0 text-neural-400 transition-transform group-hover:scale-110"
+            class="text-on-surface shrink-0 transition-transform group-hover:scale-110"
           />
         </div>
-        <p class="text-body-sm mt-x-lg font-semibold text-neural-400">
+        <p class="text-body-sm mt-x-lg text-on-surface font-semibold">
           {{ t('remote.hub.open') }}
           <span aria-hidden="true"> →</span>
         </p>

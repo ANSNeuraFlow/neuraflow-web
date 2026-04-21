@@ -82,7 +82,7 @@ const formatDate = (dateStr: string | null): string => {
         'group relative rounded-2xl border text-left transition-all duration-200',
         disabled ? 'cursor-not-allowed' : 'cursor-pointer',
         selectedModelId === model.id
-          ? 'border-accent bg-accent/[0.06] ring-accent/25 shadow-sm ring-1'
+          ? 'border-on-surface bg-on-surface/[0.06] ring-on-surface/25 shadow-sm ring-1'
           : disabled
             ? 'border-on-surface/[0.06] bg-on-surface/[0.02] opacity-70'
             : 'border-on-surface/[0.08] bg-on-surface/[0.02] hover:border-on-surface/20 hover:bg-on-surface/[0.05]',
@@ -94,8 +94,8 @@ const formatDate = (dateStr: string | null): string => {
           :class="[
             'flex h-[4rem] w-[4rem] shrink-0 items-center justify-center rounded-xl transition-colors',
             selectedModelId === model.id
-              ? 'bg-accent/15 text-accent'
-              : 'bg-on-surface/[0.06] text-on-surface-dim group-hover:bg-accent/10 group-hover:text-accent',
+              ? 'bg-on-surface text-surface'
+              : 'bg-on-surface/[0.06] text-on-surface-dim group-hover:bg-on-surface/10 group-hover:text-on-surface',
           ]"
         >
           <Icon
@@ -122,7 +122,7 @@ const formatDate = (dateStr: string | null): string => {
             v-if="selectedModelId === model.id"
             name="material-symbols:check-circle"
             size="1.8rem"
-            class="text-accent"
+            class="text-on-surface"
           />
         </div>
       </div>

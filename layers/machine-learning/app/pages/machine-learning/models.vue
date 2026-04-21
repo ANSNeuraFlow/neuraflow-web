@@ -150,6 +150,7 @@ const openModelDetails = (model: MlModel) => {
         </AppButton>
         <template v-if="!isPickingSessions">
           <AppButton
+            variant="inverse"
             size="sm"
             @click="isPickingSessions = true"
           >
@@ -170,6 +171,7 @@ const openModelDetails = (model: MlModel) => {
             {{ $t('trainingJobs.actions.cancel') }}
           </AppButton>
           <AppButton
+            variant="inverse"
             size="sm"
             :loading="isDispatching"
             :disabled="selectedSessionIds.length === 0"

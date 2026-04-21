@@ -123,7 +123,7 @@ const generateSequence = (classes: string[], total: number) => {
 export const useBciCalibration = (
   config = {
     totalTrials: 40,
-    classes: ['LEFT', 'RIGHT'],
+    classes: ['LEFT', 'RIGHT', 'UP', 'DOWN'],
     timing: {
       relaxation: 2000,
       cue: 1250,
@@ -208,7 +208,12 @@ export const useBciCalibration = (
         currentState.value = 'cue';
         playBeep();
 
-        const mapMarker: Record<string, string> = { LEFT: 'LEFT_HAND', RIGHT: 'RIGHT_HAND' };
+        const mapMarker: Record<string, string> = {
+          LEFT: 'LEFT_HAND',
+          RIGHT: 'RIGHT_HAND',
+          UP: 'BOTH_HANDS',
+          DOWN: 'FEET',
+        };
 
         ws.send(mapMarker[activeCue.value] || 'IDLE');
         await exactWait(config.timing.cue, signal);

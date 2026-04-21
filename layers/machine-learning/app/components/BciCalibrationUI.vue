@@ -132,7 +132,10 @@ const getCueIcon = (cue: string) => {
               <DialogClose as-child>
                 <AppButton variant="secondary"> Anuluj </AppButton>
               </DialogClose>
-              <AppButton @click="startSession">
+              <AppButton
+                variant="inverse"
+                @click="startSession"
+              >
                 <Icon
                   name="material-symbols:play-arrow-rounded"
                   size="1.8rem"
@@ -168,14 +171,13 @@ const getCueIcon = (cue: string) => {
         <h2 class="text-heading-md text-on-surface mb-sm font-semibold">Gotowy do rejestracji</h2>
         <p class="text-body-md text-on-surface-dim mb-lg">
           Upewnij się, że czepek EEG jest poprawnie założony, a impedancje elektrod są optymalne. Protokół składa się z
-          {{ config.totalTrials }} zrównoważonych prób opartych na wyobraźni ruchowej ({{
-            config.classes.join(' i ')
-          }}).
+          {{ config.totalTrials }} zrównoważonych prób opartych na wyobraźni ruchowej ({{ config.classes.join(', ') }}).
         </p>
       </div>
       <AppButton
+        variant="inverse"
         size="lg"
-        class="shadow-accent/20 w-full shadow-xl sm:w-auto"
+        class="w-full sm:w-auto"
         @click="openNamingDialog"
       >
         <Icon
