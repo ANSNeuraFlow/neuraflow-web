@@ -26,7 +26,7 @@ useHead({
 });
 
 type RemoteNavItem = {
-  path: '/remote/drone' | '/remote/car' | '/remote/eeg';
+  path: '/remote/drone' | '/remote/car' | '/remote/game' | '/remote/eeg';
   label: string;
   icon: string;
 };
@@ -41,6 +41,11 @@ const remoteNavItems = computed<RemoteNavItem[]>(() => [
     path: '/remote/car',
     label: t('remote.navigation.car'),
     icon: 'lucide:car',
+  },
+  {
+    path: '/remote/game',
+    label: t('remote.navigation.game'),
+    icon: 'lucide:gamepad-2',
   },
   {
     path: '/remote/eeg',

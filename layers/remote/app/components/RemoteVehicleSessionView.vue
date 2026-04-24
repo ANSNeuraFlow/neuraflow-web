@@ -2,7 +2,7 @@
 import { useRemoteSession } from '../composables/useRemoteSession';
 
 const props = defineProps<{
-  vehicleType: 'drone' | 'car';
+  vehicleType: 'drone' | 'car' | 'game';
 }>();
 
 const { t } = useI18n();
@@ -19,11 +19,23 @@ const header = computed(() => {
       icon: 'mdi:quadcopter',
     };
   }
+  if (props.vehicleType === 'game') {
+    return {
+      kicker: t('remote.gamePage.kicker'),
+      title: t('remote.gamePage.title'),
+      icon: 'lucide:gamepad-2',
+    };
+  }
   return {
     kicker: t('remote.carPage.kicker'),
     title: t('remote.carPage.title'),
     icon: 'lucide:car',
   };
+});
+
+const canStartSession = computed(() => {
+  if (props.vehicleType === 'game') return true;
+  return session.canStartControl.value;
 });
 
 const startControl = () => {
@@ -95,23 +107,17 @@ const endSession = async () => {
 
         <div
           class="glass-card p-md sm:p-x-lg gap-md flex flex-wrap items-center justify-between"
-          :class="session.canStartControl.value ? 'border-success/20' : 'border-on-surface/[0.06]'"
+          :class="canStartSession ? 'border-success/20' : 'border-on-surface/[0.06]'"
         >
           <div class="gap-md flex items-center">
             <div
               :class="[
                 'flex h-[4rem] w-[4rem] shrink-0 items-center justify-center rounded-full transition-colors duration-300',
-                session.canStartControl.value
-                  ? 'bg-success/10 text-success'
-                  : 'bg-on-surface/[0.06] text-on-surface-dim',
+                canStartSession ? 'bg-success/10 text-success' : 'bg-on-surface/[0.06] text-on-surface-dim',
               ]"
             >
               <Icon
-                :name="
-                  session.canStartControl.value
-                    ? 'material-symbols:play-circle-outline'
-                    : 'material-symbols:play-disabled'
-                "
+                :name="canStartSession ? 'material-symbols:play-circle-outline' : 'material-symbols:play-disabled'"
                 size="2.2rem"
               />
             </div>
@@ -120,7 +126,7 @@ const endSession = async () => {
                 {{ t('remote.control.startSession') }}
               </p>
               <p class="text-body-sm text-on-surface-dim mt-xx-sm">
-                {{ session.canStartControl.value ? t('remote.control.readyHint') : t('remote.control.startHint') }}
+                {{ canStartSession ? t('remote.control.readyHint') : t('remote.control.startHint') }}
               </p>
             </div>
           </div>
@@ -128,7 +134,7 @@ const endSession = async () => {
           <AppButton
             variant="inverse"
             size="md"
-            :disabled="!session.canStartControl.value"
+            :disabled="!canStartSession"
             @click="startControl"
           >
             <Icon
