@@ -1,0 +1,47 @@
+{
+  "profile": {
+    "edit": {
+      "bio": "About me",
+      "bioPlaceholder": "Tell us something about yourself...",
+      "dateOfBirth": "Date of birth",
+      "firstName": "First name",
+      "firstNamePlaceholder": "John",
+      "lastName": "Last name",
+      "lastNamePlaceholder": "Doe",
+      "phoneNumber": "Phone number",
+      "phoneNumberPlaceholder": "+1 555 000 0000",
+      "save": "Save changes",
+      "saveSuccess": "Profile updated successfully",
+      "subtitle": "Update your personal information",
+      "title": "Edit Profile"
+    },
+    "errors": {
+      "fetchFailed": "Failed to load profile",
+      "updateFailed": "Failed to update profile"
+    },
+    "header": {
+      "lastLogin": "Last login: {date}",
+      "memberSince": "Member since {date}",
+      "unverified": "Unverified",
+      "verified": "Verified"
+    },
+    "loading": "Loading profile...",
+    "pageTitle": "User Profile",
+    "retry": "Try again",
+    "stats": {
+      "deployments": "Deployments",
+      "eegSessions": "EEG Sessions",
+      "mlModels": "ML Models",
+      "trainingJobs": "Training Jobs"
+    },
+    "validation": {
+      "bioTooLong": "Bio cannot exceed 2000 characters",
+      "dateOfBirthInvalid": "Invalid date format (YYYY-MM-DD)",
+      "firstNameRequired": "First name is required",
+      "firstNameTooLong": "First name cannot exceed 128 characters",
+      "lastNameRequired": "Last name is required",
+      "lastNameTooLong": "Last name cannot exceed 128 characters",
+      "phoneTooLong": "Phone number cannot exceed 32 characters"
+    }
+  }
+}

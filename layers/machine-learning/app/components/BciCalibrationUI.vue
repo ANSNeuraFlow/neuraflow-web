@@ -7,9 +7,9 @@ const emit = defineEmits<{
 }>();
 
 const {
-  config,
   currentState,
   currentTrial,
+  totalTrialsRef,
   activeCue,
   containerRef,
   runProtocol,
@@ -20,24 +20,77 @@ const {
   showBlank,
 } = useBciCalibration();
 
+type DirectionMode = '4way' | '2way';
+
 const showNamingDialog = ref(false);
 const sessionNameInput = ref('');
 const sessionNameError = ref('');
+const directionMode = ref<DirectionMode>('4way');
+const trialsPerDirectionStr = ref('10');
+const trialsPerDirection = computed(() => {
+  const n = parseInt(trialsPerDirectionStr.value, 10);
+  return isNaN(n) ? 0 : n;
+});
+const trialsError = ref('');
+
+const activeClasses = computed(() =>
+  directionMode.value === '4way' ? ['LEFT', 'RIGHT', 'UP', 'DOWN'] : ['LEFT', 'RIGHT'],
+);
+
+const totalTrials = computed(() => activeClasses.value.length * trialsPerDirection.value);
+
+const trialsHint = computed(() => {
+  const n = trialsPerDirection.value;
+  const total = totalTrials.value;
+  if (directionMode.value === '4way') {
+    return `${n} ↑ + ${n} ↓ + ${n} ← + ${n} → = ${total} prób łącznie`;
+  }
+  return `${n} ← + ${n} → = ${total} prób łącznie`;
+});
+
+const directionModeOptions: { value: DirectionMode; label: string; icon: string; description: string }[] = [
+  {
+    value: '4way',
+    label: '4 kierunkowy',
+    icon: 'material-symbols:open-with-rounded',
+    description: 'Góra · Dół · Lewo · Prawo',
+  },
+  {
+    value: '2way',
+    label: 'Lewo / Prawo',
+    icon: 'material-symbols:swap-horiz-rounded',
+    description: 'Tylko lewo i prawo',
+  },
+];
 
 const openNamingDialog = () => {
   sessionNameInput.value = '';
   sessionNameError.value = '';
+  trialsError.value = '';
   showNamingDialog.value = true;
 };
 
 const startSession = async () => {
+  sessionNameError.value = '';
+  trialsError.value = '';
+
   const name = sessionNameInput.value.trim();
   if (!name) {
     sessionNameError.value = 'Wprowadź nazwę sesji';
     return;
   }
+
+  if (trialsPerDirection.value < 1) {
+    trialsError.value = 'Minimalna liczba prób to 1';
+    return;
+  }
+  if (trialsPerDirection.value > 100) {
+    trialsError.value = 'Maksymalna liczba prób to 100';
+    return;
+  }
+
   showNamingDialog.value = false;
-  await runProtocol(name);
+  await runProtocol(name, activeClasses.value, trialsPerDirection.value);
 };
 
 watch(protocolEndReason, (reason) => {
@@ -71,7 +124,7 @@ const getCueIcon = (cue: string) => {
     <DialogPortal>
       <DialogOverlay class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" />
       <DialogContent
-        class="bg-surface/80 dark:bg-surface/30 !border-on-surface/10 fixed left-1/2 top-1/2 z-50 w-full max-w-[48rem] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border shadow-[0_0_80px_rgba(0,0,0,0.4)] outline-none backdrop-blur-3xl"
+        class="bg-surface/80 dark:bg-surface/30 !border-on-surface/10 fixed left-1/2 top-1/2 z-50 w-full max-w-[52rem] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border shadow-[0_0_80px_rgba(0,0,0,0.4)] outline-none backdrop-blur-3xl"
         @open-auto-focus.prevent
       >
         <div
@@ -108,6 +161,7 @@ const getCueIcon = (cue: string) => {
           </div>
 
           <div class="gap-x-lg flex flex-col">
+            <!-- Session name -->
             <AppFormField
               label="Nazwa sesji"
               :error="sessionNameError || undefined"
@@ -123,6 +177,80 @@ const getCueIcon = (cue: string) => {
               />
             </AppFormField>
 
+            <!-- Direction mode -->
+            <div class="gap-sm flex flex-col">
+              <p class="text-body-sm text-on-surface font-medium">
+                Tryb kierunków
+                <span class="text-error ml-xx-sm">*</span>
+              </p>
+              <div class="gap-sm grid grid-cols-2">
+                <button
+                  v-for="opt in directionModeOptions"
+                  :key="opt.value"
+                  type="button"
+                  class="gap-sm border-on-surface/10 duration-short p-sm flex items-center rounded-xl border text-left transition-colors"
+                  :class="
+                    directionMode === opt.value
+                      ? 'text-on-surface border border-white/20 bg-white/[0.08] dark:border-white/15 dark:bg-white/[0.07]'
+                      : 'hover:bg-on-surface/[0.04] text-on-surface-dim hover:text-on-surface'
+                  "
+                  @click="directionMode = opt.value"
+                >
+                  <div
+                    class="p-xx-sm flex shrink-0 items-center justify-center rounded-lg"
+                    :class="directionMode === opt.value ? 'bg-white/[0.1]' : 'bg-on-surface/[0.06]'"
+                  >
+                    <Icon
+                      :name="opt.icon"
+                      size="2rem"
+                    />
+                  </div>
+                  <div>
+                    <p class="text-body-sm font-semibold">{{ opt.label }}</p>
+                    <p class="text-body-x-sm opacity-70">{{ opt.description }}</p>
+                  </div>
+                  <div class="ml-auto shrink-0">
+                    <div
+                      class="border-on-surface/20 flex h-[1.6rem] w-[1.6rem] items-center justify-center rounded-full border-2 transition-colors"
+                      :class="directionMode === opt.value ? 'border-white/40 dark:border-white/35' : ''"
+                    >
+                      <div
+                        v-if="directionMode === opt.value"
+                        class="bg-on-surface/50 h-[0.8rem] w-[0.8rem] rounded-full dark:bg-white/50"
+                      />
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Trials per direction -->
+            <AppFormField
+              label="Liczba prób na kierunek"
+              :error="trialsError || undefined"
+              :hint="trialsError ? undefined : trialsHint"
+              html-for="trials-per-direction-input"
+              required
+            >
+              <div class="gap-sm flex items-center">
+                <AppInput
+                  id="trials-per-direction-input"
+                  v-model="trialsPerDirectionStr"
+                  type="number"
+                  placeholder="np. 10"
+                  :error="!!trialsError"
+                  class="w-full"
+                />
+                <div
+                  class="bg-on-surface/[0.04] border-on-surface/10 text-body-sm text-on-surface-dim px-sm py-xx-sm shrink-0 rounded-xl border text-center"
+                  style="min-width: 13rem"
+                >
+                  <span class="text-on-surface font-semibold">{{ totalTrials }}</span>
+                  prób łącznie
+                </div>
+              </div>
+            </AppFormField>
+
             <p class="text-body-sm text-on-surface-dim">
               Sesja zostanie zarejestrowana w systemie. Po potwierdzeniu uruchomi się protokół Motor Imagery w trybie
               pełnoekranowym.
@@ -130,7 +258,7 @@ const getCueIcon = (cue: string) => {
 
             <div class="gap-md border-on-surface/10 pt-x-lg flex justify-end border-t">
               <DialogClose as-child>
-                <AppButton variant="secondary"> Anuluj </AppButton>
+                <AppButton variant="secondary">Anuluj</AppButton>
               </DialogClose>
               <AppButton
                 variant="inverse"
@@ -170,8 +298,8 @@ const getCueIcon = (cue: string) => {
       <div class="px-md max-w-2xl">
         <h2 class="text-heading-md text-on-surface mb-sm font-semibold">Gotowy do rejestracji</h2>
         <p class="text-body-md text-on-surface-dim mb-lg">
-          Upewnij się, że czepek EEG jest poprawnie założony, a impedancje elektrod są optymalne. Protokół składa się z
-          {{ config.totalTrials }} zrównoważonych prób opartych na wyobraźni ruchowej ({{ config.classes.join(', ') }}).
+          Upewnij się, że czepek EEG jest poprawnie założony, a impedancje elektrod są optymalne. Protokół oparty na
+          wyobraźni ruchowej (Motor Imagery).
         </p>
       </div>
       <AppButton
@@ -222,7 +350,7 @@ const getCueIcon = (cue: string) => {
       class="bottom-md left-md right-md absolute flex items-end justify-between opacity-20 transition-opacity hover:opacity-100"
     >
       <div class="text-body-sm space-y-tiny p-sm rounded-lg bg-black/50 font-mono text-white backdrop-blur-md">
-        <p>PRÓBA: {{ currentTrial }} / {{ config.totalTrials }}</p>
+        <p>PRÓBA: {{ currentTrial }} / {{ totalTrialsRef }}</p>
         <p>
           STAN: <span class="text-accent font-bold uppercase">{{ currentState }}</span>
         </p>

@@ -120,26 +120,28 @@ const generateSequence = (classes: string[], total: number) => {
   return sequence;
 };
 
-export const useBciCalibration = (
-  config = {
-    totalTrials: 40,
-    classes: ['LEFT', 'RIGHT', 'UP', 'DOWN'],
-    timing: {
-      relaxation: 2000,
-      cue: 1250,
-      execution: 2750,
-      rest: 2000,
-      itiMin: 500,
-      itiMax: 1500,
-    },
-  },
-) => {
+const TIMING = {
+  relaxation: 2000,
+  cue: 1250,
+  execution: 2750,
+  rest: 2000,
+  itiMin: 500,
+  itiMax: 1500,
+};
+
+export interface BciRunConfig {
+  classes: string[];
+  trialsPerDirection: number;
+}
+
+export const useBciCalibration = () => {
   const ws = new BridgeWebSocket('ws://127.0.0.1:8765');
   const abortController = ref<AbortController | null>(null);
 
   type ProtocolState = 'idle' | 'relaxation' | 'cue' | 'execution' | 'rest' | 'iti';
   const currentState = ref<ProtocolState>('idle');
   const currentTrial = ref(0);
+  const totalTrialsRef = ref(0);
   const activeCue = ref('');
   const isFullscreen = ref(false);
   const protocolEndReason = ref<'success' | 'abort' | null>(null);
@@ -155,7 +157,7 @@ export const useBciCalibration = (
     }
   };
 
-  const runProtocol = async (sessionName = 'Sesja EEG') => {
+  const runProtocol = async (sessionName = 'Sesja EEG', classes: string[], trialsPerDirection: number) => {
     const sessionStore = useUserSessionStore();
     // @ts-expect-error - TODO: WIP bridge auth
     const token = sessionStore.user?.token;
@@ -163,6 +165,9 @@ export const useBciCalibration = (
     if (!token) {
       console.warn('Brak tokenu użytkownika. Możesz napotkać problemy z autoryzacją w bridge.');
     }
+
+    const totalTrials = classes.length * trialsPerDirection;
+    totalTrialsRef.value = totalTrials;
 
     const { createSession, stopSession } = useEegSessionService();
     let sessionId: string | null = null;
@@ -191,7 +196,7 @@ export const useBciCalibration = (
       token,
     });
 
-    const sequence = generateSequence(config.classes, config.totalTrials);
+    const sequence = generateSequence(classes, totalTrials);
 
     let completedSuccessfully = false;
 
@@ -203,7 +208,7 @@ export const useBciCalibration = (
         activeCue.value = sequence[i] || '';
 
         currentState.value = 'relaxation';
-        await exactWait(config.timing.relaxation, signal);
+        await exactWait(TIMING.relaxation, signal);
 
         currentState.value = 'cue';
         playBeep();
@@ -216,18 +221,18 @@ export const useBciCalibration = (
         };
 
         ws.send(mapMarker[activeCue.value] || 'IDLE');
-        await exactWait(config.timing.cue, signal);
+        await exactWait(TIMING.cue, signal);
 
         currentState.value = 'execution';
-        await exactWait(config.timing.execution, signal);
+        await exactWait(TIMING.execution, signal);
 
         currentState.value = 'rest';
 
         ws.send('REST');
-        await exactWait(config.timing.rest, signal);
+        await exactWait(TIMING.rest, signal);
 
         currentState.value = 'iti';
-        const itiTime = config.timing.itiMin + Math.random() * (config.timing.itiMax - config.timing.itiMin);
+        const itiTime = TIMING.itiMin + Math.random() * (TIMING.itiMax - TIMING.itiMin);
         await exactWait(itiTime, signal);
       }
 
@@ -295,9 +300,9 @@ export const useBciCalibration = (
 
   return {
     ws,
-    config,
     currentState,
     currentTrial,
+    totalTrialsRef,
     activeCue,
     isFullscreen,
     protocolEndReason,
