@@ -22,7 +22,7 @@
     },
     "sessions": {
       "activeSession": "Aktywna sesja",
-      "calibrationSubtitle": "Utwórz nową sesję, nadaj jej nazwę i uruchom rejestrację w pełnym ekranie (Motor Imagery, 40 prób).",
+      "calibrationSubtitle": "Utwórz nową sesję, wybierz tryb kierunków i liczbę prób, a następnie uruchom rejestrację Motor Imagery w pełnym ekranie.",
       "calibrationTitle": "Nowa sesja — rejestracja EEG",
       "endSession": "Zakończ sesję",
       "historySubtitle": "Zarejestrowano {count} sesji",

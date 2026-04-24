@@ -1,0 +1,47 @@
+{
+  "profile": {
+    "edit": {
+      "bio": "O sobie",
+      "bioPlaceholder": "Napisz coś o sobie...",
+      "dateOfBirth": "Data urodzenia",
+      "firstName": "Imię",
+      "firstNamePlaceholder": "Jan",
+      "lastName": "Nazwisko",
+      "lastNamePlaceholder": "Kowalski",
+      "phoneNumber": "Numer telefonu",
+      "phoneNumberPlaceholder": "+48 123 456 789",
+      "save": "Zapisz zmiany",
+      "saveSuccess": "Profil zaktualizowany pomyślnie",
+      "subtitle": "Zaktualizuj swoje dane osobowe",
+      "title": "Edytuj profil"
+    },
+    "errors": {
+      "fetchFailed": "Nie udało się pobrać profilu",
+      "updateFailed": "Nie udało się zaktualizować profilu"
+    },
+    "header": {
+      "lastLogin": "Ostatnie logowanie: {date}",
+      "memberSince": "Dołączył {date}",
+      "unverified": "Niezweryfikowany",
+      "verified": "Zweryfikowany"
+    },
+    "loading": "Ładowanie profilu...",
+    "pageTitle": "Profil użytkownika",
+    "retry": "Spróbuj ponownie",
+    "stats": {
+      "deployments": "Wdrożenia",
+      "eegSessions": "Sesje EEG",
+      "mlModels": "Modele ML",
+      "trainingJobs": "Treningi"
+    },
+    "validation": {
+      "bioTooLong": "Bio może mieć maksymalnie 2000 znaków",
+      "dateOfBirthInvalid": "Nieprawidłowy format daty (YYYY-MM-DD)",
+      "firstNameRequired": "Imię jest wymagane",
+      "firstNameTooLong": "Imię może mieć maksymalnie 128 znaków",
+      "lastNameRequired": "Nazwisko jest wymagane",
+      "lastNameTooLong": "Nazwisko może mieć maksymalnie 128 znaków",
+      "phoneTooLong": "Numer telefonu może mieć maksymalnie 32 znaki"
+    }
+  }
+}

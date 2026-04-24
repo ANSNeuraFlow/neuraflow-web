@@ -22,7 +22,7 @@
     },
     "sessions": {
       "activeSession": "Active session",
-      "calibrationSubtitle": "Create a new session, name it, and start fullscreen recording (Motor Imagery, 40 trials).",
+      "calibrationSubtitle": "Create a new session, choose direction mode and trials per direction, then start fullscreen Motor Imagery recording.",
       "calibrationTitle": "New session — EEG recording",
       "endSession": "End Session",
       "historySubtitle": "{count} sessions recorded",
