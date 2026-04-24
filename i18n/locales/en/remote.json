@@ -18,7 +18,8 @@
       "startSession": "Start session",
       "vehicle": {
         "car": "RC car",
-        "drone": "Drone"
+        "drone": "Drone",
+        "game": "Minigame"
       }
     },
     "deployment": {
@@ -72,6 +73,12 @@
       "subtitle": "A dedicated EEG view for the remote-control workspace, not tied to a specific vehicle.",
       "title": "EEG charts"
     },
+    "gamePage": {
+      "body": "BCI Minigame - Play Dinosaur using your thoughts.",
+      "kicker": "Minigame",
+      "pageTitle": "BCI Minigame — NeuraFlow",
+      "title": "BCI Minigame"
+    },
     "hub": {
       "carDescription": "Drive an RC car from the NeuraFlow interface.",
       "carTitle": "RC car",
@@ -79,6 +86,8 @@
       "droneTitle": "Drone",
       "eegDescription": "EEG overview for the whole remote-control module.",
       "eegTitle": "EEG charts",
+      "gameDescription": "Train your BCI model by playing browser Dinosaur.",
+      "gameTitle": "BCI Minigame",
       "open": "Open",
       "pageTitle": "Vehicle control — NeuraFlow",
       "subtitle": "Pick a vehicle or open the EEG section.",
@@ -92,6 +101,7 @@
       "closeMenu": "Close menu",
       "drone": "Drone",
       "eeg": "EEG",
+      "game": "Minigame",
       "openMenu": "Open menu",
       "section": "Control"
     },
