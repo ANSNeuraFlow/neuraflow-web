@@ -29,6 +29,11 @@ const remoteVehiclesNav = computed(() => ({
   label: t('landing.nav.remoteVehicles'),
 }));
 
+const mindExercisesNav = computed(() => ({
+  to: localePath('/mind-exercises'),
+  label: t('landing.nav.mindExercises'),
+}));
+
 const navLinkClass =
   'px-sm py-sm text-body-sm duration-short lg:px-md text-on-surface-dim hover:bg-on-surface/5 hover:text-on-surface shrink-0 whitespace-nowrap rounded-lg font-medium transition-colors ease-out';
 
@@ -177,6 +182,15 @@ onUnmounted(() => {
                 >
                   {{ remoteVehiclesNav.label }}
                 </NuxtLink>
+                <NuxtLink
+                  :to="mindExercisesNav.to"
+                  role="menuitem"
+                  class="px-md py-sm text-on-surface-dim hover:bg-on-surface/8 hover:text-on-surface block font-medium transition-colors"
+                  active-class="!bg-on-surface/10 !text-on-surface"
+                  @click="closeAppsMenu"
+                >
+                  {{ mindExercisesNav.label }}
+                </NuxtLink>
               </div>
             </Transition>
           </div>
@@ -264,6 +278,15 @@ onUnmounted(() => {
             @click="closeMenu"
           >
             {{ remoteVehiclesNav.label }}
+          </NuxtLink>
+          <NuxtLink
+            :to="mindExercisesNav.to"
+            :class="navLinkClassMobile"
+            active-class="bg-white/[0.08] text-white"
+            :aria-label="mindExercisesNav.label"
+            @click="closeMenu"
+          >
+            {{ mindExercisesNav.label }}
           </NuxtLink>
 
           <div class="mt-md gap-sm pt-md flex flex-col border-t border-white/[0.06]">

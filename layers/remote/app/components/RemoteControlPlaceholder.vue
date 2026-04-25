@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-  vehicleType: 'drone' | 'car' | 'game';
+  vehicleType: 'drone' | 'car';
 }>();
 
 const emit = defineEmits<{
@@ -10,10 +10,7 @@ const emit = defineEmits<{
 
 <template>
   <div class="gap-x-lg flex flex-col">
-    <div
-      v-if="vehicleType !== 'game'"
-      class="glass-card p-md sm:p-x-lg border-success/20 gap-md flex flex-wrap items-center justify-between border"
-    >
+    <div class="glass-card p-md sm:p-x-lg border-success/20 gap-md flex flex-wrap items-center justify-between border">
       <div class="gap-md flex items-center">
         <div class="relative flex h-[4rem] w-[4rem] shrink-0 items-center justify-center">
           <span class="bg-success/25 absolute inset-0 animate-ping rounded-full" />
@@ -52,13 +49,7 @@ const emit = defineEmits<{
       </AppButton>
     </div>
 
-    <template v-if="vehicleType === 'game'">
-      <BCIDinoGame @close="emit('endSession')" />
-    </template>
-    <div
-      v-else
-      class="glass-card p-xx-lg flex min-h-[44rem] flex-col items-center justify-center text-center"
-    >
+    <div class="glass-card p-xx-lg flex min-h-[44rem] flex-col items-center justify-center text-center">
       <h2 class="text-heading-sm text-on-surface mb-sm font-display font-bold">
         {{ $t('remote.control.placeholder.title') }}
       </h2>

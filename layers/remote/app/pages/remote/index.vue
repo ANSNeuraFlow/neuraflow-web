@@ -79,7 +79,7 @@ definePageMeta({
 
       <NuxtLink
         :to="localePath('/remote/eeg')"
-        class="glass-card p-md sm:p-x-lg hover:border-on-surface-inverted/40 group border border-transparent transition-colors sm:col-span-2 lg:col-span-1"
+        class="glass-card p-md sm:p-x-lg hover:border-on-surface-inverted/40 group border border-transparent transition-colors"
       >
         <div class="gap-md flex items-start justify-between">
           <div>
@@ -95,34 +95,6 @@ definePageMeta({
           </div>
           <Icon
             name="lucide:brain-circuit"
-            size="2.4rem"
-            class="text-on-surface shrink-0 transition-transform group-hover:scale-110"
-          />
-        </div>
-        <p class="text-body-sm mt-x-lg text-on-surface font-semibold">
-          {{ t('remote.hub.open') }}
-          <span aria-hidden="true"> →</span>
-        </p>
-      </NuxtLink>
-
-      <NuxtLink
-        :to="localePath('/remote/game')"
-        class="glass-card p-md sm:p-x-lg hover:border-on-surface-inverted/40 group border border-transparent transition-colors sm:col-span-2 lg:col-span-1"
-      >
-        <div class="gap-md flex items-start justify-between">
-          <div>
-            <p class="text-body-x-sm mb-xx-sm text-on-surface font-semibold uppercase tracking-wider">
-              {{ t('remote.gamePage.kicker') }}
-            </p>
-            <h2 class="text-heading-md text-on-surface font-display font-bold">
-              {{ t('remote.hub.gameTitle') }}
-            </h2>
-            <p class="text-body-sm mt-x-sm text-on-surface-dim">
-              {{ t('remote.hub.gameDescription') }}
-            </p>
-          </div>
-          <Icon
-            name="lucide:gamepad-2"
             size="2.4rem"
             class="text-on-surface shrink-0 transition-transform group-hover:scale-110"
           />

@@ -18,8 +18,7 @@
       "startSession": "Rozpocznij sesję",
       "vehicle": {
         "car": "Samochód RC",
-        "drone": "Dron",
-        "game": "Minigra"
+        "drone": "Dron"
       }
     },
     "deployment": {
@@ -73,12 +72,6 @@
       "subtitle": "Osobna przestrzeń na podgląd i analizę EEG w module sterowania zdalnego (bez powiązania z konkretnym pojazdem).",
       "title": "Wykresy EEG"
     },
-    "gamePage": {
-      "body": "Minigra BCI - Zagraj w Dinozaura za pomocą myśli.",
-      "kicker": "Minigra",
-      "pageTitle": "Minigra BCI — NeuraFlow",
-      "title": "Minigra BCI"
-    },
     "hub": {
       "carDescription": "Sterowanie pojazdem zdalnie sterowanym z interfejsu NeuraFlow.",
       "carTitle": "Samochód RC",
@@ -86,11 +79,9 @@
       "droneTitle": "Dron",
       "eegDescription": "Podgląd EEG dla całego modułu zdalnego sterowania.",
       "eegTitle": "Wykresy EEG",
-      "gameDescription": "Trenuj z modelem BCI grając w przeglądarkowego Dinozaura.",
-      "gameTitle": "Minigra BCI",
       "open": "Otwórz",
       "pageTitle": "Sterowanie pojazdami — NeuraFlow",
-      "subtitle": "Wybierz pojazd albo przejdź do sekcji EEG.",
+      "subtitle": "Wybierz pojazd albo przejdź do sekcji EEG. Ćwiczenia umysłu (BCI, koncentracja) są w osobnej sekcji.",
       "title": "Sterowanie pojazdami"
     },
     "meta": {
@@ -101,7 +92,6 @@
       "closeMenu": "Zamknij menu",
       "drone": "Dron",
       "eeg": "EEG",
-      "game": "Minigra",
       "openMenu": "Otwórz menu",
       "section": "Sterowanie"
     },
