@@ -5,6 +5,8 @@ const emit = defineEmits<{
   (e: 'close'): void;
 }>();
 
+const { t } = useI18n();
+
 const position = ref(0);
 const MAX_BOUND = 300;
 
@@ -55,13 +57,13 @@ onUnmounted(() => {
           class="text-on-surface text-[3rem] font-semibold leading-tight tracking-tight"
           style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif"
         >
-          Kalibracja.
+          {{ t('mindExercises.blockSlide.calibrationTitle') }}
         </h2>
         <p
           class="text-on-surface-dim mt-xs text-[1.2rem] font-medium"
-          style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif"
+          style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif"
         >
-          Przetestuj kierunki ruchu w osi poziomej.
+          {{ t('mindExercises.blockSlide.calibrationSubtitle') }}
         </p>
       </div>
 
@@ -73,7 +75,7 @@ onUnmounted(() => {
           class="bg-on-surface absolute flex h-[80px] w-[80px] items-center justify-center rounded-[22px]"
           style="
             transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px -10px rgb(0 0 0 / 30%);
           "
           :style="{ transform: `translateX(${position}px)` }"
         >
@@ -86,19 +88,19 @@ onUnmounted(() => {
           class="px-x-lg py-sm bg-surface-container-highest hover:bg-surface-hover text-body-md border-on-surface/[0.05] text-on-surface rounded-full border font-semibold shadow-sm transition-all active:scale-95"
           @click="moveLeft"
         >
-          Lewo
+          {{ t('mindExercises.blockSlide.left') }}
         </button>
         <button
           class="px-md py-sm hover:bg-surface-hover text-body-md text-on-surface-dim rounded-full bg-transparent font-medium transition-all active:scale-95"
           @click="reset"
         >
-          Wyśrodkuj
+          {{ t('mindExercises.blockSlide.center') }}
         </button>
         <button
           class="px-x-lg py-sm bg-surface-container-highest hover:bg-surface-hover text-body-md border-on-surface/[0.05] text-on-surface rounded-full border font-semibold shadow-sm transition-all active:scale-95"
           @click="moveRight"
         >
-          Prawo
+          {{ t('mindExercises.blockSlide.right') }}
         </button>
       </div>
     </div>

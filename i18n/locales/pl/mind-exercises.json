@@ -1,0 +1,45 @@
+{
+  "mindExercises": {
+    "blockSlide": {
+      "calibrationSubtitle": "Sprawdź, jak reaguje oś pozioma — potem odtwarzaj to samo intencją w myślach.",
+      "calibrationTitle": "Ćwiczenie: przesuń klocek",
+      "center": "Wyśrodkuj",
+      "kicker": "Ćwiczenie",
+      "left": "Lewo",
+      "pageTitle": "Przesuń klocek — NeuraFlow",
+      "right": "Prawo",
+      "sessionAbout": "Sterujesz jednym klockiem na boki. Wyobraź sobie, że lekko pchniesz go w lewo albo w prawo albo sprowadzisz na środek — tak trenujesz czytelną intencję i spokojne utrzymanie uwagi, zanim przejdziesz do dłuższej sesji albo pomiaru.",
+      "title": "Przesuń klocek"
+    },
+    "control": {
+      "startHint": "Wejdź w ćwiczenie od razu albo uprzednio uruchom model BCI w panelu obok.",
+      "startSession": "Rozpocznij sesję"
+    },
+    "hub": {
+      "cardBlockSlideDescription": "Tak trenujesz czytelną intencję i spokojne utrzymanie uwagi, zanim przejdziesz do dłuższej sesji albo pomiaru.",
+      "cardBlockSlideLead": "Sterujesz jednym klockiem na boki. Wyobraź sobie, że lekko pchniesz go w lewo albo w prawo albo sprowadzisz na środek.",
+      "cardBlockSlideTitle": "Przesuń klocek",
+      "open": "Otwórz",
+      "pageTitle": "Ćwiczenia umysłu — NeuraFlow",
+      "subtitle": "Powtarzalne, spokojne sesje: jedna oś, jedna intencja — uczysz się utrzymać uwagę i czytelnie odtwarzać ruch w myślach. To trening koncentracji i stabilnego sygnału pod BCI, krok po kroku, w swoim tempie.",
+      "title": "Ćwiczenia umysłu"
+    },
+    "meta": {
+      "defaultTitle": "NeuraFlow — ćwiczenia umysłu"
+    },
+    "navigation": {
+      "blockSlide": "Przesuń klocek",
+      "closeMenu": "Zamknij menu",
+      "hub": "Przegląd",
+      "openMenu": "Otwórz menu",
+      "section": "Ćwiczenia"
+    },
+    "session": {
+      "wip": "XXXX"
+    },
+    "theme": {
+      "switchToDark": "Tryb ciemny",
+      "switchToLight": "Tryb jasny"
+    }
+  }
+}

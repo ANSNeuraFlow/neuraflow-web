@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import { useRemoteSession } from '../composables/useRemoteSession';
-
-const props = defineProps<{
-  vehicleType: 'drone' | 'car';
-}>();
+import { useRemoteSession } from '#layers/remote/app/composables/useRemoteSession';
 
 const { t } = useI18n();
 
@@ -11,22 +7,7 @@ const session = useRemoteSession();
 
 const view = ref<'config' | 'control'>('config');
 
-const header = computed(() => {
-  if (props.vehicleType === 'drone') {
-    return {
-      kicker: t('remote.dronePage.kicker'),
-      title: t('remote.dronePage.title'),
-      icon: 'mdi:quadcopter',
-    };
-  }
-  return {
-    kicker: t('remote.carPage.kicker'),
-    title: t('remote.carPage.title'),
-    icon: 'lucide:car',
-  };
-});
-
-const canStartSession = computed(() => session.canStartControl.value);
+const canStartSession = computed(() => true);
 
 const startControl = () => {
   view.value = 'control';
@@ -44,14 +25,17 @@ const endSession = async () => {
       <div class="gap-sm flex flex-wrap items-start justify-between">
         <div>
           <p class="text-body-x-sm mb-xx-sm text-on-surface font-semibold uppercase tracking-wider">
-            {{ header.kicker }}
+            {{ t('mindExercises.blockSlide.kicker') }}
           </p>
           <h1 class="text-heading-lg tracking-sm text-on-surface font-display font-bold">
-            {{ header.title }}
+            {{ t('mindExercises.blockSlide.title') }}
           </h1>
+          <p class="text-body-md text-on-surface-dim mt-x-sm max-w-[56rem]">
+            {{ t('mindExercises.blockSlide.sessionAbout') }}
+          </p>
         </div>
         <Icon
-          :name="header.icon"
+          name="lucide:move-horizontal"
           size="2.4rem"
           class="text-on-surface"
         />
@@ -87,10 +71,10 @@ const endSession = async () => {
 
           <aside
             class="glass-card border-on-surface/[0.08] flex min-h-[20rem] flex-col items-center justify-center border border-dashed lg:min-h-0"
-            :aria-label="t('remote.session.wip')"
+            :aria-label="t('mindExercises.session.wip')"
           >
             <p class="text-body-sm text-on-surface-dim/80 font-medium italic">
-              {{ t('remote.session.wip') }}
+              {{ t('mindExercises.session.wip') }}
             </p>
           </aside>
         </div>
@@ -113,10 +97,10 @@ const endSession = async () => {
             </div>
             <div>
               <p class="text-body-md text-on-surface font-semibold">
-                {{ t('remote.control.startSession') }}
+                {{ t('mindExercises.control.startSession') }}
               </p>
               <p class="text-body-sm text-on-surface-dim mt-xx-sm">
-                {{ canStartSession ? t('remote.control.readyHint') : t('remote.control.startHint') }}
+                {{ t('mindExercises.control.startHint') }}
               </p>
             </div>
           </div>
@@ -132,15 +116,14 @@ const endSession = async () => {
               size="2rem"
               class="mr-xs"
             />
-            {{ t('remote.control.startSession') }}
+            {{ t('mindExercises.control.startSession') }}
           </AppButton>
         </div>
       </div>
 
-      <RemoteControlPlaceholder
+      <MindExerciseControlPlaceholder
         v-else
         key="control"
-        :vehicle-type="vehicleType"
         @end-session="endSession"
       />
     </Transition>

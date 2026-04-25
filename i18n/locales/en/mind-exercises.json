@@ -1,0 +1,45 @@
+{
+  "mindExercises": {
+    "blockSlide": {
+      "calibrationSubtitle": "Map the horizontal axis on screen, then aim to match it with intention alone.",
+      "calibrationTitle": "Drill: slide the block",
+      "center": "Center",
+      "kicker": "Exercise",
+      "left": "Left",
+      "pageTitle": "Slide the block — NeuraFlow",
+      "right": "Right",
+      "sessionAbout": "You steer a single block side to side. Imagine a gentle nudge left, right, or back to center — that is how you train a clear intention and a calm, steady focus before a longer run or a recording.",
+      "title": "Slide the block"
+    },
+    "control": {
+      "startHint": "Start the drill now, or launch a BCI model in the panel first.",
+      "startSession": "Start session"
+    },
+    "hub": {
+      "cardBlockSlideDescription": "That is how you train a clear intention and a calm, steady focus before a longer run or a recording.",
+      "cardBlockSlideLead": "You steer a single block side to side. Imagine a gentle nudge left, right, or back to center.",
+      "cardBlockSlideTitle": "Slide the block",
+      "open": "Open",
+      "pageTitle": "Mind exercises — NeuraFlow",
+      "subtitle": "Calm, repeatable sessions: one axis, one intention at a time — you practice holding attention and replaying a movement in your mind. Step by step, training focus and a stable signal for BCI, at your own pace.",
+      "title": "Mind exercises"
+    },
+    "meta": {
+      "defaultTitle": "NeuraFlow — mind exercises"
+    },
+    "navigation": {
+      "blockSlide": "Slide the block",
+      "closeMenu": "Close menu",
+      "hub": "Overview",
+      "openMenu": "Open menu",
+      "section": "Exercises"
+    },
+    "session": {
+      "wip": "XXXX"
+    },
+    "theme": {
+      "switchToDark": "Dark mode",
+      "switchToLight": "Light mode"
+    }
+  }
+}
