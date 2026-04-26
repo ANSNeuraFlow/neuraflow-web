@@ -78,6 +78,7 @@ export default defineNuxtConfig({
     './layers/eeg-live',
     './layers/remote',
     './layers/mind-exercises',
+    './layers/mini-games',
     './layers/bridge-auth',
   ],
 

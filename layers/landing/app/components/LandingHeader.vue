@@ -34,6 +34,11 @@ const mindExercisesNav = computed(() => ({
   label: t('landing.nav.mindExercises'),
 }));
 
+const minigamesNav = computed(() => ({
+  to: localePath('/minigames'),
+  label: t('landing.nav.minigames'),
+}));
+
 const navLinkClass =
   'px-sm py-sm text-body-sm duration-short lg:px-md text-on-surface-dim hover:bg-on-surface/5 hover:text-on-surface shrink-0 whitespace-nowrap rounded-lg font-medium transition-colors ease-out';
 
@@ -191,6 +196,15 @@ onUnmounted(() => {
                 >
                   {{ mindExercisesNav.label }}
                 </NuxtLink>
+                <NuxtLink
+                  :to="minigamesNav.to"
+                  role="menuitem"
+                  class="px-md py-sm text-on-surface-dim hover:bg-on-surface/8 hover:text-on-surface block font-medium transition-colors"
+                  active-class="!bg-on-surface/10 !text-on-surface"
+                  @click="closeAppsMenu"
+                >
+                  {{ minigamesNav.label }}
+                </NuxtLink>
               </div>
             </Transition>
           </div>
@@ -287,6 +301,15 @@ onUnmounted(() => {
             @click="closeMenu"
           >
             {{ mindExercisesNav.label }}
+          </NuxtLink>
+          <NuxtLink
+            :to="minigamesNav.to"
+            :class="navLinkClassMobile"
+            active-class="bg-white/[0.08] text-white"
+            :aria-label="minigamesNav.label"
+            @click="closeMenu"
+          >
+            {{ minigamesNav.label }}
           </NuxtLink>
 
           <div class="mt-md gap-sm pt-md flex flex-col border-t border-white/[0.06]">

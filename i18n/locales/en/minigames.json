@@ -1,0 +1,105 @@
+{
+  "minigames": {
+    "dodge": {
+      "about": "Dodge falling balls across 4 lanes. Move one lane at a time — left or right. Survive as long as you can!",
+      "againShort": "Again",
+      "backShort": "Back",
+      "backToConfig": "Back to settings",
+      "bestScore": "Best: {score}s",
+      "bestShort": "max {score} s",
+      "close": "Close",
+      "config": {
+        "controlSource": "Control source",
+        "selectDifficulty": "Difficulty",
+        "subtitle": "Pick a difficulty before jumping in",
+        "title": "Game settings"
+      },
+      "controlSource": {
+        "bci": "BCI",
+        "keyboard": "Keyboard"
+      },
+      "controlSourceDesc": {
+        "bci": "BCI signal control, requires model deployment on the left panel.",
+        "keyboard": "Arrow-key control, no model deployment required."
+      },
+      "controls": {
+        "hint": "Use the arrow keys ← → or the buttons below to move your rocket one lane at a time. There are 4 lanes — 3 steps to cross the whole screen. One hit ends the run!",
+        "title": "How to play"
+      },
+      "difficulty": {
+        "easy": "Easy",
+        "hard": "Hard",
+        "medium": "Medium"
+      },
+      "difficultyDesc": {
+        "easy": "Slower balls, more time to react. Perfect for beginners.",
+        "hard": "Fast and relentless. Good luck!",
+        "medium": "Balanced pace — a good starting point for most players."
+      },
+      "finalScore": "You survived {score} seconds",
+      "gameOver": "Game Over!",
+      "goToGame": "Go to game",
+      "goToGameHint": "Pick a difficulty and start. You can configure the model later.",
+      "kicker": "Minigame",
+      "left": "Left",
+      "liveScore": "Score: {score}s",
+      "model": {
+        "options": {
+          "bci-alpha": {
+            "desc": "Profile tuned for basic left/right commands.",
+            "name": "BCI Alpha"
+          },
+          "bci-focus": {
+            "desc": "Profile tuned for calmer, more stable control.",
+            "name": "BCI Focus"
+          },
+          "keyboard-demo": {
+            "desc": "Classic arrow-key control for quick testing.",
+            "name": "Keyboard (demo)"
+          }
+        },
+        "select": "Control model selection",
+        "subtitle": "Choose which model will drive this game session",
+        "title": "Control model"
+      },
+      "newHighScore": "New personal best!",
+      "pageTitle": "Rocket Run — NeuraFlow",
+      "readyButton": "Start!",
+      "readyKeyHint": "Press Space to start",
+      "readySubtitle": "Dodge the falling balls — one lane at a time",
+      "readyTitle": "Ready?",
+      "restart": "Play again",
+      "restartHint": "Press R to restart",
+      "right": "Right",
+      "scoreShort": "{score} s",
+      "selectModelAndDeployHint": "For BCI mode, select a model and deploy it first",
+      "selectModelHint": "Select a control model to start",
+      "startShort": "Start",
+      "title": "Rocket Run"
+    },
+    "hub": {
+      "cardDodgeDescription": "Colorful balls fall from the top across 4 lanes. Move left or right one lane at a time to dodge them. Perfect for BCI control.",
+      "cardDodgeLead": "Steer left and right. Survive as long as you can.",
+      "cardDodgeTitle": "Rocket Run",
+      "kicker": "Minigames",
+      "open": "Open",
+      "pageTitle": "Minigames — NeuraFlow",
+      "subtitle": "A dedicated space for classic play. Mind exercises and BCI drills live under “Mind exercises”.",
+      "title": "Minigames"
+    },
+    "meta": {
+      "defaultTitle": "NeuraFlow — minigames"
+    },
+    "navigation": {
+      "closeMenu": "Close menu",
+      "dodge": "Rocket Run",
+      "hub": "Overview",
+      "openMenu": "Open menu",
+      "section": "Minigames"
+    },
+    "theme": {
+      "switchToDark": "Dark mode",
+      "switchToLight": "Light mode"
+    }
+  }
+}

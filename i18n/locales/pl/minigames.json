@@ -1,0 +1,105 @@
+{
+  "minigames": {
+    "dodge": {
+      "about": "Omijaj kolorowe kulki w 4 torach. Przesuwaj się o jeden tor na raz — w lewo lub w prawo. Przeżyj jak najdłużej!",
+      "againShort": "Jeszcze",
+      "backShort": "Wstecz",
+      "backToConfig": "Wróć do ustawień",
+      "bestScore": "Rekord: {score}s",
+      "bestShort": "max {score} s",
+      "close": "Zamknij",
+      "config": {
+        "controlSource": "Źródło sterowania",
+        "selectDifficulty": "Poziom trudności",
+        "subtitle": "Wybierz poziom trudności przed wejściem do gry",
+        "title": "Ustawienia gry"
+      },
+      "controlSource": {
+        "bci": "BCI",
+        "keyboard": "Klawiatura"
+      },
+      "controlSourceDesc": {
+        "bci": "Sterowanie sygnałem BCI, wymagane uruchomienie modelu po lewej.",
+        "keyboard": "Sterowanie strzałkami, bez wdrażania modelu."
+      },
+      "controls": {
+        "hint": "Użyj strzałek ← → lub przycisków poniżej, żeby przesunąć rakietę o jeden tor. Są 4 tory — 3 kroki, żeby przejść cały ekran. Jedno trafienie kończy grę!",
+        "title": "Jak grać"
+      },
+      "difficulty": {
+        "easy": "Łatwy",
+        "hard": "Trudny",
+        "medium": "Średni"
+      },
+      "difficultyDesc": {
+        "easy": "Wolniejsze kulki, więcej czasu na reakcję. Idealny na start.",
+        "hard": "Szybko i bezlitośnie. Powodzenia!",
+        "medium": "Wyważone tempo — dobry punkt startowy dla większości graczy."
+      },
+      "finalScore": "Przeżyłeś {score} sekund",
+      "gameOver": "Koniec gry!",
+      "goToGame": "Przejdź do gry",
+      "goToGameHint": "Wybierz poziom trudności i kliknij start. Model możesz skonfigurować później.",
+      "kicker": "Minigra",
+      "left": "Lewo",
+      "liveScore": "Wynik: {score}s",
+      "model": {
+        "options": {
+          "bci-alpha": {
+            "desc": "Profil pod podstawowe komendy lewo/prawo.",
+            "name": "BCI Alpha"
+          },
+          "bci-focus": {
+            "desc": "Profil pod stabilniejszą, spokojniejszą kontrolę.",
+            "name": "BCI Focus"
+          },
+          "keyboard-demo": {
+            "desc": "Klasyczne sterowanie strzałkami do szybkich testów.",
+            "name": "Klawiatura (demo)"
+          }
+        },
+        "select": "Wybór modelu sterowania",
+        "subtitle": "Wybierz model, którym sterowana będzie rozgrywka",
+        "title": "Model sterowania"
+      },
+      "newHighScore": "Nowy rekord osobisty!",
+      "pageTitle": "Rakietowy slalom — NeuraFlow",
+      "readyButton": "Start!",
+      "readyKeyHint": "Naciśnij Spację, żeby zacząć",
+      "readySubtitle": "Omijaj kulki — jeden tor na raz",
+      "readyTitle": "Gotowi?",
+      "restart": "Zagraj ponownie",
+      "restartHint": "Naciśnij R, żeby zrestartować",
+      "right": "Prawo",
+      "scoreShort": "{score} s",
+      "selectModelAndDeployHint": "Dla trybu BCI wybierz model i kliknij wdrożenie",
+      "selectModelHint": "Wybierz model sterowania, aby rozpocząć",
+      "startShort": "Start",
+      "title": "Rakietowy slalom"
+    },
+    "hub": {
+      "cardDodgeDescription": "Kolorowe kulki spadają z góry w 4 torach. Przesuń się o jeden tor w lewo lub prawo, żeby je ominąć. Idealne do sterowania BCI.",
+      "cardDodgeLead": "Steruj w lewo i prawo. Przeżyj jak najdłużej.",
+      "cardDodgeTitle": "Rakietowy slalom",
+      "kicker": "Minigry",
+      "open": "Otwórz",
+      "pageTitle": "Minigry — NeuraFlow",
+      "subtitle": "Osobna strefa na klasyczne rozgrywki. Ćwiczenia umysłu i BCI trzymamy w sekcji „Ćwiczenia umysłu”.",
+      "title": "Minigry"
+    },
+    "meta": {
+      "defaultTitle": "NeuraFlow — minigry"
+    },
+    "navigation": {
+      "closeMenu": "Zamknij menu",
+      "dodge": "Rakietowy slalom",
+      "hub": "Przegląd",
+      "openMenu": "Otwórz menu",
+      "section": "Minigry"
+    },
+    "theme": {
+      "switchToDark": "Tryb ciemny",
+      "switchToLight": "Tryb jasny"
+    }
+  }
+}
