@@ -35,7 +35,7 @@ const isSelectDisabled = computed(() => props.isRunning || props.isTransitional 
 </script>
 
 <template>
-  <div class="glass-card p-x-lg gap-x-lg flex flex-col">
+  <div class="glass-card p-x-lg gap-x-lg flex h-full flex-col">
     <div class="gap-md flex items-center">
       <div
         class="bg-on-surface/10 text-on-surface flex h-[4rem] w-[4rem] shrink-0 items-center justify-center rounded-full"
