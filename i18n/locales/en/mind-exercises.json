@@ -19,6 +19,9 @@
       "cardBlockSlideDescription": "That is how you train a clear intention and a calm, steady focus before a longer run or a recording.",
       "cardBlockSlideLead": "You steer a single block side to side. Imagine a gentle nudge left, right, or back to center.",
       "cardBlockSlideTitle": "Slide the block",
+      "cardNeuroBalanceDescription": "Mu/Beta focus training: you practice sustained attention and a stable BCI signal without game-like chrome.",
+      "cardNeuroBalanceLead": "Keep a levitating sphere in the center using motor imagery of your hands.",
+      "cardNeuroBalanceTitle": "Neuro-Balance",
       "open": "Open",
       "pageTitle": "Mind exercises — NeuraFlow",
       "subtitle": "Calm, repeatable sessions: one axis, one intention at a time — you practice holding attention and replaying a movement in your mind. Step by step, training focus and a stable signal for BCI, at your own pace.",
@@ -31,8 +34,56 @@
       "blockSlide": "Slide the block",
       "closeMenu": "Close menu",
       "hub": "Overview",
+      "neuroBalance": "Neuro-Balance",
       "openMenu": "Open menu",
       "section": "Exercises"
+    },
+    "neuroBalance": {
+      "about": "Keep a luminous sphere near the center using motor imagery. If it drifts left, imagine your right hand. If it drifts right, imagine your left. You train sustained focus and a clear Mu/Beta control signal.",
+      "backShort": "Back",
+      "bestStreak": "Best: {s} s",
+      "config": {
+        "durationDesc": {
+          "10": "Standard training session — recommended for most users.",
+          "15": "Advanced run — expect sustained focus for the full duration.",
+          "5": "Short run — a good warm-up and daily habit."
+        },
+        "durationLabel": "{min} min",
+        "selectDuration": "Session length",
+        "subtitle": "Choose how long the exercise runs before you start",
+        "title": "Session settings"
+      },
+      "focusTime": "Focus: {s} s",
+      "fullscreen": {
+        "enter": "Full screen",
+        "exit": "Exit full screen"
+      },
+      "goToExercise": "Start exercise",
+      "goToExerciseHint": "You can set up the BCI model now or launch it later.",
+      "hint": {
+        "center": "Hold the sphere in the focus band",
+        "left": "The sphere leans right — use left-hand imagery",
+        "right": "The sphere leans left — use right-hand imagery"
+      },
+      "kicker": "Exercise",
+      "pageTitle": "Neuro-Balance — NeuraFlow",
+      "ready": {
+        "start": "Start",
+        "subtitle": "Press Start (Space). While running, ← → match left- and right-hand BCI commands.",
+        "title": "Ready?"
+      },
+      "recovering": {
+        "countdown": "Resuming in {s} s…",
+        "subtitle": "The sphere lost balance. Take a calm breath and try again.",
+        "title": "Relax"
+      },
+      "sessionComplete": {
+        "back": "Back to settings",
+        "subtitle": "Longest uninterrupted focus in this session: {s} s.",
+        "title": "Session complete"
+      },
+      "sessionTime": "Elapsed: {s} s",
+      "title": "Neuro-Balance"
     },
     "session": {
       "wip": "XXXX"

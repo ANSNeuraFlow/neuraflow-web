@@ -26,7 +26,7 @@ useHead({
 });
 
 type MindExerciseNavItem = {
-  path: '/mind-exercises' | '/mind-exercises/slide-block';
+  path: '/mind-exercises' | '/mind-exercises/slide-block' | '/mind-exercises/neuro-balance';
   label: string;
   icon: string;
 };
@@ -41,6 +41,11 @@ const mindExerciseNavItems = computed<MindExerciseNavItem[]>(() => [
     path: '/mind-exercises/slide-block',
     label: t('mindExercises.navigation.blockSlide'),
     icon: 'lucide:move-horizontal',
+  },
+  {
+    path: '/mind-exercises/neuro-balance',
+    label: t('mindExercises.navigation.neuroBalance'),
+    icon: 'lucide:brain-circuit',
   },
 ]);
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useBciController } from '../../../../app/composables/useBciController';
 import { type DodgeGameConfig, useDodgeGame } from '../composables/useDodgeGame';
 
 defineOptions({ name: 'DodgeGame' });
@@ -29,6 +30,11 @@ const {
   restart,
   handleResize,
 } = useDodgeGame(canvasRef, () => props.config);
+
+const { currentCommand, currentConfidence, isConnected, onCommand } = useBciController();
+
+onCommand('LEFT_HAND', () => moveLeft());
+onCommand('RIGHT_HAND', () => moveRight());
 
 const resizeCanvas = () => {
   const canvas = canvasRef.value;
@@ -108,6 +114,24 @@ onUnmounted(() => {
           aria-live="polite"
           >★</span
         >
+        <div class="gap-x-sm text-body-x-sm text-on-surface-dim flex w-full items-center font-medium sm:ml-0 sm:w-auto">
+          <span
+            class="size-2 shrink-0 rounded-full"
+            :class="isConnected ? 'bg-green-400' : 'bg-red-500'"
+            aria-hidden="true"
+          />
+          <span
+            v-if="currentCommand"
+            class="tabular-nums"
+          >
+            BCI: {{ currentCommand }} ({{ Math.round(currentConfidence * 100) }}%)
+          </span>
+          <span
+            v-else
+            class="opacity-50"
+            >BCI: —</span
+          >
+        </div>
       </div>
     </div>
 
