@@ -19,6 +19,9 @@
       "cardBlockSlideDescription": "Tak trenujesz czytelną intencję i spokojne utrzymanie uwagi, zanim przejdziesz do dłuższej sesji albo pomiaru.",
       "cardBlockSlideLead": "Sterujesz jednym klockiem na boki. Wyobraź sobie, że lekko pchniesz go w lewo albo w prawo albo sprowadzisz na środek.",
       "cardBlockSlideTitle": "Przesuń klocek",
+      "cardNeuroBalanceDescription": "Ćwiczenie fal Mu/Beta — trenujesz długotrwałe skupienie i stabilny sygnał BCI bez elementów rozrywkowych.",
+      "cardNeuroBalanceLead": "Utrzymuj lewitującą sferę w centrum pola intencją ruchu dłoni.",
+      "cardNeuroBalanceTitle": "Neuro-Balance",
       "open": "Otwórz",
       "pageTitle": "Ćwiczenia umysłu — NeuraFlow",
       "subtitle": "Powtarzalne, spokojne sesje: jedna oś, jedna intencja — uczysz się utrzymać uwagę i czytelnie odtwarzać ruch w myślach. To trening koncentracji i stabilnego sygnału pod BCI, krok po kroku, w swoim tempie.",
@@ -31,8 +34,56 @@
       "blockSlide": "Przesuń klocek",
       "closeMenu": "Zamknij menu",
       "hub": "Przegląd",
+      "neuroBalance": "Neuro-Balance",
       "openMenu": "Otwórz menu",
       "section": "Ćwiczenia"
+    },
+    "neuroBalance": {
+      "about": "Utrzymuj świetlistą sferę w centrum pola za pomocą wyobrażeń ruchowych. Gdy sfera odchyla się w lewo — wywołaj intencję prawej dłoni. Gdy w prawo — intencję lewej. Trenujesz zdolność długotrwałego skupienia i czytelności sygnału Mu/Beta.",
+      "backShort": "Wstecz",
+      "bestStreak": "Rekord: {s} s",
+      "config": {
+        "durationDesc": {
+          "10": "Standardowa sesja treningowa — zalecana dla większości użytkowników.",
+          "15": "Sesja zaawansowana — wymaga wysokiej koncentracji przez cały czas.",
+          "5": "Krótka sesja — dobre wprowadzenie i codzienna rozgrzewka."
+        },
+        "durationLabel": "{min} min",
+        "selectDuration": "Czas sesji",
+        "subtitle": "Wybierz czas trwania przed wejściem w ćwiczenie",
+        "title": "Ustawienia sesji"
+      },
+      "focusTime": "Skupienie: {s} s",
+      "fullscreen": {
+        "enter": "Pełny ekran",
+        "exit": "Wyjdź z pełnego ekranu"
+      },
+      "goToExercise": "Rozpocznij ćwiczenie",
+      "goToExerciseHint": "Model BCI możesz skonfigurować teraz lub uruchomić później.",
+      "hint": {
+        "center": "Utrzymuj sferę w strefie skupienia",
+        "left": "Sfera wychyla się w prawo — wywołaj intencję lewej dłoni",
+        "right": "Sfera wychyla się w lewo — wywołaj intencję prawej dłoni"
+      },
+      "kicker": "Ćwiczenie",
+      "pageTitle": "Neuro-Balance — NeuraFlow",
+      "ready": {
+        "start": "Start",
+        "subtitle": "Naciśnij Start (Spacja). W trakcie ćwiczenia strzałki ← → działają tak samo jak komendy BCI lewej i prawej dłoni.",
+        "title": "Gotowi?"
+      },
+      "recovering": {
+        "countdown": "Wznowienie za {s} s…",
+        "subtitle": "Sfera straciła równowagę. Weź spokojny oddech i spróbuj ponownie.",
+        "title": "Zrelaksuj się"
+      },
+      "sessionComplete": {
+        "back": "Wróć do ustawień",
+        "subtitle": "Najdłuższe nieprzerwane skupienie w tej sesji: {s} s.",
+        "title": "Sesja zakończona"
+      },
+      "sessionTime": "Czas: {s} s",
+      "title": "Neuro-Balance"
     },
     "session": {
       "wip": "XXXX"

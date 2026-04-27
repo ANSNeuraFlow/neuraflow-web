@@ -48,6 +48,7 @@ export default defineNuxtConfig({
       siteBaseUrl: process.env.PUBLIC_SITE_BASE_URL,
       apiBaseUrl: process.env.PUBLIC_API_BASE_URL || '/api',
       socketIoGatewayUrl: process.env.PUBLIC_SOCKET_IO_GATEWAY_URL,
+      bciWsUrl: process.env.PUBLIC_BCI_WS_URL || 'ws://127.0.0.1:8765',
     },
   },
   modules: [
