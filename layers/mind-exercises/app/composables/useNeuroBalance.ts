@@ -33,6 +33,18 @@ function lerpColor(r1: number, g1: number, b1: number, r2: number, g2: number, b
   };
 }
 
+let cachedColor = 'rgb(128, 128, 128)';
+let colorBase = { r: 128, g: 128, b: 128 };
+let frameCount = 0;
+
+function parseRGB(colorStr: string) {
+  const match = colorStr.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+  if (match && match[1] && match[2] && match[3]) {
+    return { r: parseInt(match[1]), g: parseInt(match[2]), b: parseInt(match[3]) };
+  }
+  return { r: 128, g: 128, b: 128 };
+}
+
 function drawScene(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
@@ -41,6 +53,11 @@ function drawScene(
   timestamp: number,
   recoveringFraction: number,
 ) {
+  if (frameCount++ % 60 === 0) {
+    cachedColor = getComputedStyle(canvas).color || 'rgb(128, 128, 128)';
+    colorBase = parseRGB(cachedColor);
+  }
+
   const W = canvas.width;
   const H = canvas.height;
   const cx = W / 2;
@@ -50,14 +67,10 @@ function drawScene(
   const yFunnelBase = H;
   const baseHalfW = W * 0.4 * FOCUS_THRESHOLD;
 
-  const background = ctx.createLinearGradient(0, 0, 0, H);
-  background.addColorStop(0, '#0b0a2e');
-  background.addColorStop(1, '#1c0a3c');
-  ctx.fillStyle = background;
-  ctx.fillRect(0, 0, W, H);
+  ctx.clearRect(0, 0, W, H);
 
   ctx.save();
-  ctx.fillStyle = 'rgba(8,6,28,0.22)';
+  ctx.fillStyle = `rgba(${colorBase.r}, ${colorBase.g}, ${colorBase.b}, 0.03)`;
   ctx.beginPath();
   ctx.moveTo(0, yFunnelTop);
   ctx.lineTo(cx - baseHalfW, yFunnelBase);
@@ -80,23 +93,22 @@ function drawScene(
   ctx.lineTo(cx - baseHalfW, yFunnelBase);
   ctx.closePath();
   const funnelFill = ctx.createLinearGradient(0, yFunnelTop, 0, yFunnelBase);
-  funnelFill.addColorStop(0, 'rgba(255,255,255,0.028)');
-  funnelFill.addColorStop(0.5, 'rgba(255,255,255,0.014)');
-  funnelFill.addColorStop(1, 'rgba(255,255,255,0.02)');
+  funnelFill.addColorStop(0, `rgba(${colorBase.r}, ${colorBase.g}, ${colorBase.b}, 0.05)`);
+  funnelFill.addColorStop(1, `rgba(${colorBase.r}, ${colorBase.g}, ${colorBase.b}, 0.01)`);
   ctx.fillStyle = funnelFill;
   ctx.fill();
   ctx.restore();
 
   const t = Math.min(1, absPos / RECOVER_THRESHOLD);
-  const { r, g, b } = lerpColor(56, 189, 248, 249, 115, 22, t);
+  const { r, g, b } = lerpColor(colorBase.r, colorBase.g, colorBase.b, 249, 115, 22, t * 0.7);
   const color = `rgb(${r},${g},${b})`;
 
   const sphereX = cx + visualX * W * 0.4;
   const sphereR = Math.min(W, H) * 0.052;
 
   ctx.save();
-  ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-  ctx.lineWidth = 1;
+  ctx.strokeStyle = `rgba(${colorBase.r}, ${colorBase.g}, ${colorBase.b}, 0.15)`;
+  ctx.lineWidth = 1.5;
   ctx.setLineDash([4, 10]);
   ctx.beginPath();
   ctx.moveTo(cx, yFunnelTop);
@@ -107,8 +119,8 @@ function drawScene(
 
   const anchorY = H * 0.76;
   ctx.save();
-  ctx.strokeStyle = `rgba(${r},${g},${b},0.28)`;
-  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = `rgba(${r},${g},${b},0.35)`;
+  ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(cx, anchorY);
   ctx.lineTo(sphereX, cy);
@@ -118,25 +130,25 @@ function drawScene(
   const pulse = 1 + Math.sin(timestamp / 1400) * 0.06;
   const glowR = sphereR * 4.5 * pulse;
   const glow = ctx.createRadialGradient(sphereX, cy, 0, sphereX, cy, glowR);
-  glow.addColorStop(0, `rgba(${r},${g},${b},0.18)`);
+  glow.addColorStop(0, `rgba(${r},${g},${b},0.12)`);
   glow.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.fillStyle = glow;
   ctx.fillRect(sphereX - glowR, cy - glowR, glowR * 2, glowR * 2);
 
   ctx.save();
   ctx.shadowColor = color;
-  ctx.shadowBlur = 36;
+  ctx.shadowBlur = 24;
   const sg = ctx.createRadialGradient(
     sphereX - sphereR * 0.32,
     cy - sphereR * 0.32,
-    sphereR * 0.08,
+    sphereR * 0.1,
     sphereX,
     cy,
     sphereR,
   );
-  sg.addColorStop(0, '#ffffff');
-  sg.addColorStop(0.28, color);
-  sg.addColorStop(1, `rgba(${r},${g},${b},0.5)`);
+
+  sg.addColorStop(0, `rgba(${colorBase.r}, ${colorBase.g}, ${colorBase.b}, 0.8)`);
+  sg.addColorStop(1, color);
   ctx.fillStyle = sg;
   ctx.beginPath();
   ctx.arc(sphereX, cy, sphereR, 0, Math.PI * 2);
@@ -145,7 +157,7 @@ function drawScene(
 
   if (recoveringFraction > 0) {
     ctx.save();
-    ctx.fillStyle = `rgba(11,10,46,${0.72 * recoveringFraction})`;
+    ctx.fillStyle = `rgba(${colorBase.r}, ${colorBase.g}, ${colorBase.b}, ${0.5 * recoveringFraction})`;
     ctx.fillRect(0, 0, W, H);
     ctx.restore();
   }

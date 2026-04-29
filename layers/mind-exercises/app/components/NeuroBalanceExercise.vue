@@ -187,7 +187,7 @@ onUnmounted(() => {
     <div class="w-full min-w-0">
       <div
         ref="containerRef"
-        class="border-on-surface/[0.12] relative min-h-[min(78dvh,52rem)] w-full overflow-hidden rounded-2xl border"
+        class="bg-surface-container border-on-surface/[0.12] relative min-h-[min(78dvh,52rem)] w-full overflow-hidden rounded-2xl border"
       >
         <canvas
           ref="canvasRef"
@@ -197,7 +197,7 @@ onUnmounted(() => {
         <Transition name="fade-nb">
           <div
             v-if="exerciseState === 'ready'"
-            class="bg-on-surface/55 px-md absolute inset-0 flex flex-col items-center justify-center gap-4 backdrop-blur-sm"
+            class="bg-surface/85 px-md absolute inset-0 flex flex-col items-center justify-center gap-4 backdrop-blur-md"
           >
             <p class="text-heading-md text-on-surface font-display font-bold">
               {{ t('mindExercises.neuroBalance.ready.title') }}
@@ -218,7 +218,7 @@ onUnmounted(() => {
         <Transition name="fade-nb">
           <div
             v-if="exerciseState === 'recovering'"
-            class="bg-on-surface/45 px-md absolute inset-0 flex flex-col items-center justify-center gap-3 backdrop-blur-sm"
+            class="bg-surface/80 px-md absolute inset-0 flex flex-col items-center justify-center gap-3 backdrop-blur-md"
           >
             <p class="text-heading-sm text-on-surface font-display font-bold drop-shadow-lg">
               {{ t('mindExercises.neuroBalance.recovering.title') }}
@@ -238,7 +238,7 @@ onUnmounted(() => {
         <Transition name="fade-nb">
           <div
             v-if="exerciseState === 'complete'"
-            class="bg-on-surface/55 px-md absolute inset-0 flex flex-col items-center justify-center gap-4 backdrop-blur-sm"
+            class="bg-surface/85 px-md absolute inset-0 flex flex-col items-center justify-center gap-4 backdrop-blur-md"
           >
             <p class="text-heading-md text-on-surface font-display font-bold">
               {{ t('mindExercises.neuroBalance.sessionComplete.title') }}

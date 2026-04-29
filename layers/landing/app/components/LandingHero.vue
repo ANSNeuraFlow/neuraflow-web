@@ -234,7 +234,7 @@ onUnmounted(() => {
 
           <!-- EEG Wave Visualization -->
           <div
-            class="p-md sm:p-lg bg-on-surface/5 relative min-h-[16rem] overflow-hidden rounded-lg sm:min-h-[18rem] dark:bg-white/10"
+            class="p-md sm:p-lg bg-on-surface/5 relative min-h-[16rem] overflow-hidden rounded-lg sm:min-h-[18rem] dark:bg-gray-300"
             role="img"
             :aria-label="t('landing.hero.visualTitle')"
           >
