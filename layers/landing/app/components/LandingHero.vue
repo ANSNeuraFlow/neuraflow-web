@@ -218,12 +218,12 @@ onUnmounted(() => {
                 class="bg-success h-2 w-2 animate-pulse rounded-full"
                 aria-hidden="true"
               />
-              <span class="text-body-x-sm font-mono text-slate-400">
+              <span class="text-body-x-sm text-on-surface-dim font-mono">
                 {{ t('landing.hero.visualSession') }}
               </span>
             </div>
             <div class="gap-sm flex items-center">
-              <div class="text-body-x-sm font-mono text-slate-500">{{ t('landing.hero.visualFreq') }}</div>
+              <div class="text-body-x-sm text-on-surface-dim/80 font-mono">{{ t('landing.hero.visualFreq') }}</div>
               <div
                 class="px-sm py-xx-sm text-body-x-sm border-on-surface/10 bg-on-surface/5 text-on-surface-dim rounded-lg border font-mono"
               >
@@ -234,7 +234,7 @@ onUnmounted(() => {
 
           <!-- EEG Wave Visualization -->
           <div
-            class="p-md sm:p-lg bg-on-surface/5 relative min-h-[16rem] overflow-hidden rounded-lg sm:min-h-[18rem] dark:bg-gray-300"
+            class="border-on-surface/10 via-surface/[0.35] p-md dark:via-on-surface/[0.12] sm:p-lg relative min-h-[16rem] overflow-hidden rounded-lg border bg-gradient-to-br from-neural-500/[0.08] to-cyan-400/[0.06] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] sm:min-h-[18rem] dark:from-neural-500/[0.14] dark:to-cyan-400/[0.1] dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)]"
             role="img"
             :aria-label="t('landing.hero.visualTitle')"
           >
@@ -315,15 +315,6 @@ onUnmounted(() => {
                 class="eeg-path"
                 style="opacity: 0.5"
               />
-              <line
-                x1="0"
-                y1="60"
-                x2="800"
-                y2="60"
-                stroke="rgba(255,255,255,0.05)"
-                stroke-width="1"
-                stroke-dasharray="4 4"
-              />
             </svg>
           </div>
 
@@ -339,8 +330,8 @@ onUnmounted(() => {
                 :style="{ backgroundColor: ch.color }"
                 aria-hidden="true"
               />
-              <span class="text-slate-500">{{ ch.label }}</span>
-              <span class="font-medium text-slate-300">{{ ch.value }}</span>
+              <span class="text-on-surface-dim">{{ ch.label }}</span>
+              <span class="text-on-surface font-medium">{{ ch.value }}</span>
             </div>
           </div>
         </div>
@@ -352,9 +343,9 @@ onUnmounted(() => {
         aria-hidden="true"
       >
         <div class="gap-sm flex flex-col items-center">
-          <span class="text-body-x-sm text-slate-600">{{ t('landing.hero.scrollHint') }}</span>
+          <span class="text-body-x-sm text-on-surface-dim">{{ t('landing.hero.scrollHint') }}</span>
           <svg
-            class="h-md w-md text-slate-600"
+            class="h-md w-md text-on-surface-dim"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
