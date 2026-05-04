@@ -144,7 +144,8 @@ export const useBciCalibration = () => {
   const totalTrialsRef = ref(0);
   const activeCue = ref('');
   const isFullscreen = ref(false);
-  const protocolEndReason = ref<'success' | 'abort' | null>(null);
+  const protocolEndReason = ref<'success' | 'abort' | 'tutorial-done' | null>(null);
+  const tutorialMode = ref(false);
 
   const containerRef = ref<HTMLElement | null>(null);
 
@@ -272,6 +273,72 @@ export const useBciCalibration = () => {
     }
   };
 
+  const TUTORIAL_SEQUENCE: string[] = ['LEFT', 'RIGHT', 'LEFT', 'RIGHT'];
+
+  const runTutorial = async () => {
+    tutorialMode.value = true;
+    totalTrialsRef.value = TUTORIAL_SEQUENCE.length;
+
+    await toggleFullscreen();
+
+    abortController.value = new AbortController();
+    const signal = abortController.value.signal;
+
+    currentState.value = 'iti';
+    currentTrial.value = 0;
+
+    let completedSuccessfully = false;
+
+    try {
+      await exactWait(2000, signal);
+
+      for (let i = 0; i < TUTORIAL_SEQUENCE.length; i++) {
+        currentTrial.value = i + 1;
+        activeCue.value = TUTORIAL_SEQUENCE[i]!;
+
+        currentState.value = 'relaxation';
+        await exactWait(TIMING.relaxation, signal);
+
+        currentState.value = 'cue';
+        playBeep();
+        await exactWait(TIMING.cue, signal);
+
+        currentState.value = 'execution';
+        await exactWait(TIMING.execution, signal);
+
+        currentState.value = 'rest';
+        await exactWait(TIMING.rest, signal);
+
+        currentState.value = 'iti';
+        const itiTime = TIMING.itiMin + Math.random() * (TIMING.itiMax - TIMING.itiMin);
+        await exactWait(itiTime, signal);
+      }
+
+      completedSuccessfully = true;
+    } catch (err: unknown) {
+      if (!(err instanceof Error && err.message === 'Aborted')) {
+        console.error(err);
+      }
+      currentTrial.value = 0;
+      activeCue.value = '';
+      currentState.value = 'idle';
+      protocolEndReason.value = 'abort';
+    } finally {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+        isFullscreen.value = false;
+      }
+      tutorialMode.value = false;
+    }
+
+    if (completedSuccessfully) {
+      currentTrial.value = 0;
+      activeCue.value = '';
+      currentState.value = 'idle';
+      protocolEndReason.value = 'tutorial-done';
+    }
+  };
+
   const abortProtocol = () => {
     if (abortController.value) {
       abortController.value.abort();
@@ -306,8 +373,10 @@ export const useBciCalibration = () => {
     activeCue,
     isFullscreen,
     protocolEndReason,
+    tutorialMode,
     containerRef,
     runProtocol,
+    runTutorial,
     abortProtocol,
     resetSession,
     showCross,
