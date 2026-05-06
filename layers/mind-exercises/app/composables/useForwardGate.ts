@@ -9,7 +9,6 @@ export interface ForwardGateConfig {
   durationMinutes: SessionDuration;
 }
 
-/** Half-width of the gap in track units (× track half-width). Fixed — tuned for slow BCI steering. */
 const FIXED_GAP_HALF_WIDTH = 0.36;
 
 interface Gate {
@@ -173,13 +172,11 @@ function drawScene(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, p: 
     ctx.fillRect(0, top, gapLeft, WALL_THICKNESS);
     ctx.fillRect(gapRight, top, W - gapRight, WALL_THICKNESS);
 
-    // Aiming feedback: only the active gate’s gap (never multiple walls)
     if (gate.id === p.activeGateId && p.isInGap) {
       ctx.fillStyle = 'rgba(74, 222, 128, 0.22)';
       ctx.fillRect(gapLeft, top, gapRight - gapLeft, WALL_THICKNESS);
     }
 
-    // Miss only — no green strip on success (avoids stacking with next gate highlight)
     if (gate.passed && flashFrac > 0 && gate.passedSuccess === false) {
       ctx.fillStyle = `rgba(249, 115, 22, ${flashFrac * 0.3})`;
       ctx.fillRect(gapLeft, top, gapRight - gapLeft, WALL_THICKNESS);
