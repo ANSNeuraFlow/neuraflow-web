@@ -1,4 +1,4 @@
-import { computed, onBeforeUnmount, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, shallowRef } from 'vue';
 
 import { useUserSessionStore } from '#layers/auth/app/store/user-session.store';
 import { useEegSessionService } from '#layers/eeg-sessions/app/services/eeg-session.service';
@@ -7,6 +7,7 @@ class BridgeWebSocket {
   private ws: WebSocket | null = null;
   private url: string;
   public connected = false;
+  private destroyed = false;
 
   constructor(url: string) {
     this.url = url;
@@ -14,8 +15,24 @@ class BridgeWebSocket {
   }
 
   private connect() {
+    if (this.destroyed || !import.meta.client) {
+      return;
+    }
+    if (typeof globalThis.WebSocket === 'undefined') {
+      console.warn('[Bridge WS] WebSocket API unavailable in this environment.');
+      return;
+    }
+
     console.log(`[Bridge WS] Connecting to local bridge at ${this.url}...`);
-    this.ws = new WebSocket(this.url);
+    try {
+      this.ws = new WebSocket(this.url);
+    } catch (e) {
+      console.error('[Bridge WS] Failed to construct WebSocket:', e);
+      if (!this.destroyed) {
+        setTimeout(() => this.connect(), 2000);
+      }
+      return;
+    }
 
     this.ws.onopen = () => {
       this.connected = true;
@@ -24,6 +41,9 @@ class BridgeWebSocket {
 
     this.ws.onclose = () => {
       this.connected = false;
+      if (this.destroyed) {
+        return;
+      }
       console.log('[Bridge WS] Connection closed. Reconnecting in 2s...');
       setTimeout(() => this.connect(), 2000);
     };
@@ -52,10 +72,13 @@ class BridgeWebSocket {
   }
 
   close() {
+    this.destroyed = true;
     if (this.ws) {
       this.ws.onclose = null;
       this.ws.close();
+      this.ws = null;
     }
+    this.connected = false;
   }
 }
 
@@ -135,7 +158,20 @@ export interface BciRunConfig {
 }
 
 export const useBciCalibration = () => {
-  const ws = new BridgeWebSocket('ws://127.0.0.1:8765');
+  const config = useRuntimeConfig();
+  const wsRef = shallowRef<BridgeWebSocket | null>(null);
+
+  const bridgeSendEvent = (type: string, extras: Record<string, unknown> = {}) => {
+    wsRef.value?.sendEvent(type, extras);
+  };
+
+  const bridgeSendMarker = (marker: string) => {
+    wsRef.value?.send(marker);
+  };
+
+  onMounted(() => {
+    wsRef.value = new BridgeWebSocket(String(config.public.bciWsUrl));
+  });
   const abortController = ref<AbortController | null>(null);
 
   type ProtocolState = 'idle' | 'relaxation' | 'cue' | 'execution' | 'rest' | 'iti';
@@ -144,7 +180,8 @@ export const useBciCalibration = () => {
   const totalTrialsRef = ref(0);
   const activeCue = ref('');
   const isFullscreen = ref(false);
-  const protocolEndReason = ref<'success' | 'abort' | null>(null);
+  const protocolEndReason = ref<'success' | 'abort' | 'tutorial-done' | null>(null);
+  const tutorialMode = ref(false);
 
   const containerRef = ref<HTMLElement | null>(null);
 
@@ -191,7 +228,7 @@ export const useBciCalibration = () => {
     currentState.value = 'iti';
     currentTrial.value = 0;
 
-    ws.sendEvent('SESSION_START', {
+    bridgeSendEvent('SESSION_START', {
       sessionId,
       token,
     });
@@ -220,7 +257,7 @@ export const useBciCalibration = () => {
           DOWN: 'FEET',
         };
 
-        ws.send(mapMarker[activeCue.value] || 'IDLE');
+        bridgeSendMarker(mapMarker[activeCue.value] || 'IDLE');
         await exactWait(TIMING.cue, signal);
 
         currentState.value = 'execution';
@@ -228,7 +265,7 @@ export const useBciCalibration = () => {
 
         currentState.value = 'rest';
 
-        ws.send('REST');
+        bridgeSendMarker('REST');
         await exactWait(TIMING.rest, signal);
 
         currentState.value = 'iti';
@@ -236,7 +273,7 @@ export const useBciCalibration = () => {
         await exactWait(itiTime, signal);
       }
 
-      ws.sendEvent('SESSION_END', { sessionId });
+      bridgeSendEvent('SESSION_END', { sessionId });
 
       if (sessionId && !sessionId.startsWith('local-test-session')) {
         await stopSession(sessionId);
@@ -249,7 +286,7 @@ export const useBciCalibration = () => {
       } else {
         console.error(err);
       }
-      ws.sendEvent('SESSION_ABORTED', { sessionId });
+      bridgeSendEvent('SESSION_ABORTED', { sessionId });
       if (sessionId && !sessionId.startsWith('local-test-session')) {
         await stopSession(sessionId).catch(() => {});
       }
@@ -272,6 +309,72 @@ export const useBciCalibration = () => {
     }
   };
 
+  const TUTORIAL_SEQUENCE: string[] = ['LEFT', 'RIGHT', 'LEFT', 'RIGHT'];
+
+  const runTutorial = async () => {
+    tutorialMode.value = true;
+    totalTrialsRef.value = TUTORIAL_SEQUENCE.length;
+
+    await toggleFullscreen();
+
+    abortController.value = new AbortController();
+    const signal = abortController.value.signal;
+
+    currentState.value = 'iti';
+    currentTrial.value = 0;
+
+    let completedSuccessfully = false;
+
+    try {
+      await exactWait(2000, signal);
+
+      for (let i = 0; i < TUTORIAL_SEQUENCE.length; i++) {
+        currentTrial.value = i + 1;
+        activeCue.value = TUTORIAL_SEQUENCE[i]!;
+
+        currentState.value = 'relaxation';
+        await exactWait(TIMING.relaxation, signal);
+
+        currentState.value = 'cue';
+        playBeep();
+        await exactWait(TIMING.cue, signal);
+
+        currentState.value = 'execution';
+        await exactWait(TIMING.execution, signal);
+
+        currentState.value = 'rest';
+        await exactWait(TIMING.rest, signal);
+
+        currentState.value = 'iti';
+        const itiTime = TIMING.itiMin + Math.random() * (TIMING.itiMax - TIMING.itiMin);
+        await exactWait(itiTime, signal);
+      }
+
+      completedSuccessfully = true;
+    } catch (err: unknown) {
+      if (!(err instanceof Error && err.message === 'Aborted')) {
+        console.error(err);
+      }
+      currentTrial.value = 0;
+      activeCue.value = '';
+      currentState.value = 'idle';
+      protocolEndReason.value = 'abort';
+    } finally {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+        isFullscreen.value = false;
+      }
+      tutorialMode.value = false;
+    }
+
+    if (completedSuccessfully) {
+      currentTrial.value = 0;
+      activeCue.value = '';
+      currentState.value = 'idle';
+      protocolEndReason.value = 'tutorial-done';
+    }
+  };
+
   const abortProtocol = () => {
     if (abortController.value) {
       abortController.value.abort();
@@ -282,7 +385,7 @@ export const useBciCalibration = () => {
     }
 
     // TODO: Bezpiecznejsze zakończenie komunikacji w wypadku błędu
-    ws.send('ABORTED');
+    bridgeSendMarker('ABORTED');
   };
 
   const resetSession = () => {
@@ -291,7 +394,8 @@ export const useBciCalibration = () => {
 
   onBeforeUnmount(() => {
     abortProtocol();
-    ws.close();
+    wsRef.value?.close();
+    wsRef.value = null;
   });
 
   const showCross = computed(() => ['relaxation', 'cue', 'execution'].includes(currentState.value));
@@ -299,15 +403,17 @@ export const useBciCalibration = () => {
   const showBlank = computed(() => ['rest', 'iti'].includes(currentState.value));
 
   return {
-    ws,
+    ws: wsRef,
     currentState,
     currentTrial,
     totalTrialsRef,
     activeCue,
     isFullscreen,
     protocolEndReason,
+    tutorialMode,
     containerRef,
     runProtocol,
+    runTutorial,
     abortProtocol,
     resetSession,
     showCross,

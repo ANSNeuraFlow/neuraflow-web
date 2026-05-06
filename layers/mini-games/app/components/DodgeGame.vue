@@ -16,6 +16,7 @@ const { t } = useI18n();
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const containerRef = ref<HTMLDivElement | null>(null);
+const isFullscreen = ref(false);
 
 const {
   gameState,
@@ -45,16 +46,45 @@ const resizeCanvas = () => {
   handleResize();
 };
 
+const toggleFullscreen = async () => {
+  if (!containerRef.value) return;
+  try {
+    if (!document.fullscreenElement) {
+      await containerRef.value.requestFullscreen();
+    } else {
+      await document.exitFullscreen();
+    }
+  } catch {
+    //
+  }
+};
+
+const onFullscreenChange = () => {
+  isFullscreen.value = !!document.fullscreenElement;
+};
+
 const handleKeyDown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape') {
+    if (document.fullscreenElement) {
+      e.preventDefault();
+      void document.exitFullscreen();
+      return;
+    }
+    e.preventDefault();
+    emit('close');
+    return;
+  }
+  if ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.metaKey) {
+    e.preventDefault();
+    void toggleFullscreen();
+    return;
+  }
   if (e.key === 'ArrowLeft') {
     e.preventDefault();
     moveLeft();
   } else if (e.key === 'ArrowRight') {
     e.preventDefault();
     moveRight();
-  } else if (e.key === 'Escape') {
-    e.preventDefault();
-    emit('close');
   } else if ((e.key === 'r' || e.key === 'R') && gameState.value === 'gameover') {
     e.preventDefault();
     restart();
@@ -71,6 +101,7 @@ onMounted(() => {
   const c = canvasRef.value;
   if (c) initialize(c);
   window.addEventListener('keydown', handleKeyDown);
+  document.addEventListener('fullscreenchange', onFullscreenChange);
   if (containerRef.value) {
     resizeObserver = new ResizeObserver(resizeCanvas);
     resizeObserver.observe(containerRef.value);
@@ -80,6 +111,7 @@ onMounted(() => {
 onUnmounted(() => {
   stop();
   window.removeEventListener('keydown', handleKeyDown);
+  document.removeEventListener('fullscreenchange', onFullscreenChange);
   resizeObserver?.disconnect();
 });
 </script>
@@ -103,9 +135,11 @@ onUnmounted(() => {
         <span class="max-sm:sr-only">{{ t('minigames.dodge.backShort') }}</span>
       </AppButton>
 
-      <div class="gap-x-md sm:gap-x-lg ml-auto flex items-center font-semibold tabular-nums">
+      <div
+        class="text-body-x-sm gap-x-md sm:gap-x-lg sm:text-body-sm ml-auto flex flex-wrap items-center justify-end font-semibold tabular-nums leading-tight"
+      >
         <span>{{ t('minigames.dodge.scoreShort', { score }) }}</span>
-        <span class="text-body-x-sm sm:text-body-sm text-on-surface-dim font-medium">
+        <span class="text-on-surface-dim font-medium">
           {{ t('minigames.dodge.bestShort', { score: highScore }) }}
         </span>
         <span
@@ -114,7 +148,7 @@ onUnmounted(() => {
           aria-live="polite"
           >★</span
         >
-        <div class="gap-x-sm text-body-x-sm text-on-surface-dim flex w-full items-center font-medium sm:ml-0 sm:w-auto">
+        <div class="gap-x-sm text-on-surface-dim flex w-full items-center font-medium sm:ml-0 sm:w-auto">
           <span
             class="size-2 shrink-0 rounded-full"
             :class="isConnected ? 'bg-green-400' : 'bg-red-500'"
@@ -132,13 +166,27 @@ onUnmounted(() => {
             >BCI: —</span
           >
         </div>
+
+        <AppButton
+          variant="ghost"
+          size="sm"
+          class="text-on-surface hover:text-on-surface"
+          :aria-label="isFullscreen ? t('minigames.dodge.fullscreen.exit') : t('minigames.dodge.fullscreen.enter')"
+          @click="toggleFullscreen"
+        >
+          <Icon
+            :name="isFullscreen ? 'lucide:minimize-2' : 'lucide:maximize-2'"
+            size="1.3rem"
+            class="text-on-surface"
+          />
+        </AppButton>
       </div>
     </div>
 
     <div class="w-full min-w-0">
       <div
         ref="containerRef"
-        class="border-on-surface/[0.12] relative min-h-[min(78dvh,52rem)] w-full overflow-hidden rounded-2xl border"
+        class="bg-surface-container border-on-surface/[0.12] relative min-h-[min(78dvh,52rem)] w-full overflow-hidden rounded-2xl border"
       >
         <canvas
           ref="canvasRef"

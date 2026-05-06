@@ -37,6 +37,10 @@
         "medium": "Wyważone tempo — dobry punkt startowy dla większości graczy."
       },
       "finalScore": "Przeżyłeś {score} sekund",
+      "fullscreen": {
+        "enter": "Pełny ekran",
+        "exit": "Wyjdź z pełnego ekranu"
+      },
       "gameOver": "Koniec gry!",
       "goToGame": "Przejdź do gry",
       "goToGameHint": "Wybierz poziom trudności i kliknij start. Model możesz skonfigurować później.",
