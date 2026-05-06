@@ -40,7 +40,8 @@ export const useRegister = () => {
         lastName: values.lastName,
       });
 
-      await navigateTo(localePath('/'));
+      const loginUrl = `${localePath('/login')}?registered=true`;
+      await navigateTo(loginUrl);
     } catch (err: unknown) {
       const error = err as { data?: { message?: string }; status?: number };
 

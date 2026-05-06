@@ -15,10 +15,50 @@
       "startHint": "Wejdź w ćwiczenie od razu albo uprzednio uruchom model BCI w panelu obok.",
       "startSession": "Rozpocznij sesję"
     },
+    "forwardGate": {
+      "about": "Bramki zbliżają się z góry — steruj sferą w otwór wyobrażeniami ruchowymi (lewa/prawa dłoń, ten sam układ co Neuro-Balance). Przejście zaliczasz, gdy sfera jest w szczelinie w momencie krzyżowania się z bramką; zielony podkreśla dopasowanie tylko na aktualnej bramce.",
+      "backShort": "Wstecz",
+      "complete": {
+        "back": "Wróć do ustawień",
+        "subtitle": "Przeszedłeś przez {n} z {total} bramek (skuteczność {pct}%).",
+        "title": "Sesja zakończona"
+      },
+      "config": {
+        "durationDesc": {
+          "10": "Standardowa sesja treningowa — zalecana dla większości użytkowników.",
+          "15": "Sesja zaawansowana — wymaga wysokiej koncentracji przez cały czas.",
+          "5": "Krótka sesja — dobre wprowadzenie i codzienna rozgrzewka."
+        },
+        "durationLabel": "{min} min",
+        "selectDuration": "Czas sesji",
+        "subtitle": "Wybierz długość sesji przed startem",
+        "title": "Ustawienia sesji"
+      },
+      "failedPasses": "Pudła: {n}",
+      "fullscreen": {
+        "enter": "Pełny ekran",
+        "exit": "Wyjdź z pełnego ekranu"
+      },
+      "goToExercise": "Rozpocznij ćwiczenie",
+      "goToExerciseHint": "Model BCI możesz skonfigurować teraz lub uruchomić później.",
+      "kicker": "Ćwiczenie",
+      "pageTitle": "Forward Gate Control — NeuraFlow",
+      "ready": {
+        "start": "Start",
+        "subtitle": "Naciśnij Start (Spacja). Bramki nadjeżdżają z góry — strzałkami ← → lub BCI wjedź w każdą szczelinę. Zielony oznacza dopasowanie do bieżącej bramki.",
+        "title": "Gotowi?"
+      },
+      "sessionTime": "Czas: {s} s",
+      "successfulPasses": "Przejścia: {n}",
+      "title": "Forward Gate Control"
+    },
     "hub": {
       "cardBlockSlideDescription": "Tak trenujesz czytelną intencję i spokojne utrzymanie uwagi, zanim przejdziesz do dłuższej sesji albo pomiaru.",
       "cardBlockSlideLead": "Sterujesz jednym klockiem na boki. Wyobraź sobie, że lekko pchniesz go w lewo albo w prawo albo sprowadzisz na środek.",
       "cardBlockSlideTitle": "Przesuń klocek",
+      "cardForwardGateDescription": "Wcześnie ustawiasz się w otworze — liczy się spokojna kontrola pozioma, nie czysty refleks.",
+      "cardForwardGateLead": "Bramki zjeżdżają z góry; wyrównuj się z każdą szczeliną tak jak w Neuro-Balance.",
+      "cardForwardGateTitle": "Forward Gate Control",
       "cardNeuroBalanceDescription": "Ćwiczenie fal Mu/Beta — trenujesz długotrwałe skupienie i stabilny sygnał BCI bez elementów rozrywkowych.",
       "cardNeuroBalanceLead": "Utrzymuj lewitującą sferę w centrum pola intencją ruchu dłoni.",
       "cardNeuroBalanceTitle": "Neuro-Balance",
@@ -33,6 +73,7 @@
     "navigation": {
       "blockSlide": "Przesuń klocek",
       "closeMenu": "Zamknij menu",
+      "forwardGate": "Forward Gate",
       "hub": "Przegląd",
       "neuroBalance": "Neuro-Balance",
       "openMenu": "Otwórz menu",

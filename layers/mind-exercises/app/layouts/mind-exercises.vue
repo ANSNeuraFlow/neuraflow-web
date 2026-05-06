@@ -2,7 +2,7 @@
 const head = useLocaleHead();
 const route = useRoute();
 const { t, te } = useI18n();
-const localePath = useLocalePath();
+const localePath = useLocalePath() as unknown as (path: string) => string;
 const isMobileSidebarOpen = ref(false);
 const isDark = ref(true);
 
@@ -26,7 +26,11 @@ useHead({
 });
 
 type MindExerciseNavItem = {
-  path: '/mind-exercises' | '/mind-exercises/slide-block' | '/mind-exercises/neuro-balance';
+  path:
+    | '/mind-exercises'
+    | '/mind-exercises/slide-block'
+    | '/mind-exercises/neuro-balance'
+    | '/mind-exercises/forward-gate';
   label: string;
   icon: string;
 };
@@ -46,6 +50,11 @@ const mindExerciseNavItems = computed<MindExerciseNavItem[]>(() => [
     path: '/mind-exercises/neuro-balance',
     label: t('mindExercises.navigation.neuroBalance'),
     icon: 'lucide:brain-circuit',
+  },
+  {
+    path: '/mind-exercises/forward-gate',
+    label: t('mindExercises.navigation.forwardGate'),
+    icon: 'lucide:milestone',
   },
 ]);
 
