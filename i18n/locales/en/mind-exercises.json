@@ -15,10 +15,50 @@
       "startHint": "Start the drill now, or launch a BCI model in the panel first.",
       "startSession": "Start session"
     },
+    "forwardGate": {
+      "about": "Gates approach from above — steer the sphere into each opening with motor imagery (left/right hand, same mapping as Neuro-Balance). You pass when the sphere crosses the gate inside the gap; green marks your alignment on the active gate only.",
+      "backShort": "Back",
+      "complete": {
+        "back": "Back to settings",
+        "subtitle": "You passed {n} out of {total} gates ({pct}% success rate).",
+        "title": "Session complete"
+      },
+      "config": {
+        "durationDesc": {
+          "10": "Standard training session — recommended for most users.",
+          "15": "Advanced run — expect sustained focus for the full duration.",
+          "5": "Short run — a good warm-up and daily habit."
+        },
+        "durationLabel": "{min} min",
+        "selectDuration": "Session length",
+        "subtitle": "Choose session length before you start",
+        "title": "Session settings"
+      },
+      "failedPasses": "Missed: {n}",
+      "fullscreen": {
+        "enter": "Full screen",
+        "exit": "Exit full screen"
+      },
+      "goToExercise": "Start exercise",
+      "goToExerciseHint": "You can set up the BCI model now or launch it later.",
+      "kicker": "Exercise",
+      "pageTitle": "Forward Gate Control — NeuraFlow",
+      "ready": {
+        "start": "Start",
+        "subtitle": "Press Start (Space). Gates scroll from above — use ← → or BCI to steer into each gap. Green shows you are aligned with the current gate.",
+        "title": "Ready?"
+      },
+      "sessionTime": "Elapsed: {s} s",
+      "successfulPasses": "Passed: {n}",
+      "title": "Forward Gate Control"
+    },
     "hub": {
       "cardBlockSlideDescription": "That is how you train a clear intention and a calm, steady focus before a longer run or a recording.",
       "cardBlockSlideLead": "You steer a single block side to side. Imagine a gentle nudge left, right, or back to center.",
       "cardBlockSlideTitle": "Slide the block",
+      "cardForwardGateDescription": "Steer through openings before they reach you — smooth horizontal control matters more than reflex.",
+      "cardForwardGateLead": "Gates drift toward you from above; align with each gap using motor imagery (same as Neuro-Balance).",
+      "cardForwardGateTitle": "Forward Gate Control",
       "cardNeuroBalanceDescription": "Mu/Beta focus training: you practice sustained attention and a stable BCI signal without game-like chrome.",
       "cardNeuroBalanceLead": "Keep a levitating sphere in the center using motor imagery of your hands.",
       "cardNeuroBalanceTitle": "Neuro-Balance",
@@ -33,6 +73,7 @@
     "navigation": {
       "blockSlide": "Slide the block",
       "closeMenu": "Close menu",
+      "forwardGate": "Forward Gate",
       "hub": "Overview",
       "neuroBalance": "Neuro-Balance",
       "openMenu": "Open menu",

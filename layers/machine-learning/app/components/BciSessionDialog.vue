@@ -9,10 +9,13 @@ const emit = defineEmits<{
 
 type DirectionMode = '4way' | '2way';
 
+const DEFAULT_DIRECTION_MODE: DirectionMode = '2way';
+const DEFAULT_TRIALS_PER_DIRECTION_STR = '30';
+
 const sessionNameInput = ref('');
 const sessionNameError = ref('');
-const directionMode = ref<DirectionMode>('4way');
-const trialsPerDirectionStr = ref('10');
+const directionMode = ref<DirectionMode>(DEFAULT_DIRECTION_MODE);
+const trialsPerDirectionStr = ref(DEFAULT_TRIALS_PER_DIRECTION_STR);
 const trialsError = ref('');
 
 const trialsPerDirection = computed(() => {
@@ -37,16 +40,16 @@ const trialsHint = computed(() => {
 
 const directionModeOptions: { value: DirectionMode; label: string; icon: string; description: string }[] = [
   {
-    value: '4way',
-    label: t('machineLearning.bci.session.dir4wayLabel'),
-    icon: 'material-symbols:open-with-rounded',
-    description: t('machineLearning.bci.session.dir4wayDesc'),
-  },
-  {
     value: '2way',
     label: t('machineLearning.bci.session.dir2wayLabel'),
     icon: 'material-symbols:swap-horiz-rounded',
     description: t('machineLearning.bci.session.dir2wayDesc'),
+  },
+  {
+    value: '4way',
+    label: t('machineLearning.bci.session.dir4wayLabel'),
+    icon: 'material-symbols:open-with-rounded',
+    description: t('machineLearning.bci.session.dir4wayDesc'),
   },
 ];
 
@@ -57,6 +60,8 @@ watch(
       sessionNameInput.value = '';
       sessionNameError.value = '';
       trialsError.value = '';
+      directionMode.value = DEFAULT_DIRECTION_MODE;
+      trialsPerDirectionStr.value = DEFAULT_TRIALS_PER_DIRECTION_STR;
     }
   },
 );

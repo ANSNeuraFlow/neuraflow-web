@@ -37,6 +37,10 @@
         "medium": "Balanced pace — a good starting point for most players."
       },
       "finalScore": "You survived {score} seconds",
+      "fullscreen": {
+        "enter": "Full screen",
+        "exit": "Exit full screen"
+      },
       "gameOver": "Game Over!",
       "goToGame": "Go to game",
       "goToGameHint": "Pick a difficulty and start. You can configure the model later.",

@@ -18,8 +18,10 @@ function notifyPayloadListeners(payload: BciCommandPayload) {
 
 export default defineNuxtPlugin(() => {
   const {
-    public: { bciWsUrl },
+    public: { bciWsUrl: bciWsUrlRaw },
   } = useRuntimeConfig();
+
+  const bciWsUrl = String(bciWsUrlRaw);
 
   const currentCommand = useState<BciAction | null>(BCI_STATE_KEYS.command, () => null);
   const currentConfidence = useState<number>(BCI_STATE_KEYS.confidence, () => 0);
@@ -70,7 +72,13 @@ export default defineNuxtPlugin(() => {
       reconnectTimer = null;
     }
 
-    ws = new WebSocket(bciWsUrl);
+    try {
+      ws = new WebSocket(bciWsUrl);
+    } catch {
+      connectionError.value = `WebSocket constructor failed (${bciWsUrl})`;
+      scheduleReconnect();
+      return;
+    }
 
     ws.onopen = () => {
       isConnected.value = true;
