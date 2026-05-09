@@ -12,8 +12,16 @@ export default defineNuxtConfig({
     '/remote/game/': { redirect: { to: '/mind-exercises/slide-block', statusCode: 302 } },
     '/drone': { redirect: { to: '/remote', statusCode: 302 } },
     '/drone/': { redirect: { to: '/remote', statusCode: 302 } },
-    '/drone/eeg': { redirect: { to: '/remote/eeg', statusCode: 302 } },
-    '/drone/eeg/': { redirect: { to: '/remote/eeg', statusCode: 302 } },
+    '/drone/eeg': { redirect: { to: '/remote', statusCode: 302 } },
+    '/drone/eeg/': { redirect: { to: '/remote', statusCode: 302 } },
+    '/remote/eeg': { redirect: { to: '/remote', statusCode: 302 } },
+    '/remote/eeg/': { redirect: { to: '/remote', statusCode: 302 } },
+    '/remote/drone/bci': { redirect: { to: '/remote/drone', statusCode: 302 } },
+    '/remote/drone/bci/': { redirect: { to: '/remote/drone', statusCode: 302 } },
+    '/remote/drone/manual': { redirect: { to: '/remote/drone', statusCode: 302 } },
+    '/remote/drone/manual/': { redirect: { to: '/remote/drone', statusCode: 302 } },
+    '/remote/drone/keyboard': { redirect: { to: '/remote/drone', statusCode: 302 } },
+    '/remote/drone/keyboard/': { redirect: { to: '/remote/drone', statusCode: 302 } },
   },
   components: [
     {

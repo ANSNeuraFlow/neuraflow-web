@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AppStatusBadgeProps } from '#layers/neuraflow-core-layer/app/components/app-status-badge/index';
 
-import type { DeploymentStatus } from '../models/model-deployment.domain';
+import type { DeploymentStatus } from '../../models/model-deployment.domain';
 
 defineProps<{ status: DeploymentStatus }>();
 

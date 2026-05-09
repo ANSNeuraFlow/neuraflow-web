@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRemoteSession } from '../composables/useRemoteSession';
+import { useRemoteSession } from '../../composables/useRemoteSession';
 
 const props = defineProps<{
   vehicleType: 'drone' | 'car';

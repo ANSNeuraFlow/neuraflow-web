@@ -59,29 +59,98 @@
         "STOPPING": "Stopping"
       }
     },
+    "droneConfig": {
+      "controlTileSubtitle": "Pick a mode before you configure the sections below.",
+      "controlTileTitle": "Drone control",
+      "introSubtitle": "Set up your flight options and then the sections below. When you are ready, start the control session at the bottom of the page.",
+      "modeFootnoteBci": "BCI mode: choose a trained model, deploy it in NeuraFlow, then fly using the brain–computer signal from the interface. The session button unlocks only once the model is running.",
+      "modeFootnoteManual": "Manual mode: fly with on-screen arrows — no BCI model or deployment. Extra settings stay lightweight so you can jump into a session quickly after what you set up below.",
+      "segmentLabel": "Control source"
+    },
+    "droneControl": {
+      "camera": {
+        "label": "Camera",
+        "noSignal": "No camera signal",
+        "noSignalHint": "Connect a camera to enable the live feed."
+      },
+      "controls": {
+        "arm": "Arm",
+        "armedStatus": "Armed",
+        "backward": "Backward",
+        "disarm": "Disarm",
+        "disarmedStatus": "Disarmed",
+        "flyingStatus": "In flight",
+        "forward": "Forward",
+        "groundedStatus": "Grounded",
+        "keyboardHint": "Arrow keys or WASD",
+        "land": "Land",
+        "left": "Left",
+        "needsArming": "Arm the drone first",
+        "powerTitle": "Power",
+        "right": "Right",
+        "takeoff": "Takeoff",
+        "title": "Direction"
+      },
+      "telemetry": {
+        "altitude": "Altitude",
+        "battery": "Battery",
+        "distanceFromHome": "Distance",
+        "gpsNoFix": "No GPS fix",
+        "gpsPosition": "GPS Position",
+        "heading": "Heading",
+        "na": "—",
+        "signal": "Signal",
+        "speed": "Speed",
+        "statusConnected": "Connected",
+        "statusDisconnected": "Disconnected",
+        "title": "Telemetry"
+      },
+      "timeline": {
+        "clear": "Clear",
+        "commands": {
+          "arm": "Armed",
+          "disarm": "Disarmed",
+          "land": "Landing",
+          "move_backward": "Move backward",
+          "move_forward": "Move forward",
+          "move_left": "Move left",
+          "move_right": "Move right",
+          "takeoff": "Takeoff"
+        },
+        "empty": "No commands issued yet.",
+        "title": "Command log"
+      }
+    },
+    "droneHub": {
+      "bciDescription": "Pick a model, deploy it, and run a BCI session.",
+      "bciKicker": "BCI",
+      "bciTitle": "BCI control",
+      "manualDescription": "Manual flying with on-screen arrow controls. No BCI model.",
+      "manualKicker": "Manual",
+      "manualTitle": "Manual control"
+    },
+    "droneManual": {
+      "configPlaceholder": "On-screen arrow control settings will appear here — no BCI required.",
+      "kicker": "Manual",
+      "pageTitle": "Drone — manual control — NeuraFlow",
+      "startHint": "You can start a session immediately — no BCI model deployment.",
+      "title": "Manual control"
+    },
     "dronePage": {
       "body": "Drone control and related BCI features.",
       "kicker": "Drone",
       "pageTitle": "Drone control — NeuraFlow",
       "title": "Drone control"
     },
-    "eeg": {
-      "kicker": "EEG",
-      "pageTitle": "EEG charts — NeuraFlow",
-      "placeholder": "Signal visualization will appear here — module under construction.",
-      "subtitle": "A dedicated EEG view for the remote-control workspace, not tied to a specific vehicle.",
-      "title": "EEG charts"
-    },
     "hub": {
       "carDescription": "Drive an RC car from the NeuraFlow interface.",
       "carTitle": "RC car",
       "droneDescription": "Fly the drone from NeuraFlow.",
       "droneTitle": "Drone",
-      "eegDescription": "EEG overview for the whole remote-control module.",
-      "eegTitle": "EEG charts",
+      "kicker": "RC vehicles",
       "open": "Open",
-      "pageTitle": "Vehicle control — NeuraFlow",
-      "subtitle": "Pick a vehicle or open the EEG section. Mind exercises (BCI, focus) live in a separate area.",
+      "pageTitle": "RC vehicles — overview — NeuraFlow",
+      "subtitle": "Pick a vehicle. Mind exercises (BCI, focus) live in a separate area.",
       "title": "Vehicle control"
     },
     "meta": {
@@ -91,9 +160,9 @@
       "car": "RC car",
       "closeMenu": "Close menu",
       "drone": "Drone",
-      "eeg": "EEG",
+      "hub": "Overview",
       "openMenu": "Open menu",
-      "section": "Control"
+      "section": "RC vehicles"
     },
     "session": {
       "wip": "XXXX"

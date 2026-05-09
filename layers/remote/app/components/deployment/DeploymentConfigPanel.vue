@@ -2,7 +2,7 @@
 import type { MlModel } from '#layers/ml-models/app/models/ml-model.domain';
 import type { AppSelectOption } from '#layers/neuraflow-core-layer/app/components/app-select/index';
 
-import type { ModelDeployment } from '../models/model-deployment.domain';
+import type { ModelDeployment } from '../../models/model-deployment.domain';
 
 const props = defineProps<{
   readyModels: MlModel[];
