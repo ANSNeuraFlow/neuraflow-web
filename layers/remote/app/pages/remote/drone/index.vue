@@ -3,9 +3,10 @@
 definePageMeta({
   layout: 'remote',
   title: 'remote.dronePage.pageTitle',
+  pageTransition: false,
 });
 </script>
 
 <template>
-  <RemoteVehicleSessionView vehicle-type="drone" />
+  <RemoteDroneSessionView />
 </template>

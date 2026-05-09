@@ -18,7 +18,7 @@
       "startSession": "Rozpocznij sesję",
       "vehicle": {
         "car": "Samochód RC",
-        "drone": "Dron"
+        "drone": "Sesja sterowania dronem"
       }
     },
     "deployment": {
@@ -59,29 +59,98 @@
         "STOPPING": "Zatrzymywanie"
       }
     },
+    "droneConfig": {
+      "controlTileSubtitle": "Wybierz tryb przed konfiguracją szczegółów poniżej.",
+      "controlTileTitle": "Sterowanie dronem",
+      "introSubtitle": "Ustawiasz tu opcje lotu i — według wyboru — konfigurację pod spodem. Na końcu strony uruchamiasz sesję sterowania.",
+      "modeFootnoteBci": "Wybór wytrenowanego modelu, uruchomienie wdrożenia w NeuraFlow i dopiero potem sterowanie dronem sygnałem z interfejsu. Sesję zaczniesz dopiero gdy model będzie w stanie „działa”.",
+      "modeFootnoteManual": "Sterowanie strzałkami na ekranie bez modelu BCI i bez wdrożenia. Konfiguracja dodatków jest uproszczona — możesz przejść do sesji od razu po ustawieniu tego, co poniżej.",
+      "segmentLabel": "Źródło sterowania"
+    },
+    "droneControl": {
+      "camera": {
+        "label": "Kamera",
+        "noSignal": "Brak sygnału z kamery",
+        "noSignalHint": "Podłącz kamerę, aby wyświetlić podgląd na żywo."
+      },
+      "controls": {
+        "arm": "Uzbrój",
+        "armedStatus": "Uzbrojony",
+        "backward": "Tył",
+        "disarm": "Rozbrój",
+        "disarmedStatus": "Nieuzbrojony",
+        "flyingStatus": "W locie",
+        "forward": "Przód",
+        "groundedStatus": "Na ziemi",
+        "keyboardHint": "Strzałki lub WASD",
+        "land": "Lądowanie",
+        "left": "Lewo",
+        "needsArming": "Najpierw uzbrój drona",
+        "powerTitle": "Zasilanie",
+        "right": "Prawo",
+        "takeoff": "Wzlot",
+        "title": "Kierunek"
+      },
+      "telemetry": {
+        "altitude": "Wysokość",
+        "battery": "Bateria",
+        "distanceFromHome": "Odległość",
+        "gpsNoFix": "Brak sygnału GPS",
+        "gpsPosition": "Pozycja GPS",
+        "heading": "Kierunek",
+        "na": "—",
+        "signal": "Sygnał",
+        "speed": "Prędkość",
+        "statusConnected": "Połączono",
+        "statusDisconnected": "Rozłączono",
+        "title": "Telemetria"
+      },
+      "timeline": {
+        "clear": "Wyczyść",
+        "commands": {
+          "arm": "Uzbrojono",
+          "disarm": "Rozbrojono",
+          "land": "Lądowanie",
+          "move_backward": "Ruch do tyłu",
+          "move_forward": "Ruch do przodu",
+          "move_left": "Ruch w lewo",
+          "move_right": "Ruch w prawo",
+          "takeoff": "Wzlot"
+        },
+        "empty": "Nie wydano jeszcze żadnych poleceń.",
+        "title": "Dziennik poleceń"
+      }
+    },
+    "droneHub": {
+      "bciDescription": "Wybór modelu, wdrożenie i sesja sterowania sygnałem BCI.",
+      "bciKicker": "BCI",
+      "bciTitle": "Sterowanie przez BCI",
+      "manualDescription": "Sterowanie ręczne: strzałki na ekranie. Bez modelu BCI.",
+      "manualKicker": "Ręczne",
+      "manualTitle": "Sterowanie ręczne"
+    },
+    "droneManual": {
+      "configPlaceholder": "Tu pojawi się konfiguracja sterowania strzałkami na ekranie — bez BCI.",
+      "kicker": "Ręczne",
+      "pageTitle": "Dron — sterowanie ręczne — NeuraFlow",
+      "startHint": "Możesz od razu rozpocząć sesję — bez wdrażania modelu BCI.",
+      "title": "Sterowanie ręczne"
+    },
     "dronePage": {
       "body": "Panel sterowania dronem i powiązanymi funkcjami BCI.",
       "kicker": "Dron",
       "pageTitle": "Sterowanie dronem — NeuraFlow",
       "title": "Sterowanie dronem"
     },
-    "eeg": {
-      "kicker": "EEG",
-      "pageTitle": "Wykresy EEG — NeuraFlow",
-      "placeholder": "Tu pojawi się wizualizacja sygnału — moduł w przygotowaniu.",
-      "subtitle": "Osobna przestrzeń na podgląd i analizę EEG w module sterowania zdalnego (bez powiązania z konkretnym pojazdem).",
-      "title": "Wykresy EEG"
-    },
     "hub": {
       "carDescription": "Sterowanie pojazdem zdalnie sterowanym z interfejsu NeuraFlow.",
       "carTitle": "Samochód RC",
       "droneDescription": "Sterowanie dronem z poziomu NeuraFlow.",
       "droneTitle": "Dron",
-      "eegDescription": "Podgląd EEG dla całego modułu zdalnego sterowania.",
-      "eegTitle": "Wykresy EEG",
+      "kicker": "Pojazdy RC",
       "open": "Otwórz",
-      "pageTitle": "Sterowanie pojazdami — NeuraFlow",
-      "subtitle": "Wybierz pojazd albo przejdź do sekcji EEG. Ćwiczenia umysłu (BCI, koncentracja) są w osobnej sekcji.",
+      "pageTitle": "Pojazdy RC — przegląd — NeuraFlow",
+      "subtitle": "Wybierz pojazd. Ćwiczenia umysłu (BCI, koncentracja) są w osobnej sekcji.",
       "title": "Sterowanie pojazdami"
     },
     "meta": {
@@ -91,9 +160,9 @@
       "car": "Samochód RC",
       "closeMenu": "Zamknij menu",
       "drone": "Dron",
-      "eeg": "EEG",
+      "hub": "Przegląd",
       "openMenu": "Otwórz menu",
-      "section": "Sterowanie"
+      "section": "Pojazdy RC"
     },
     "session": {
       "wip": "XXXX"

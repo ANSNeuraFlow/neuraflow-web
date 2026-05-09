@@ -26,12 +26,17 @@ useHead({
 });
 
 type RemoteNavItem = {
-  path: '/remote/drone' | '/remote/car' | '/remote/eeg';
+  path: '/remote' | '/remote/drone' | '/remote/car';
   label: string;
   icon: string;
 };
 
 const remoteNavItems = computed<RemoteNavItem[]>(() => [
+  {
+    path: '/remote',
+    label: t('remote.navigation.hub'),
+    icon: 'lucide:layout-grid',
+  },
   {
     path: '/remote/drone',
     label: t('remote.navigation.drone'),
@@ -42,18 +47,23 @@ const remoteNavItems = computed<RemoteNavItem[]>(() => [
     label: t('remote.navigation.car'),
     icon: 'lucide:car',
   },
-  {
-    path: '/remote/eeg',
-    label: t('remote.navigation.eeg'),
-    icon: 'lucide:brain-circuit',
-  },
 ]);
 
 const normalizedPath = computed(() => route.path.replace(/\/$/, '') || '/');
 
 const isNavActive = (item: RemoteNavItem): boolean => {
+  const path = normalizedPath.value;
   const target = item.path.replace(/\/$/, '') || '/';
-  return normalizedPath.value === target;
+  if (item.path === '/remote') {
+    return path === '/remote';
+  }
+  if (item.path === '/remote/drone') {
+    return path === target || path.startsWith(`${target}/`);
+  }
+  if (item.path === '/remote/car') {
+    return path === target || path.startsWith(`${target}/`);
+  }
+  return false;
 };
 
 const toggleTheme = () => {
@@ -292,7 +302,7 @@ onBeforeUnmount(() => {
         </aside>
 
         <main
-          class="px-x-lg sm:px-xx-lg pb-xx-lg pt-x-lg min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain"
+          class="px-x-lg sm:px-xx-lg pb-xx-lg pt-x-lg min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain [scrollbar-gutter:stable]"
         >
           <div class="mx-auto min-h-0 w-full max-w-[132rem]">
             <slot />
