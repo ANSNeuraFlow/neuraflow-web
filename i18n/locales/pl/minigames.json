@@ -39,6 +39,7 @@
       "finalScore": "Przeżyłeś {score} sekund",
       "fullscreen": {
         "enter": "Pełny ekran",
+        "error": "Nie udało się przełączyć pełnego ekranu.",
         "exit": "Wyjdź z pełnego ekranu"
       },
       "gameOver": "Koniec gry!",

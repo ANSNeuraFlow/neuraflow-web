@@ -39,6 +39,7 @@
       "finalScore": "You survived {score} seconds",
       "fullscreen": {
         "enter": "Full screen",
+        "error": "Couldn't toggle full screen.",
         "exit": "Exit full screen"
       },
       "gameOver": "Game Over!",

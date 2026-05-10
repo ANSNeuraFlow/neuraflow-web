@@ -2,7 +2,7 @@
 const head = useLocaleHead();
 const route = useRoute();
 const { t, te } = useI18n();
-const localePath = useLocalePath() as unknown as (path: string) => string;
+const localePath = useLocalePath();
 const isMobileSidebarOpen = ref(false);
 const isDark = ref(true);
 

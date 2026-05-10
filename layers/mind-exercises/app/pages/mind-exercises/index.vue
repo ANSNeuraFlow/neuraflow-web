@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 const { t } = useI18n();
-const localePath = useLocalePath() as unknown as (path: string) => string;
+const localePath = useLocalePath();
 
 definePageMeta({
   layout: 'mind-exercises',
