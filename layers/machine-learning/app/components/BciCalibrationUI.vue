@@ -72,7 +72,7 @@ const onTutorialStart = async () => {
     :class="[
       currentState !== 'idle'
         ? 'fixed inset-0 z-[9999] bg-black'
-        : 'bg-surface-container border-outline min-h-[70vh] border',
+        : 'border-on-surface/[0.08] bg-on-surface/[0.03] min-h-[32rem] border backdrop-blur-sm',
     ]"
   >
     <BciIdlePanel
