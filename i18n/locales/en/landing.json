@@ -105,7 +105,7 @@
         "apiDocs": "API Docs",
         "features": "Features",
         "howItWorks": "How it works",
-        "machineLearning": "Machine learning",
+        "machineLearning": "EEG Sessions",
         "tech": "Technology"
       },
       "privacy": "Privacy policy",
@@ -206,7 +206,7 @@
       "howItWorks": "How it works",
       "login": "Login",
       "logout": "Log out",
-      "machineLearning": "Machine learning",
+      "machineLearning": "EEG Sessions",
       "mindExercises": "Mind exercises",
       "minigames": "Minigames",
       "openMenu": "Open navigation menu",
