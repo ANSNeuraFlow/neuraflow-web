@@ -17,6 +17,8 @@ const { t } = useI18n();
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const containerRef = ref<HTMLDivElement | null>(null);
 const isFullscreen = ref(false);
+const fullscreenError = ref<string | null>(null);
+let fullscreenErrorTimer: ReturnType<typeof globalThis.setTimeout> | undefined;
 
 const {
   gameState,
@@ -48,14 +50,24 @@ const resizeCanvas = () => {
 
 const toggleFullscreen = async () => {
   if (!containerRef.value) return;
+  fullscreenError.value = null;
+  if (fullscreenErrorTimer !== undefined) {
+    clearTimeout(fullscreenErrorTimer);
+    fullscreenErrorTimer = undefined;
+  }
   try {
     if (!document.fullscreenElement) {
       await containerRef.value.requestFullscreen();
     } else {
       await document.exitFullscreen();
     }
-  } catch {
-    //
+  } catch (err) {
+    fullscreenError.value = t('minigames.dodge.fullscreen.error');
+    console.warn('[DodgeGame] fullscreen:', err);
+    fullscreenErrorTimer = globalThis.setTimeout(() => {
+      fullscreenError.value = null;
+      fullscreenErrorTimer = undefined;
+    }, 4000);
   }
 };
 
@@ -113,6 +125,7 @@ onUnmounted(() => {
   window.removeEventListener('keydown', handleKeyDown);
   document.removeEventListener('fullscreenchange', onFullscreenChange);
   resizeObserver?.disconnect();
+  if (fullscreenErrorTimer !== undefined) clearTimeout(fullscreenErrorTimer);
 });
 </script>
 
@@ -181,6 +194,13 @@ onUnmounted(() => {
           />
         </AppButton>
       </div>
+      <p
+        v-if="fullscreenError"
+        class="text-body-x-sm w-full basis-full font-medium text-amber-400"
+        role="alert"
+      >
+        {{ fullscreenError }}
+      </p>
     </div>
 
     <div class="w-full min-w-0">
