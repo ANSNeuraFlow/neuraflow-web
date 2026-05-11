@@ -91,6 +91,15 @@
         "takeoff": "Takeoff",
         "title": "Direction"
       },
+      "map": {
+        "ariaLabel": "Drone telemetry map",
+        "follow": "Follow",
+        "gpsFix": "GPS fix",
+        "noFix": "No GPS",
+        "recording": "Recording route",
+        "title": "Telemetry map",
+        "toggleFollow": "Toggle drone position tracking"
+      },
       "telemetry": {
         "altitude": "Altitude",
         "battery": "Battery",

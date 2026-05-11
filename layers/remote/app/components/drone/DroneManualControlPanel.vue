@@ -1,11 +1,33 @@
 <script setup lang="ts">
+import { toRefs } from 'vue';
+
 import { useDroneState } from '../../composables/useDroneState';
+import { useFlightPath } from '../../composables/useFlightPath';
 
 const emit = defineEmits<{
   endSession: [];
 }>();
 
 const drone = useDroneState();
+const flight = useFlightPath();
+const { flightPath, isTracking } = toRefs(flight);
+
+watch(drone.isFlying, (flying) => {
+  if (flying) {
+    flight.startTracking();
+    flight.addPoint(drone.telemetry);
+  } else {
+    flight.stopTracking();
+  }
+});
+
+watch(
+  () => ({
+    gpsLat: drone.telemetry.gpsLat,
+    gpsLon: drone.telemetry.gpsLon,
+  }),
+  () => flight.addPoint(drone.telemetry),
+);
 </script>
 
 <template>
@@ -38,5 +60,11 @@ const drone = useDroneState();
         @clear="drone.clearLog"
       />
     </div>
+
+    <DroneMap
+      :telemetry="drone.telemetry"
+      :flight-path="flightPath"
+      :is-tracking="isTracking"
+    />
   </div>
 </template>

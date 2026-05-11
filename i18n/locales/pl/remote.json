@@ -91,6 +91,15 @@
         "takeoff": "Wzlot",
         "title": "Kierunek"
       },
+      "map": {
+        "ariaLabel": "Mapa telemetryczna drona",
+        "follow": "Śledź",
+        "gpsFix": "GPS fix",
+        "noFix": "Brak GPS",
+        "recording": "Nagrywanie trasy",
+        "title": "Mapa telemetryczna",
+        "toggleFollow": "Przełącz śledzenie pozycji drona"
+      },
       "telemetry": {
         "altitude": "Wysokość",
         "battery": "Bateria",
