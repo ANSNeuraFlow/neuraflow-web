@@ -64,7 +64,6 @@ const baselineSeconds = computed(() => {
 </script>
 
 <template>
-  <!-- Layers are absolute so switching FOCUS/RELAX (cue vs task) does not reflow the fullscreen shell -->
   <div class="relative isolate h-full min-h-0 w-full overflow-hidden">
     <Transition
       enter-active-class="transition-opacity duration-300"
@@ -108,7 +107,6 @@ const baselineSeconds = computed(() => {
         key="cue"
         class="absolute inset-0 flex flex-col items-center justify-center gap-6 px-8 text-center"
       >
-        <!-- Stable slot: RELAX keeps the same layout box as FOCUS (+ hidden but reserved) -->
         <div
           class="pointer-events-none flex min-h-[13rem] items-center justify-center md:min-h-[18rem]"
           aria-hidden="true"
