@@ -19,6 +19,7 @@
       "name": "Nazwa",
       "noFile": "Niedostępna",
       "sessionId": "ID sesji",
+      "sessionKind": "Rodzaj treningu",
       "status": "Status",
       "title": "Szczegóły modelu",
       "trainedAt": "Wytrenowano",
@@ -41,6 +42,7 @@
       "actions": "Akcje",
       "empty": "Brak wytrenowanych modeli. Najpierw uruchom zadanie treningowe.",
       "name": "Nazwa",
+      "sessionKind": "Rodzaj treningu",
       "status": "Status",
       "trainedAt": "Wytrenowano"
     },

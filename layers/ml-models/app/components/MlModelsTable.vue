@@ -1,17 +1,32 @@
 <script setup lang="ts">
+import { resolveEegProtocolKindUi } from '#layers/eeg-sessions/app/constants/eeg-protocols.const';
+
 import type { MlModel, ModelStatus } from '../models/ml-model.domain';
 
-defineProps<{
-  models: MlModel[];
-  isLoading: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    models: MlModel[];
+    isLoading: boolean;
+    sessionProtocolById?: Record<string, string>;
+  }>(),
+  {
+    sessionProtocolById: () => ({}),
+  },
+);
 
 const emit = defineEmits<{
   deleteModel: [model: MlModel];
   viewDetails: [model: MlModel];
 }>();
 
-const { locale } = useI18n();
+const { locale, t } = useI18n();
+
+const modelTrainingKindLabel = (model: MlModel) => {
+  const proto = props.sessionProtocolById[model.sessionId];
+  if (!proto) return t('eegSessions.protocolKind.unknown');
+  const kind = resolveEegProtocolKindUi(proto);
+  return t(`eegSessions.protocolKind.${kind}`);
+};
 
 const formatDate = (dateStr: string | null) => {
   if (!dateStr) return '—';
@@ -69,6 +84,9 @@ const isTraining = (s: ModelStatus) => s === 'TRAINING';
           <th class="border-on-surface/10 py-sm pl-md min-w-0 border-b pr-0 font-medium">
             {{ $t('mlModels.table.name') }}
           </th>
+          <th class="border-on-surface/10 px-md py-sm whitespace-nowrap border-b font-medium">
+            {{ $t('mlModels.table.sessionKind') }}
+          </th>
           <th class="border-on-surface/10 py-sm pr-md whitespace-nowrap border-b pl-0 font-medium">
             {{ $t('mlModels.table.status') }}
           </th>
@@ -97,6 +115,10 @@ const isTraining = (s: ModelStatus) => s === 'TRAINING';
             >
               {{ model.name }}
             </span>
+          </td>
+
+          <td class="border-on-surface/[0.06] px-md py-sm text-body-sm text-on-surface-dim whitespace-nowrap border-b">
+            {{ modelTrainingKindLabel(model) }}
           </td>
 
           <td class="border-on-surface/[0.06] py-sm pr-md whitespace-nowrap border-b pl-0">
@@ -155,7 +177,7 @@ const isTraining = (s: ModelStatus) => s === 'TRAINING';
 
         <tr v-if="models.length === 0 && !isLoading">
           <td
-            colspan="5"
+            colspan="6"
             class="py-xx-lg text-body-md text-on-surface-dim text-center"
           >
             {{ $t('mlModels.table.empty') }}

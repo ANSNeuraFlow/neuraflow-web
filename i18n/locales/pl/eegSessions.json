@@ -34,7 +34,13 @@
       "protocol": "Wybierz protokół",
       "sessionName": "np. Pomiar poranny — osoba A"
     },
+    "protocolKind": {
+      "focus": "Skupienie",
+      "movement": "Ruch",
+      "unknown": "—"
+    },
     "protocols": {
+      "attention": "Skupienie",
       "move_backward": "Ruch w tył",
       "move_down": "Ruch w dół",
       "move_forward": "Ruch do przodu",
@@ -70,6 +76,7 @@
         "showing": "Widoczne {from}–{to} z {total}"
       },
       "protocol": "Protokół",
+      "sessionKind": "Rodzaj treningu",
       "sessionName": "Sesja",
       "status": "Status"
     },

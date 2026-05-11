@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useBciCalibration } from '../composables/useBciCalibration';
+import { useBciCalibration } from '../../composables/useBciCalibration';
 
 const emit = defineEmits<{
   finished: [];
