@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Map as LeafletMap, Marker, Polyline } from 'leaflet';
+import type { Map as LeafletMap, Marker, Polyline, TileLayer } from 'leaflet';
 import L from 'leaflet';
 
 import type { FlightPathPoint } from '../../composables/useFlightPath';
@@ -13,14 +13,29 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+const config = useRuntimeConfig();
+
+const TILE_ERROR_THRESHOLD = 3;
+const FALLBACK_SESSION_KEY = 'neuraflow-map-tile-source';
+
+const MAPTILER_ATTRIBUTION =
+  '&copy; <a href="https://www.maptiler.com/copyright/" target="_blank" rel="noopener">MapTiler</a>' +
+  ' &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>';
+
+const OSM_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const OSM_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>';
 
 const mapEl = ref<HTMLDivElement | null>(null);
 const autoFollow = ref(true);
+const tileBaseKind = ref<'maptiler' | 'osm'>('osm');
 
 let mapInstance: LeafletMap | null = null;
 let droneMarker: Marker | null = null;
 let flightPolyline: Polyline | null = null;
+let activeTileLayer: TileLayer | null = null;
 let resizeObserver: ResizeObserver | null = null;
+let tileErrorCount = 0;
 
 const currentLat = computed(() => props.telemetry.gpsLat ?? DEFAULT_MAP_CENTER.lat);
 const currentLng = computed(() => props.telemetry.gpsLon ?? DEFAULT_MAP_CENTER.lng);
@@ -67,21 +82,77 @@ function refreshPolyline() {
   flightPolyline?.setLatLngs(props.flightPath.map((p): [number, number] => [p.lat, p.lng]));
 }
 
+function makeOsmLayer(): TileLayer {
+  return L.tileLayer(OSM_URL, {
+    attribution: OSM_ATTRIBUTION,
+    maxZoom: 19,
+  });
+}
+
+function makeMapTilerSatelliteLayer(): TileLayer {
+  return L.tileLayer(`https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=${config.public.mapTilerApiKey}`, {
+    attribution: MAPTILER_ATTRIBUTION,
+    maxZoom: 22,
+  });
+}
+
+function switchToOsm(): void {
+  if (!mapInstance) return;
+  activeTileLayer?.remove();
+  activeTileLayer = makeOsmLayer().addTo(mapInstance);
+  tileBaseKind.value = 'osm';
+  tileErrorCount = 0;
+  try {
+    sessionStorage.setItem(FALLBACK_SESSION_KEY, 'osm');
+  } catch (err) {
+    if (import.meta.dev) {
+      console.warn('[DroneMap] sessionStorage.setItem failed (fallback flag not persisted)', err);
+    }
+  }
+}
+
+function initTileLayer(): void {
+  if (!mapInstance) return;
+
+  let useSessionFallback = false;
+  try {
+    useSessionFallback = sessionStorage.getItem(FALLBACK_SESSION_KEY) === 'osm';
+  } catch (err) {
+    useSessionFallback = false;
+    if (import.meta.dev) {
+      console.warn('[DroneMap] sessionStorage.getItem failed (assuming no OSM fallback flag)', err);
+    }
+  }
+
+  if (!config.public.mapTilerApiKey || useSessionFallback) {
+    activeTileLayer = makeOsmLayer().addTo(mapInstance);
+    tileBaseKind.value = 'osm';
+    return;
+  }
+
+  const layer = makeMapTilerSatelliteLayer();
+  layer.on('tileerror', () => {
+    tileErrorCount++;
+    if (tileErrorCount >= TILE_ERROR_THRESHOLD) {
+      switchToOsm();
+    }
+  });
+  activeTileLayer = layer;
+  layer.addTo(mapInstance);
+  tileBaseKind.value = 'maptiler';
+}
+
 onMounted(() => {
   if (!mapEl.value) return;
 
   mapInstance = L.map(mapEl.value, {
     center: [DEFAULT_MAP_CENTER.lat, DEFAULT_MAP_CENTER.lng],
-    zoom: 15,
+    zoom: 18,
     zoomControl: true,
     attributionControl: true,
   });
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
-    maxZoom: 19,
-  }).addTo(mapInstance);
+  initTileLayer();
 
   droneMarker = L.marker([currentLat.value, currentLng.value], {
     icon: makeDroneIcon(props.telemetry.heading),
@@ -110,9 +181,11 @@ onBeforeUnmount(() => {
   resizeObserver = null;
   flightPolyline?.remove();
   droneMarker?.remove();
+  activeTileLayer?.remove();
   mapInstance?.remove();
   flightPolyline = null;
   droneMarker = null;
+  activeTileLayer = null;
   mapInstance = null;
 });
 
@@ -175,6 +248,7 @@ watch(() => props.flightPath, refreshPolyline, { deep: true });
     <div
       ref="mapEl"
       class="relative h-[24rem] w-full sm:h-[28rem]"
+      :data-map-base="tileBaseKind"
       :aria-label="t('remote.droneControl.map.ariaLabel')"
     />
   </div>
@@ -188,7 +262,7 @@ watch(() => props.flightPath, refreshPolyline, { deep: true });
   border: none !important;
 }
 
-html[data-theme='dark'] .leaflet-tile-pane {
+html[data-theme='dark'] .leaflet-container[data-map-base='osm'] .leaflet-tile-pane {
   filter: invert(100%) hue-rotate(180deg) brightness(0.75) contrast(1.1) saturate(0.8);
 }
 
