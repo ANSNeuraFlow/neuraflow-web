@@ -21,6 +21,8 @@ export interface DroneTelemetryData {
   batteryPercent: number | null;
   altitude: number | null;
   speed: number | null;
+  pitch: number | null;
+  roll: number | null;
   heading: number | null;
   signalStrength: number | null;
   gpsLat: number | null;

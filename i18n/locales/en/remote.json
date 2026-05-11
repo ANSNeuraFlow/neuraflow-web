@@ -91,6 +91,10 @@
         "takeoff": "Takeoff",
         "title": "Direction"
       },
+      "hud": {
+        "batteryAria": "Battery charge level",
+        "title": "Flight HUD"
+      },
       "map": {
         "ariaLabel": "Drone telemetry map",
         "follow": "Follow",
