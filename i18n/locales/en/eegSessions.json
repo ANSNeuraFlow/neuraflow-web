@@ -34,7 +34,13 @@
       "protocol": "Choose a protocol",
       "sessionName": "e.g. Morning run — subject A"
     },
+    "protocolKind": {
+      "focus": "Focus",
+      "movement": "Movement",
+      "unknown": "—"
+    },
     "protocols": {
+      "attention": "Focus",
       "move_backward": "move backward",
       "move_down": "move down",
       "move_forward": "move forward",
@@ -70,6 +76,7 @@
         "showing": "Showing {from}–{to} of {total}"
       },
       "protocol": "Protocol",
+      "sessionKind": "Training type",
       "sessionName": "Session",
       "status": "Status"
     },

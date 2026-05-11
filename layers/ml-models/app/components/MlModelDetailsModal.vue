@@ -4,6 +4,7 @@ import type { MlModel } from '../models/ml-model.domain';
 defineProps<{
   open: boolean;
   model: MlModel | null;
+  sessionKindLabel?: string | null;
 }>();
 
 const emit = defineEmits<{
@@ -95,6 +96,18 @@ const formatFileSize = (bytes: number | null) => {
               </dt>
               <dd class="text-body-sm text-on-surface">
                 {{ model.name }}
+              </dd>
+            </div>
+
+            <div
+              v-if="sessionKindLabel"
+              class="bg-on-surface/[0.03] p-md rounded-lg sm:col-span-2"
+            >
+              <dt class="text-body-x-sm text-on-surface-dim mb-xx-sm font-medium uppercase tracking-wider">
+                {{ $t('mlModels.details.sessionKind') }}
+              </dt>
+              <dd class="text-body-sm text-on-surface">
+                {{ sessionKindLabel }}
               </dd>
             </div>
 

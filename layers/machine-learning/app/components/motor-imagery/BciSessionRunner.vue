@@ -68,7 +68,6 @@ const instructionKey = computed(() => cueInstructions[props.activeCue] ?? '');
     </div>
   </div>
 
-  <!-- Tutorial instruction overlay -->
   <Transition
     enter-active-class="transition-all duration-300"
     enter-from-class="opacity-0 translate-y-4"
@@ -88,7 +87,6 @@ const instructionKey = computed(() => cueInstructions[props.activeCue] ?? '');
     </div>
   </Transition>
 
-  <!-- HUD -->
   <div
     class="bottom-md left-md right-md absolute flex items-end justify-between opacity-20 transition-opacity hover:opacity-100"
   >

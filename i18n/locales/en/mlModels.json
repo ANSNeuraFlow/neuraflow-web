@@ -19,6 +19,7 @@
       "name": "Name",
       "noFile": "Not available",
       "sessionId": "Session ID",
+      "sessionKind": "Training type",
       "status": "Status",
       "title": "Model Details",
       "trainedAt": "Trained At",
@@ -41,6 +42,7 @@
       "actions": "Actions",
       "empty": "No trained models yet. Dispatch a training job first.",
       "name": "Name",
+      "sessionKind": "Training type",
       "status": "Status",
       "trainedAt": "Trained At"
     },

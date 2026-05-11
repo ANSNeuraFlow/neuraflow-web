@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useEegSessions } from '#layers/eeg-sessions/app/composables/useEegSessions';
+import { EEG_SESSION_TYPE_PROTOCOLS } from '#layers/eeg-sessions/app/constants/eeg-protocols.const';
 import type { EegSession } from '#layers/eeg-sessions/app/models/eeg-session.domain';
 
 definePageMeta({
@@ -13,8 +14,13 @@ const isStopOpen = ref(false);
 const isDeleteOpen = ref(false);
 const selectedSession = ref<EegSession | null>(null);
 
+const motorProtocolFilter = [...EEG_SESSION_TYPE_PROTOCOLS.motor_imagery];
+const motorProtocolSet = new Set<string>(motorProtocolFilter);
+
+const sessionsInScenario = computed(() => sessions.value.filter((s) => motorProtocolSet.has(s.protocolName)));
+
 const activeSession = computed<EegSession | undefined>(() =>
-  sessions.value.find((s) => s.status === 'INITIALIZED' || s.status === 'ACTIVE'),
+  sessionsInScenario.value.find((s) => s.status === 'INITIALIZED' || s.status === 'ACTIVE'),
 );
 
 const openStop = (session: EegSession) => {
@@ -76,7 +82,7 @@ const protocolSteps = [
       />
 
       <div
-        v-if="isLoading && sessions.length === 0"
+        v-if="isLoading && sessionsInScenario.length === 0"
         class="py-x-lg relative z-10 flex items-center justify-center"
       >
         <Icon
@@ -206,7 +212,7 @@ const protocolSteps = [
             {{ $t('machineLearning.sessions.historyTitle') }}
           </h2>
           <p class="text-body-sm mt-xx-sm text-on-surface-dim">
-            {{ $t('machineLearning.sessions.historySubtitle', { count: sessions.length }) }}
+            {{ $t('machineLearning.sessions.historySubtitle', { count: sessionsInScenario.length }) }}
           </p>
         </div>
         <AppButton
@@ -244,6 +250,7 @@ const protocolSteps = [
         <EegSessionsTable
           :sessions="sessions"
           :is-loading="isLoading"
+          :protocol-filter="motorProtocolFilter"
           @stop-session="openStop"
           @delete-session="openDelete"
         />

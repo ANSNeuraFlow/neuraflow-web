@@ -13,6 +13,7 @@ export default defineNuxtConfig({
       path: resolve(currentDir, 'app/components'),
       pathPrefix: false,
       extensions: ['.vue'],
+      /** attention/, motor-imagery/ — register by file name only (no folder prefix in component name) */
     },
   ],
 });

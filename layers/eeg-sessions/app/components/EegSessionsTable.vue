@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { resolveEegProtocolKindUi } from '../constants/eeg-protocols.const';
 import type { EegSession, SessionStatus } from '../models/eeg-session.domain';
 
 const props = withDefaults(
@@ -7,11 +8,13 @@ const props = withDefaults(
     isLoading: boolean;
     selectable?: boolean;
     selectedIds?: string[];
+    protocolFilter?: string[];
     pageSize?: number;
   }>(),
   {
     selectable: false,
     selectedIds: undefined,
+    protocolFilter: undefined,
     pageSize: 10,
   },
 );
@@ -22,12 +25,22 @@ const emit = defineEmits<{
   'update:selectedIds': [ids: string[]];
 }>();
 
-const { locale } = useI18n();
+const { locale, t } = useI18n();
+
+const sessionKindLabel = (protocolName: string) => {
+  const kind = resolveEegProtocolKindUi(protocolName);
+  return t(`eegSessions.protocolKind.${kind}`);
+};
 
 const colCount = computed(() => (props.selectable ? 6 : 5));
 
 const sortedSessions = computed(() => {
-  const list = [...props.sessions];
+  let list = [...props.sessions];
+  const filter = props.protocolFilter;
+  if (filter && filter.length > 0) {
+    const allowed = new Set<string>(filter);
+    list = list.filter((s) => allowed.has(s.protocolName));
+  }
   list.sort((a, b) => {
     const ta = new Date(a.createdAt).getTime();
     const tb = new Date(b.createdAt).getTime();
@@ -174,7 +187,7 @@ const toggleSelect = (id: string) => {
               {{ session.sessionName }}
             </td>
             <td class="border-on-surface/[0.06] px-md py-sm text-body-sm text-on-surface-dim border-b">
-              {{ session.protocolName }}
+              {{ sessionKindLabel(session.protocolName) }}
             </td>
             <td class="border-on-surface/[0.06] px-md py-sm border-b">
               <span

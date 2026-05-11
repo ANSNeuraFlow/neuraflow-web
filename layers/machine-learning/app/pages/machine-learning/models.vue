@@ -1,6 +1,11 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 import { useEegSessions } from '#layers/eeg-sessions/app/composables/useEegSessions';
+import {
+  EEG_SESSION_TYPE_PROTOCOLS,
+  type EegSessionTrainingPickerType,
+  resolveEegProtocolKindUi,
+} from '#layers/eeg-sessions/app/constants/eeg-protocols.const';
 import type { EegSession } from '#layers/eeg-sessions/app/models/eeg-session.domain';
 import { useMlModels } from '#layers/ml-models/app/composables/useMlModels';
 import type { MlModel } from '#layers/ml-models/app/models/ml-model.domain';
@@ -32,16 +37,28 @@ const selectedJob = ref<TrainingJob | null>(null);
 const isModelDetailsOpen = ref(false);
 const selectedModelDetails = ref<MlModel | null>(null);
 
-const isPickingSessions = ref(false);
+const selectedTrainingType = ref<EegSessionTrainingPickerType | null>(null);
+const isPickingSessions = computed(() => selectedTrainingType.value !== null);
+
+const activeProtocolFilter = computed((): string[] =>
+  selectedTrainingType.value ? [...EEG_SESSION_TYPE_PROTOCOLS[selectedTrainingType.value]] : [],
+);
+
 const selectedSessionIds = ref<string[]>([]);
 const isDispatching = ref(false);
 const dispatchError = ref<string | null>(null);
 
 watch(
-  sessions,
-  (list) => {
-    const completed = new Set(list.filter((s) => s.status === 'COMPLETED').map((s) => s.id));
-    selectedSessionIds.value = selectedSessionIds.value.filter((id) => completed.has(id));
+  [sessions, activeProtocolFilter],
+  () => {
+    const list = sessions.value;
+    const filter = activeProtocolFilter.value;
+    const completedSessions = list.filter((s) => s.status === 'COMPLETED');
+    const allowedProtocols = new Set(filter);
+    const eligible =
+      filter.length > 0 ? completedSessions.filter((s) => allowedProtocols.has(s.protocolName)) : completedSessions;
+    const allowed = new Set(eligible.map((s) => s.id));
+    selectedSessionIds.value = selectedSessionIds.value.filter((id) => allowed.has(id));
   },
   { deep: true },
 );
@@ -51,8 +68,13 @@ const clearSelection = () => {
   dispatchError.value = null;
 };
 
+const startTrainingSetup = (type: EegSessionTrainingPickerType) => {
+  selectedTrainingType.value = type;
+  clearSelection();
+};
+
 const cancelTrainingSetup = () => {
-  isPickingSessions.value = false;
+  selectedTrainingType.value = null;
   clearSelection();
 };
 
@@ -99,6 +121,23 @@ const openModelDetails = (model: MlModel) => {
   selectedModelDetails.value = model;
   isModelDetailsOpen.value = true;
 };
+
+const sessionProtocolById = computed(() => {
+  const map: Record<string, string> = {};
+  for (const s of sessions.value) {
+    map[s.id] = s.protocolName;
+  }
+  return map;
+});
+
+const modelDetailsSessionKindLabel = computed(() => {
+  const m = selectedModelDetails.value;
+  if (!m) return null;
+  const p = sessionProtocolById.value[m.sessionId];
+  if (!p) return t('eegSessions.protocolKind.unknown');
+  const k = resolveEegProtocolKindUi(p);
+  return t(`eegSessions.protocolKind.${k}`);
+});
 </script>
 
 <template>
@@ -121,20 +160,22 @@ const openModelDetails = (model: MlModel) => {
       </div>
     </section>
 
-    <div class="mb-x-lg gap-md flex flex-wrap items-center justify-between">
-      <div>
+    <div class="mb-md gap-y-md flex flex-col">
+      <div class="min-w-0">
         <h2 class="text-heading-md text-on-surface font-semibold">
           {{ $t('machineLearning.models.dataForModelTitle') }}
         </h2>
         <p class="text-body-sm mt-xx-sm text-on-surface-dim">
           {{
             isPickingSessions
-              ? $t('machineLearning.models.dataForModelSubtitlePicking')
+              ? selectedTrainingType === 'motor_imagery'
+                ? $t('machineLearning.models.dataForModelSubtitlePickingMotor')
+                : $t('machineLearning.models.dataForModelSubtitlePickingAttention')
               : $t('machineLearning.models.dataForModelSubtitle')
           }}
         </p>
       </div>
-      <div class="gap-sm flex flex-wrap items-center">
+      <div class="gap-sm flex w-full flex-wrap items-center justify-end">
         <AppButton
           variant="ghost"
           size="sm"
@@ -152,13 +193,16 @@ const openModelDetails = (model: MlModel) => {
           <AppButton
             variant="inverse"
             size="sm"
-            @click="isPickingSessions = true"
+            @click="startTrainingSetup('motor_imagery')"
           >
-            <Icon
-              name="material-symbols:neurology"
-              size="1.6rem"
-            />
-            {{ $t('machineLearning.models.newModel') }}
+            {{ $t('machineLearning.models.newModelMotorImagery') }}
+          </AppButton>
+          <AppButton
+            variant="inverse"
+            size="sm"
+            @click="startTrainingSetup('attention')"
+          >
+            {{ $t('machineLearning.models.newModelAttention') }}
           </AppButton>
         </template>
         <template v-else>
@@ -217,6 +261,7 @@ const openModelDetails = (model: MlModel) => {
         :sessions="sessions"
         :is-loading="sessionsLoading"
         :selectable="isPickingSessions"
+        :protocol-filter="activeProtocolFilter"
         @stop-session="openStop"
         @delete-session="openDelete"
       />
@@ -313,6 +358,7 @@ const openModelDetails = (model: MlModel) => {
     <div class="glass-card mb-x-lg overflow-hidden">
       <MlModelsTable
         :models="models"
+        :session-protocol-by-id="sessionProtocolById"
         :is-loading="modelsLoading"
         @delete-model="openDeleteModel"
         @view-details="openModelDetails"
@@ -341,6 +387,7 @@ const openModelDetails = (model: MlModel) => {
     <MlModelDetailsModal
       v-model:open="isModelDetailsOpen"
       :model="selectedModelDetails"
+      :session-kind-label="modelDetailsSessionKindLabel ?? undefined"
     />
   </div>
 </template>
