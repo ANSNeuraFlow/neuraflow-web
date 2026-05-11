@@ -6,11 +6,24 @@ import type { FlightPathPoint } from '../../composables/useFlightPath';
 import { DEFAULT_MAP_CENTER } from '../../composables/useFlightPath';
 import type { DroneTelemetryData } from '../../models/drone-control.domain';
 
-const props = defineProps<{
-  telemetry: DroneTelemetryData;
-  flightPath: FlightPathPoint[];
-  isTracking: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    telemetry: DroneTelemetryData;
+    flightPath: FlightPathPoint[];
+    isTracking: boolean;
+    /** Niższy panel mapy pod rząd sterowania (ręczny panel drona). */
+    compact?: boolean;
+  }>(),
+  {
+    compact: false,
+  },
+);
+
+const mapPanelClass = computed(() =>
+  props.compact
+    ? 'relative h-[15rem] w-full shrink-0 sm:h-[17rem] xl:min-h-[22rem] xl:flex-1'
+    : 'relative h-[24rem] w-full sm:h-[28rem]',
+);
 
 const { t } = useI18n();
 const config = useRuntimeConfig();
@@ -199,7 +212,7 @@ watch(() => props.flightPath, refreshPolyline, { deep: true });
 </script>
 
 <template>
-  <div class="glass-card overflow-hidden">
+  <div class="glass-card flex min-h-0 flex-col overflow-hidden">
     <div class="border-on-surface/[0.08] px-md py-sm flex items-center justify-between border-b">
       <div class="gap-sm flex min-w-0 flex-1 flex-wrap items-center">
         <Icon
@@ -247,7 +260,7 @@ watch(() => props.flightPath, refreshPolyline, { deep: true });
 
     <div
       ref="mapEl"
-      class="relative h-[24rem] w-full sm:h-[28rem]"
+      :class="mapPanelClass"
       :data-map-base="tileBaseKind"
       :aria-label="t('remote.droneControl.map.ariaLabel')"
     />

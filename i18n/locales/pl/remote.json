@@ -91,6 +91,10 @@
         "takeoff": "Wzlot",
         "title": "Kierunek"
       },
+      "hud": {
+        "batteryAria": "Poziom naładowania baterii",
+        "title": "HUD lotu"
+      },
       "map": {
         "ariaLabel": "Mapa telemetryczna drona",
         "follow": "Śledź",

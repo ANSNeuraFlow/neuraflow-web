@@ -16,6 +16,8 @@ export function useDroneState() {
     batteryPercent: null,
     altitude: null,
     speed: null,
+    pitch: null,
+    roll: null,
     heading: null,
     signalStrength: null,
     gpsLat: null,
