@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// Główny HUD lotu — składa podkomponenty z folderu hud/ i zestawia układ karty (glass-card).
-// Wartości domyślne umożliwują podgląd bez źródła danych; w locie nadpiszesz je przez propsy z telemetrii.
 const props = withDefaults(
   defineProps<{
     pitch: number;
@@ -10,7 +8,6 @@ const props = withDefaults(
     altitude: number;
     batteryVoltage: number;
     batteryPercent: number;
-    /** Wąska kolumna obok sterowania — niższy horyzont i węższe taśmy. */
     compact?: boolean;
   }>(),
   {

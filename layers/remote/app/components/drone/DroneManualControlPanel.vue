@@ -39,10 +39,6 @@ watch(
       <DroneTelemetry :telemetry="drone.telemetry" />
     </div>
 
-    <!--
-      Poniżej xl: kolejka karta kierunku+zasilanie → map+log obok siebie → HUD na końcu.
-      Od xl: rząd 2 — mapa na szerokość kierunku+zasilanie (col-span 2), dziennik w kolumnie HUD pod nim.
-    -->
     <div
       class="gap-x-lg gap-y-lg xl:gap-x-lg grid min-h-0 grid-cols-1 xl:grid-cols-[minmax(0,0.85fr)_minmax(0,0.85fr)_minmax(0,1.3fr)] xl:grid-rows-[auto_minmax(0,1fr)] xl:items-stretch"
     >

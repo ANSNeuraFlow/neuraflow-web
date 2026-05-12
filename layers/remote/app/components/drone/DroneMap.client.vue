@@ -11,7 +11,6 @@ const props = withDefaults(
     telemetry: DroneTelemetryData;
     flightPath: FlightPathPoint[];
     isTracking: boolean;
-    /** Niższy panel mapy pod rząd sterowania (ręczny panel drona). */
     compact?: boolean;
   }>(),
   {
