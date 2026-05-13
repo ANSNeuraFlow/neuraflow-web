@@ -19,6 +19,7 @@ const sessionNameError = ref('');
 const directionMode = ref<DirectionMode>(DEFAULT_DIRECTION_MODE);
 const trialsPerDirectionStr = ref(DEFAULT_TRIALS_PER_DIRECTION_STR);
 const trialsError = ref('');
+const formGateError = ref('');
 
 const trialsPerDirection = computed(() => {
   const n = parseInt(trialsPerDirectionStr.value, 10);
@@ -55,6 +56,8 @@ const directionModeOptions: { value: DirectionMode; label: string; icon: string;
   },
 ];
 
+const bridgeConnection = useBridgeConnection();
+
 watch(
   () => props.open,
   (val) => {
@@ -62,23 +65,33 @@ watch(
       sessionNameInput.value = '';
       sessionNameError.value = '';
       trialsError.value = '';
+      formGateError.value = '';
       directionMode.value = DEFAULT_DIRECTION_MODE;
       trialsPerDirectionStr.value = DEFAULT_TRIALS_PER_DIRECTION_STR;
+      void bridgeConnection.fetchStatus();
     }
   },
 );
 
-const bridgeConnection = useBridgeConnection();
-
 const connectBridge = () => {
-  bridgeConnection.connect();
+  void bridgeConnection.connect();
+};
+
+const startBridgeStreaming = () => {
+  void bridgeConnection.startStreaming();
 };
 
 const isBridgeConnecting = computed(() => bridgeConnection.isConnecting.value);
+const isStartingStream = computed(() => bridgeConnection.isStartingStream.value);
+
+const showConnectButton = computed(() => !bridgeConnection.isConnected.value);
+const showStreamButton = computed(() => bridgeConnection.isConnected.value && !bridgeConnection.isStreaming.value);
+const showStartButton = computed(() => bridgeConnection.isConnected.value && bridgeConnection.isStreaming.value);
 
 const submit = () => {
   sessionNameError.value = '';
   trialsError.value = '';
+  formGateError.value = '';
 
   const name = sessionNameInput.value.trim();
   if (!name) {
@@ -91,6 +104,10 @@ const submit = () => {
   }
   if (trialsPerDirection.value > 100) {
     trialsError.value = t('machineLearning.bci.session.trialsMax');
+    return;
+  }
+  if (!bridgeConnection.isStreaming.value) {
+    formGateError.value = t('machineLearning.bci.session.streamingRequired');
     return;
   }
 
@@ -238,12 +255,32 @@ const submit = () => {
               {{ t('machineLearning.bci.session.note') }}
             </p>
 
+            <!-- Debug info -->
+            <div class="bg-info/10 text-body-x-sm p-sm text-on-surface-dim rounded">
+              <strong>Debug:</strong> isConnected={{ bridgeConnection.isConnected }}, isStreaming={{
+                bridgeConnection.isStreaming
+              }}
+            </div>
+
+            <p
+              v-if="bridgeConnection.error"
+              class="text-body-sm text-error"
+            >
+              {{ bridgeConnection.error }}
+            </p>
+            <p
+              v-if="formGateError"
+              class="text-body-sm text-error"
+            >
+              {{ formGateError }}
+            </p>
+
             <div class="gap-md border-on-surface/10 pt-x-lg flex justify-end border-t">
               <DialogClose as-child>
                 <AppButton variant="secondary">{{ t('machineLearning.bci.session.cancel') }}</AppButton>
               </DialogClose>
               <AppButton
-                v-if="!bridgeConnection.isConnected.value"
+                v-if="showConnectButton"
                 variant="inverse"
                 :disabled="isBridgeConnecting"
                 @click="connectBridge"
@@ -259,7 +296,23 @@ const submit = () => {
                 }}
               </AppButton>
               <AppButton
-                v-else
+                v-else-if="showStreamButton"
+                variant="inverse"
+                :disabled="isStartingStream"
+                @click="startBridgeStreaming"
+              >
+                <Icon
+                  :name="isStartingStream ? 'svg-spinners:ring-resize' : 'material-symbols:sensors-rounded'"
+                  size="1.8rem"
+                />
+                {{
+                  isStartingStream
+                    ? t('machineLearning.bci.session.startingStreaming')
+                    : t('machineLearning.bci.session.startStreaming')
+                }}
+              </AppButton>
+              <AppButton
+                v-else-if="showStartButton"
                 variant="inverse"
                 @click="submit"
               >
