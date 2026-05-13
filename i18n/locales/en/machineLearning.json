@@ -111,6 +111,8 @@
       },
       "session": {
         "cancel": "Cancel",
+        "connectBridge": "Connect to Cyton Bridge",
+        "connecting": "Connecting...",
         "dir2wayDesc": "Left and right only",
         "dir2wayLabel": "Left / Right",
         "dir4wayDesc": "Up · Down · Left · Right",

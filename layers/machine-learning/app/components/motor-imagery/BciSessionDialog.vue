@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useBridgeConnection } from '#layers/bridge-auth/app/composables/useBridgeConnection';
+
 const { t } = useI18n();
 
 const props = defineProps<{ open: boolean }>();
@@ -65,6 +67,14 @@ watch(
     }
   },
 );
+
+const bridgeConnection = useBridgeConnection();
+
+const connectBridge = () => {
+  bridgeConnection.connect();
+};
+
+const isBridgeConnecting = computed(() => bridgeConnection.isConnecting.value);
 
 const submit = () => {
   sessionNameError.value = '';
@@ -233,6 +243,23 @@ const submit = () => {
                 <AppButton variant="secondary">{{ t('machineLearning.bci.session.cancel') }}</AppButton>
               </DialogClose>
               <AppButton
+                v-if="!bridgeConnection.isConnected.value"
+                variant="inverse"
+                :disabled="isBridgeConnecting"
+                @click="connectBridge"
+              >
+                <Icon
+                  :name="isBridgeConnecting ? 'svg-spinners:ring-resize' : 'mdi:connect'"
+                  size="1.8rem"
+                />
+                {{
+                  isBridgeConnecting
+                    ? t('machineLearning.bci.session.connecting')
+                    : t('machineLearning.bci.session.connectBridge')
+                }}
+              </AppButton>
+              <AppButton
+                v-else
                 variant="inverse"
                 @click="submit"
               >
