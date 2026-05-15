@@ -1,3 +1,4 @@
+import { useWakeLock } from '@vueuse/core';
 import { computed, onBeforeUnmount, ref } from 'vue';
 
 import { useBridgeConnection } from '#layers/bridge-auth/app/composables/useBridgeConnection';
@@ -83,6 +84,8 @@ export const useBciCalibration = () => {
   const bridge = useBridgeConnection();
   const { sendMarker } = useBridgeStreamService();
 
+  const { isSupported: wakeLockSupported, request: requestWakeLock, release: releaseWakeLock } = useWakeLock();
+
   const bridgeSendMarker = async (marker: string) => {
     try {
       await sendMarker(marker);
@@ -110,6 +113,11 @@ export const useBciCalibration = () => {
         console.warn(`Error attempting to enable fullscreen: ${err.message}`);
       });
       isFullscreen.value = true;
+      if (wakeLockSupported.value) {
+        await requestWakeLock('screen').catch((err) => {
+          console.warn('Wake lock request failed:', err);
+        });
+      }
     }
   };
 
@@ -214,6 +222,7 @@ export const useBciCalibration = () => {
         document.exitFullscreen();
         isFullscreen.value = false;
       }
+      await releaseWakeLock().catch(() => {});
     }
 
     if (completedSuccessfully) {
@@ -279,6 +288,7 @@ export const useBciCalibration = () => {
         document.exitFullscreen();
         isFullscreen.value = false;
       }
+      await releaseWakeLock().catch(() => {});
       tutorialMode.value = false;
     }
 
@@ -298,6 +308,8 @@ export const useBciCalibration = () => {
       document.exitFullscreen();
       isFullscreen.value = false;
     }
+
+    void releaseWakeLock().catch(() => {});
 
     void bridgeSendMarker('ABORTED');
     void bridge.stopStreaming().catch(() => {});
