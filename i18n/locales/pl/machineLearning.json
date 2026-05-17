@@ -8,6 +8,7 @@
         "title": "Trening uwagi"
       },
       "page": {
+        "backToChoice": "Wróć do wyboru treningu",
         "kicker": "Uwaga",
         "newSessionSubtitle": "Nadaj sesji nazwę i uruchom protokół kalibracji uwagi w trybie pełnoekranowym.",
         "newSessionTitle": "Nowa sesja",
