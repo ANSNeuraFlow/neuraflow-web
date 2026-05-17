@@ -6,6 +6,7 @@ import type { Permission } from './layers/auth/app/models/user.domain';
 interface BciBridgePluginApi {
   subscribePayload: (fn: (payload: BciCommandPayload) => void) => () => void;
   reconnect: () => void;
+  sendJson: (payload: Record<string, unknown>) => boolean;
 }
 
 declare module '#app' {

@@ -11,6 +11,10 @@ export interface BridgeControlCommandResponse {
   sent: number;
 }
 
+export interface BridgeSessionResponse {
+  ok: boolean;
+}
+
 export const useBridgeStreamService = () => {
   const { get, post } = useApi();
 
@@ -22,5 +26,8 @@ export const useBridgeStreamService = () => {
   const sendMarker = (marker: string) =>
     post<BridgeControlCommandResponse>('/bridge/control/marker', { body: { marker } });
 
-  return { getStatus, sendCommand, sendMarker };
+  const setSession = (sessionId: string) =>
+    post<BridgeSessionResponse>('/bridge/control/session', { body: { sessionId } });
+
+  return { getStatus, sendCommand, sendMarker, setSession };
 };

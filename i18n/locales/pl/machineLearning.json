@@ -2,7 +2,7 @@
   "machineLearning": {
     "attention": {
       "idle": {
-        "btnStart": "Rozpocznij kalibrację",
+        "btnStart": "Rozpocznij sesję",
         "btnTutorial": "Instrukcja",
         "description": "Zbierz dane EEG oznaczone jako FOCUS lub RELAX, aby wytrenować klasyfikator uwagi. Przejdź najpierw instrukcję lub od razu uruchom sesję kalibracyjną.",
         "title": "Trening uwagi"
@@ -112,7 +112,7 @@
       "session": {
         "cancel": "Anuluj",
         "connectBridge": "Połącz z Cyton Bridge",
-        "connecting": "Łączenie...",
+        "connecting": "Łączenie…",
         "dir2wayDesc": "Tylko lewo i prawo",
         "dir2wayLabel": "Lewo / Prawo",
         "dir4wayDesc": "Góra · Dół · Lewo · Prawo",
@@ -125,7 +125,8 @@
         "note": "Sesja zostanie zarejestrowana w systemie. Po potwierdzeniu uruchomi się protokół Motor Imagery w trybie pełnoekranowym.",
         "start": "Rozpocznij sesję",
         "startStreaming": "Uruchom streaming",
-        "startingStreaming": "Uruchamianie streamingu...",
+        "startingStreaming": "Uruchamianie streamingu…",
+        "streamUplinkRequired": "Poczekaj, aż uaktywni się kanał wysyłki EEG na serwerze. Jeśli utknęło — zatrzymaj i ponownie uruchom streaming w bridge.",
         "streamingRequired": "Uruchom streaming EEG przed rozpoczęciem sesji.",
         "title": "Nowa sesja EEG",
         "trialsHint2way": "{n} ← + {n} → = {total} prób łącznie",
@@ -167,6 +168,12 @@
         "trialCrossLabel": "Krzyż (+)",
         "trialFlowTitle": "Jak wygląda jedna próba?"
       }
+    },
+    "eegIngress": {
+      "localBridgeTitle": "Lokalny Bridge",
+      "localWsRequired": "Podłącz lokalny bridge WebSocket przed startem sesji.",
+      "neuraflowBridgeTitle": "NeuraFlow Bridge",
+      "streamingMethodLabel": "Sposób streamowania"
     },
     "models": {
       "dataForModelSubtitle": "Ukończone sesje EEG, które możesz wykorzystać jako dane treningowe. Nowe nagrania zaczniesz na stronie Sesje.",

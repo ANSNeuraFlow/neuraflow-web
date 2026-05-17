@@ -1,79 +1,43 @@
 import { useWakeLock } from '@vueuse/core';
+import { useNuxtApp } from 'nuxt/app';
 import { computed, onBeforeUnmount, ref } from 'vue';
 
 import { useBridgeConnection } from '#layers/bridge-auth/app/composables/useBridgeConnection';
 import { useBridgeStreamService } from '#layers/bridge-auth/app/services/bridge-stream.service';
 import { useEegSessionService } from '#layers/eeg-sessions/app/services/eeg-session.service';
 
-const exactWait = (ms: number, signal?: AbortSignal) => {
-  return new Promise<void>((resolve, reject) => {
-    const start = performance.now();
-    const frame = (time: DOMHighResTimeStamp) => {
-      if (signal?.aborted) {
-        return reject(new Error('Aborted'));
-      }
-      if (time - start >= ms) {
-        resolve();
-      } else {
-        requestAnimationFrame(frame);
-      }
-    };
-    requestAnimationFrame(frame);
-  });
-};
+import { useBciController } from '../../../../app/composables/useBciController';
+import type { EegIngressMode } from '../models/eeg-ingress.domain';
+import {
+  assertBridgeIngressReady,
+  assertLocalWsReady,
+  createBoundSession,
+  makeLocalMarkerSender,
+  makeNeuraflowMarkerSender,
+  resolveBciEegProtocolId,
+  sendLocalLifecycleEvent,
+} from './eeg-ingress.utils';
+import { exactWait, generateSequence, playTone } from './eeg-protocol.utils';
 
-const playBeep = () => {
-  try {
-    const AudioContextClass =
-      window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-
-    const ctx = new AudioContextClass();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(800, ctx.currentTime);
-
-    gain.gain.setValueAtTime(0, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(1, ctx.currentTime + 0.01);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
-
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + 0.15);
-  } catch (e) {
-    console.error('Failed to play audio cue:', e);
-  }
-};
-
-const generateSequence = (classes: string[], total: number) => {
-  const perClass = Math.floor(total / classes.length);
-  const sequence: string[] = [];
-
-  classes.forEach((cls) => {
-    for (let i = 0; i < perClass; i++) sequence.push(cls);
-  });
-
-  for (let i = sequence.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const temp = sequence[i];
-    sequence[i] = sequence[j] as string;
-    sequence[j] = temp as string;
-  }
-
-  return sequence;
-};
-
-const TIMING = {
+const BCI_TIMING = {
   relaxation: 2000,
   cue: 1250,
   execution: 2750,
   rest: 2000,
   itiMin: 500,
   itiMax: 1500,
+} as const;
+
+const BCI_MARKER_MAP: Record<string, string> = {
+  LEFT: 'LEFT_HAND',
+  RIGHT: 'RIGHT_HAND',
+  UP: 'BOTH_HANDS',
+  DOWN: 'FEET',
 };
+
+const BCI_TUTORIAL_SEQUENCE: string[] = ['LEFT', 'RIGHT', 'LEFT', 'RIGHT'];
+
+export type BciProtocolState = 'idle' | 'relaxation' | 'cue' | 'execution' | 'rest' | 'iti';
 
 export interface BciRunConfig {
   classes: string[];
@@ -82,68 +46,92 @@ export interface BciRunConfig {
 
 export const useBciCalibration = () => {
   const bridge = useBridgeConnection();
+  const nuxtApp = useNuxtApp();
   const { sendMarker } = useBridgeStreamService();
+  const sendNeuraflowBciMarker = makeNeuraflowMarkerSender(sendMarker, 'BCI');
+  const { isConnected: localWsConnected } = useBciController();
 
   const { isSupported: wakeLockSupported, request: requestWakeLock, release: releaseWakeLock } = useWakeLock();
 
-  const bridgeSendMarker = async (marker: string) => {
-    try {
-      await sendMarker(marker);
-    } catch (e) {
-      console.error('[BCI] Marker send failed:', e);
-    }
-  };
+  const activeIngressMode = ref<EegIngressMode | null>(null);
+  const markerSink = ref<((m: string) => Promise<void>) | null>(null);
 
   const abortController = ref<AbortController | null>(null);
-
-  type ProtocolState = 'idle' | 'relaxation' | 'cue' | 'execution' | 'rest' | 'iti';
-  const currentState = ref<ProtocolState>('idle');
+  const currentState = ref<BciProtocolState>('idle');
   const currentTrial = ref(0);
   const totalTrialsRef = ref(0);
   const activeCue = ref('');
   const isFullscreen = ref(false);
   const protocolEndReason = ref<'success' | 'abort' | 'tutorial-done' | null>(null);
   const tutorialMode = ref(false);
-
   const containerRef = ref<HTMLElement | null>(null);
 
   const toggleFullscreen = async () => {
     if (!document.fullscreenElement && containerRef.value) {
-      await containerRef.value.requestFullscreen().catch((err) => {
-        console.warn(`Error attempting to enable fullscreen: ${err.message}`);
+      await containerRef.value.requestFullscreen().catch((err: unknown) => {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.warn(`Fullscreen request failed: ${msg}`);
       });
       isFullscreen.value = true;
       if (wakeLockSupported.value) {
-        await requestWakeLock('screen').catch((err) => {
-          console.warn('Wake lock request failed:', err);
+        await requestWakeLock('screen').catch((err: unknown) => {
+          console.warn('Wake lock request failed:', err instanceof Error ? err.message : String(err));
         });
       }
     }
   };
 
-  const runProtocol = async (sessionName = 'Sesja EEG', classes: string[], trialsPerDirection: number) => {
-    await bridge.fetchStatus();
-    if (!bridge.isStreaming.value) {
-      console.error('BCI protocol requires active EEG streaming. Use "Start streaming" in the session dialog first.');
+  const exitFullscreen = () => {
+    void releaseWakeLock();
+    if (document.fullscreenElement) document.exitFullscreen();
+    isFullscreen.value = false;
+  };
+
+  const runProtocol = async (
+    sessionName = 'Sesja EEG',
+    classes: string[],
+    trialsPerDirection: number,
+    ingressMode: EegIngressMode = 'neuraflow-bridge',
+  ) => {
+    activeIngressMode.value = ingressMode;
+
+    try {
+      if (ingressMode === 'neuraflow-bridge') {
+        await assertBridgeIngressReady(bridge);
+      } else {
+        assertLocalWsReady(localWsConnected);
+      }
+    } catch (e) {
+      const code = e instanceof Error ? e.message : '';
+      console.error(`BCI prerequisites not met (${code}).`);
+      activeIngressMode.value = null;
       return;
     }
 
+    let sessionId: string;
+    try {
+      sessionId = await createBoundSession(sessionName, resolveBciEegProtocolId(classes), bridge, ingressMode);
+    } catch (e) {
+      console.error('Cannot start BCI calibration without server session and Kafka bridge binding:', e);
+      bridge.error.value = e instanceof Error ? e.message : 'EEG session or bridge binding failed.';
+      activeIngressMode.value = null;
+      return;
+    }
+
+    markerSink.value = ingressMode === 'neuraflow-bridge' ? sendNeuraflowBciMarker : makeLocalMarkerSender(nuxtApp);
+
+    const sendLine = (m: string) => markerSink.value!(m);
+
+    const notifyLifecycle = async (kind: 'SESSION_START' | 'SESSION_END' | 'SESSION_ABORTED') => {
+      if (ingressMode === 'neuraflow-bridge') {
+        await sendLine(kind);
+      } else {
+        sendLocalLifecycleEvent(nuxtApp, kind, sessionId, '');
+      }
+    };
+
     const totalTrials = classes.length * trialsPerDirection;
     totalTrialsRef.value = totalTrials;
-
-    const { createSession, stopSession } = useEegSessionService();
-    let sessionId: string | null = null;
-
-    try {
-      const session = await createSession({
-        sessionName,
-        protocolName: 'move_left',
-      });
-      sessionId = session.id;
-    } catch (err) {
-      console.error('Failed to create an EEG session via API:', err);
-      sessionId = 'local-test-session-' + Date.now();
-    }
 
     await toggleFullscreen();
 
@@ -153,10 +141,9 @@ export const useBciCalibration = () => {
     currentState.value = 'iti';
     currentTrial.value = 0;
 
-    await bridgeSendMarker('SESSION_START');
+    await notifyLifecycle('SESSION_START');
 
     const sequence = generateSequence(classes, totalTrials);
-
     let completedSuccessfully = false;
 
     try {
@@ -164,65 +151,51 @@ export const useBciCalibration = () => {
 
       for (let i = 0; i < sequence.length; i++) {
         currentTrial.value = i + 1;
-        activeCue.value = sequence[i] || '';
+        activeCue.value = sequence[i] ?? '';
 
         currentState.value = 'relaxation';
-        await exactWait(TIMING.relaxation, signal);
+        await exactWait(BCI_TIMING.relaxation, signal);
 
         currentState.value = 'cue';
-        playBeep();
-
-        const mapMarker: Record<string, string> = {
-          LEFT: 'LEFT_HAND',
-          RIGHT: 'RIGHT_HAND',
-          UP: 'BOTH_HANDS',
-          DOWN: 'FEET',
-        };
-
-        await bridgeSendMarker(mapMarker[activeCue.value] || 'IDLE');
-        await exactWait(TIMING.cue, signal);
+        playTone(800, 0.15);
+        await sendLine(BCI_MARKER_MAP[activeCue.value] ?? 'IDLE');
+        await exactWait(BCI_TIMING.cue, signal);
 
         currentState.value = 'execution';
-        await exactWait(TIMING.execution, signal);
+        await exactWait(BCI_TIMING.execution, signal);
 
         currentState.value = 'rest';
-
-        await bridgeSendMarker('REST');
-        await exactWait(TIMING.rest, signal);
+        await sendLine('REST');
+        await exactWait(BCI_TIMING.rest, signal);
 
         currentState.value = 'iti';
-        const itiTime = TIMING.itiMin + Math.random() * (TIMING.itiMax - TIMING.itiMin);
-        await exactWait(itiTime, signal);
+        await exactWait(BCI_TIMING.itiMin + Math.random() * (BCI_TIMING.itiMax - BCI_TIMING.itiMin), signal);
       }
 
-      await bridgeSendMarker('SESSION_END');
-
-      if (sessionId && !sessionId.startsWith('local-test-session')) {
-        await stopSession(sessionId);
-      }
-
+      await notifyLifecycle('SESSION_END');
+      const { stopSession } = useEegSessionService();
+      await stopSession(sessionId);
       completedSuccessfully = true;
     } catch (err: unknown) {
       if (err instanceof Error && err.message === 'Aborted') {
-        console.log('Protocol manually aborted early.');
+        console.log('BCI protocol manually aborted.');
       } else {
         console.error(err);
       }
-      await bridgeSendMarker('SESSION_ABORTED');
-      if (sessionId && !sessionId.startsWith('local-test-session')) {
-        await stopSession(sessionId).catch(() => {});
-      }
+      await notifyLifecycle('SESSION_ABORTED');
+      const { stopSession } = useEegSessionService();
+      await stopSession(sessionId).catch(() => {});
       currentTrial.value = 0;
       activeCue.value = '';
       currentState.value = 'idle';
       protocolEndReason.value = 'abort';
     } finally {
-      await bridge.stopStreaming().catch(() => {});
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-        isFullscreen.value = false;
+      if (ingressMode === 'neuraflow-bridge') {
+        await bridge.stopStreaming({ waitForDeviceStopped: false }).catch(() => {});
       }
-      await releaseWakeLock().catch(() => {});
+      markerSink.value = null;
+      activeIngressMode.value = null;
+      exitFullscreen();
     }
 
     if (completedSuccessfully) {
@@ -233,11 +206,9 @@ export const useBciCalibration = () => {
     }
   };
 
-  const TUTORIAL_SEQUENCE: string[] = ['LEFT', 'RIGHT', 'LEFT', 'RIGHT'];
-
   const runTutorial = async () => {
     tutorialMode.value = true;
-    totalTrialsRef.value = TUTORIAL_SEQUENCE.length;
+    totalTrialsRef.value = BCI_TUTORIAL_SEQUENCE.length;
 
     await toggleFullscreen();
 
@@ -246,49 +217,41 @@ export const useBciCalibration = () => {
 
     currentState.value = 'iti';
     currentTrial.value = 0;
-
     let completedSuccessfully = false;
 
     try {
       await exactWait(2000, signal);
 
-      for (let i = 0; i < TUTORIAL_SEQUENCE.length; i++) {
+      for (let i = 0; i < BCI_TUTORIAL_SEQUENCE.length; i++) {
         currentTrial.value = i + 1;
-        activeCue.value = TUTORIAL_SEQUENCE[i]!;
+        activeCue.value = BCI_TUTORIAL_SEQUENCE[i]!;
 
         currentState.value = 'relaxation';
-        await exactWait(TIMING.relaxation, signal);
+        await exactWait(BCI_TIMING.relaxation, signal);
 
         currentState.value = 'cue';
-        playBeep();
-        await exactWait(TIMING.cue, signal);
+        playTone(800, 0.15);
+        await exactWait(BCI_TIMING.cue, signal);
 
         currentState.value = 'execution';
-        await exactWait(TIMING.execution, signal);
+        await exactWait(BCI_TIMING.execution, signal);
 
         currentState.value = 'rest';
-        await exactWait(TIMING.rest, signal);
+        await exactWait(BCI_TIMING.rest, signal);
 
         currentState.value = 'iti';
-        const itiTime = TIMING.itiMin + Math.random() * (TIMING.itiMax - TIMING.itiMin);
-        await exactWait(itiTime, signal);
+        await exactWait(BCI_TIMING.itiMin + Math.random() * (BCI_TIMING.itiMax - BCI_TIMING.itiMin), signal);
       }
 
       completedSuccessfully = true;
     } catch (err: unknown) {
-      if (!(err instanceof Error && err.message === 'Aborted')) {
-        console.error(err);
-      }
+      if (!(err instanceof Error && err.message === 'Aborted')) console.error(err);
       currentTrial.value = 0;
       activeCue.value = '';
       currentState.value = 'idle';
       protocolEndReason.value = 'abort';
     } finally {
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-        isFullscreen.value = false;
-      }
-      await releaseWakeLock().catch(() => {});
+      exitFullscreen();
       tutorialMode.value = false;
     }
 
@@ -301,18 +264,12 @@ export const useBciCalibration = () => {
   };
 
   const abortProtocol = () => {
-    if (abortController.value) {
-      abortController.value.abort();
+    abortController.value?.abort();
+    exitFullscreen();
+    void markerSink.value?.('ABORTED');
+    if (activeIngressMode.value === 'neuraflow-bridge') {
+      void bridge.stopStreaming({ waitForDeviceStopped: false }).catch(() => {});
     }
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-      isFullscreen.value = false;
-    }
-
-    void releaseWakeLock().catch(() => {});
-
-    void bridgeSendMarker('ABORTED');
-    void bridge.stopStreaming().catch(() => {});
   };
 
   const resetSession = () => {

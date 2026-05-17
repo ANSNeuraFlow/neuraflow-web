@@ -123,6 +123,23 @@ export default defineNuxtPlugin(() => {
     connect();
   };
 
+  /** Send JSON to the local BCI bridge WebSocket (markers, session lifecycle). */
+  const sendJson = (payload: Record<string, unknown>): boolean => {
+    if (!ws || ws.readyState !== WebSocket.OPEN) {
+      return false;
+    }
+    try {
+      const body =
+        'timestamp' in payload && typeof payload.timestamp === 'number'
+          ? payload
+          : { ...payload, timestamp: Date.now() };
+      ws.send(JSON.stringify(body));
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   connect();
 
   window.addEventListener('beforeunload', disconnect);
@@ -137,6 +154,7 @@ export default defineNuxtPlugin(() => {
       bciBridge: {
         subscribePayload,
         reconnect,
+        sendJson,
       },
     },
   };

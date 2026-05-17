@@ -8,6 +8,7 @@ const STREAM_WAIT_MS = 45_000;
 
 /** Shared state: bridge connection UI may be used from several components. */
 const isConnected = ref(false);
+const streamConnected = ref(false);
 const isStreaming = ref(false);
 const isConnecting = ref(false);
 const isStartingStream = ref(false);
@@ -20,6 +21,7 @@ export const useBridgeConnection = () => {
 
   const applyStatus = (s: { controlConnected: boolean; streamConnected: boolean; streaming: boolean }) => {
     isConnected.value = s.controlConnected;
+    streamConnected.value = s.streamConnected;
     isStreaming.value = s.streaming;
   };
 
@@ -105,13 +107,24 @@ export const useBridgeConnection = () => {
     }
   };
 
-  const stopStreaming = async () => {
+  const stopStreaming = async (opts?: { waitForDeviceStopped?: boolean }) => {
+    const wait = opts?.waitForDeviceStopped ?? false;
     error.value = null;
     try {
       await service.sendCommand('stop_streaming');
-      await waitForStreaming(false);
+      if (wait) await waitForStreaming(false);
     } catch (e) {
       error.value = e instanceof Error ? e.message : 'Failed to stop streaming';
+    }
+  };
+
+  const setSession = async (sessionId: string) => {
+    error.value = null;
+    try {
+      await service.setSession(sessionId);
+    } catch (e) {
+      error.value = e instanceof Error ? e.message : 'Failed to bind bridge session';
+      throw e;
     }
   };
 
@@ -124,6 +137,7 @@ export const useBridgeConnection = () => {
 
   return {
     isConnected,
+    streamConnected,
     isStreaming,
     isConnecting,
     isStartingStream,
@@ -131,6 +145,7 @@ export const useBridgeConnection = () => {
     connect,
     startStreaming,
     stopStreaming,
+    setSession,
     fetchStatus,
   };
 };

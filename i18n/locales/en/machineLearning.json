@@ -2,7 +2,7 @@
   "machineLearning": {
     "attention": {
       "idle": {
-        "btnStart": "Start calibration",
+        "btnStart": "Start session",
         "btnTutorial": "Instructions",
         "description": "Collect EEG data labelled as FOCUS or RELAX to train a attention classifier. Try the short tutorial first, or jump straight into a calibration session.",
         "title": "Attention training"
@@ -112,7 +112,7 @@
       "session": {
         "cancel": "Cancel",
         "connectBridge": "Connect to Cyton Bridge",
-        "connecting": "Connecting...",
+        "connecting": "Connecting…",
         "dir2wayDesc": "Left and right only",
         "dir2wayLabel": "Left / Right",
         "dir4wayDesc": "Up · Down · Left · Right",
@@ -125,7 +125,8 @@
         "note": "The session will be recorded in the system. After confirmation, the Motor Imagery protocol will start in fullscreen mode.",
         "start": "Start session",
         "startStreaming": "Start streaming",
-        "startingStreaming": "Starting streaming...",
+        "startingStreaming": "Starting streaming…",
+        "streamUplinkRequired": "Wait until the EEG uplink channel to the server is active. If it is stuck, stop streaming in the bridge and start it again.",
         "streamingRequired": "Start EEG streaming before beginning the session.",
         "title": "New EEG session",
         "trialsHint2way": "{n} ← + {n} → = {total} trials total",
@@ -167,6 +168,12 @@
         "trialCrossLabel": "Cross (+)",
         "trialFlowTitle": "What does a single trial look like?"
       }
+    },
+    "eegIngress": {
+      "localBridgeTitle": "Local Bridge",
+      "localWsRequired": "Connect the local bridge WebSocket before starting.",
+      "neuraflowBridgeTitle": "NeuraFlow Bridge",
+      "streamingMethodLabel": "Streaming method"
     },
     "models": {
       "dataForModelSubtitle": "Completed EEG sessions you can use as training data. Record new sessions on the Sessions page.",
