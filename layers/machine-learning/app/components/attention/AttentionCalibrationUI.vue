@@ -49,10 +49,7 @@ watch(protocolEndReason, (reason) => {
   }
 });
 
-defineExpose({ runProtocol });
-
 const onSessionStart = async (payload: { name: string; ingressMode: EegIngressMode }) => {
-  showSessionDialog.value = false;
   await runProtocol(payload.name, payload.ingressMode);
 };
 

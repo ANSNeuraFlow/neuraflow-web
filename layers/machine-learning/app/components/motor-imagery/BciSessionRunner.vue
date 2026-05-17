@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import type { BciProtocolState } from '../../composables/useBciCalibration';
+
 const { t } = useI18n();
 
-type ProtocolState = 'idle' | 'relaxation' | 'cue' | 'execution' | 'rest' | 'iti';
-
 const props = defineProps<{
-  currentState: ProtocolState;
+  currentState: BciProtocolState;
   currentTrial: number;
   totalTrials: number;
   activeCue: string;

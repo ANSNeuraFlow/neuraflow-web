@@ -1,11 +1,12 @@
+import { useWakeLock } from '@vueuse/core';
 import { useNuxtApp } from 'nuxt/app';
 import { computed, onBeforeUnmount, ref } from 'vue';
 
 import { useBridgeConnection } from '#layers/bridge-auth/app/composables/useBridgeConnection';
 import { useBridgeStreamService } from '#layers/bridge-auth/app/services/bridge-stream.service';
 import { useEegSessionService } from '#layers/eeg-sessions/app/services/eeg-session.service';
+import { useBciController } from '~/composables/useBciController';
 
-import { useBciController } from '../../../../app/composables/useBciController';
 import type { EegIngressMode } from '../models/eeg-ingress.domain';
 import {
   assertBridgeIngressReady,
@@ -17,9 +18,6 @@ import {
 } from './eeg-ingress.utils';
 import { exactWait, generateCptDigits, generateSequence, playTone } from './eeg-protocol.utils';
 
-// ------------- Kalibracja uwagi (FOCUS / RELAX): protokół UI + markery EEG ------
-
-// ------------- Stałe czasowe, liczba prób i sekwencja tutorialu ----------------
 const ATTENTION_TIMING = {
   cue: 2000,
   focusActive: 15_000,
@@ -34,21 +32,22 @@ const ATTENTION_TIMING = {
 
 const ATTENTION_TOTAL_TRIALS = 40;
 const ATTENTION_BREAK_AFTER_TRIAL = 20;
-const ATTENTION_TUTORIAL_SEQUENCE: AttentionClass[] = ['FOCUS', 'RELAX'];
 
-// ------------- Typy: klasa próby (FOCUS/RELAX) i stan maszyny UI -----------------
 export type AttentionClass = 'FOCUS' | 'RELAX';
 export type AttentionState = 'idle' | 'baseline' | 'cue' | 'active' | 'iti' | 'break' | 'summary';
 
+const ATTENTION_TUTORIAL_SEQUENCE: AttentionClass[] = ['FOCUS', 'RELAX'];
+
 export const useAttentionCalibration = () => {
-  // ------------- Mostek NeuraFlow / WebSocket + wysyłka markerów ---------------
   const bridge = useBridgeConnection();
   const nuxtApp = useNuxtApp();
   const { sendMarker } = useBridgeStreamService();
+  const { stopSession } = useEegSessionService();
   const sendNeuraflowAttentionMarker = makeNeuraflowMarkerSender(sendMarker, 'Attention');
   const { isConnected: localWsConnected } = useBciController();
 
-  // ------------- Tryb ingressu (mostek vs lokalnie) i kanał markerów ------------
+  const { isSupported: wakeLockSupported, request: requestWakeLock, release: releaseWakeLock } = useWakeLock();
+
   const activeIngressMode = ref<EegIngressMode | null>(null);
   const markerSink = ref<((m: string) => Promise<void>) | null>(null);
 
@@ -56,7 +55,6 @@ export const useAttentionCalibration = () => {
     await markerSink.value?.(marker);
   };
 
-  // ------------- Stan protokołu, trialu i preferencje UI -------------------------
   const abortController = ref<AbortController | null>(null);
   const currentState = ref<AttentionState>('idle');
   const currentTrial = ref(0);
@@ -74,44 +72,45 @@ export const useAttentionCalibration = () => {
 
   let breakResolve: (() => void) | null = null;
 
-  // ------------- Pełny ekran (kontener z protokołem) ------------------------------
   const toggleFullscreen = async () => {
     if (!document.fullscreenElement && containerRef.value) {
-      await containerRef.value.requestFullscreen().catch((err: Error) => {
-        console.warn(`Fullscreen request failed: ${err.message}`);
+      await containerRef.value.requestFullscreen().catch((err: unknown) => {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.warn(`Fullscreen request failed: ${msg}`);
       });
       isFullscreen.value = true;
+      if (wakeLockSupported.value) {
+        await requestWakeLock('screen').catch((e: unknown) => {
+          console.warn('Wake lock request failed:', e instanceof Error ? e.message : String(e));
+        });
+      }
     }
   };
 
-  // ------------- Wyjście z trybu pełnoekranowego ----------------------------------
   const exitFullscreen = () => {
+    void releaseWakeLock();
     if (document.fullscreenElement) document.exitFullscreen();
     isFullscreen.value = false;
   };
 
-  // ------------- Wznowienie protokołu po środkowej przerwie (przycisk UI) --------
   const continueAfterBreak = () => {
     breakResolve?.();
     breakResolve = null;
   };
 
-  // ------------- Baseline przed próbami (znaczniki BASELINE_START/END) -----------
   const runBaseline = async (signal: AbortSignal) => {
     currentState.value = 'baseline';
     baselineSecondsLeft.value = 120;
     await emitMarker('BASELINE_START');
-    const start = performance.now();
-    while (true) {
+    const baselineStart = performance.now();
+    for (; performance.now() - baselineStart < ATTENTION_TIMING.baseline; ) {
       await exactWait(500, signal);
-      const elapsed = performance.now() - start;
+      const elapsed = performance.now() - baselineStart;
       baselineSecondsLeft.value = Math.max(0, Math.ceil((ATTENTION_TIMING.baseline - elapsed) / 1000));
-      if (elapsed >= ATTENTION_TIMING.baseline) break;
     }
     await emitMarker('BASELINE_END');
   };
 
-  // ------------- Jedna próba: cue → aktywacja (CPT lub relaks) → ITI ------------
   const runTrial = async (cue: AttentionClass, signal: AbortSignal, sendMarkers: boolean, tutorial = false) => {
     activeCue.value = cue;
     cptDigit.value = null;
@@ -133,10 +132,9 @@ export const useAttentionCalibration = () => {
       }
     } else {
       const duration = tutorial ? ATTENTION_TIMING.relaxActiveTutorial : ATTENTION_TIMING.relaxActive;
-      const start = performance.now();
-      while (true) {
+      const deadline = performance.now() + duration;
+      for (; performance.now() < deadline; ) {
         await exactWait(100, signal);
-        if (performance.now() - start >= duration) break;
       }
     }
 
@@ -149,7 +147,6 @@ export const useAttentionCalibration = () => {
     );
   };
 
-  // ------------- Pełna sesja: wstęp, baseline, próby, przerwa, podsumowanie ----
   const runProtocol = async (
     sessionName = 'Attention Calibration',
     ingressMode: EegIngressMode = 'neuraflow-bridge',
@@ -227,7 +224,6 @@ export const useAttentionCalibration = () => {
       }
 
       await emitMarker('SESSION_END');
-      const { stopSession } = useEegSessionService();
       await stopSession(sessionId);
       completedSuccessfully = true;
     } catch (err: unknown) {
@@ -237,7 +233,6 @@ export const useAttentionCalibration = () => {
         console.error(err);
       }
       await emitMarker('SESSION_ABORTED');
-      const { stopSession } = useEegSessionService();
       await stopSession(sessionId).catch(() => {});
       currentTrial.value = 0;
       activeCue.value = '';
@@ -259,7 +254,6 @@ export const useAttentionCalibration = () => {
     }
   };
 
-  // ------------- Tutorial: krótsze próby, bez markerów na EEG -------------------
   const runTutorial = async () => {
     tutorialMode.value = true;
     totalTrialsRef.value = ATTENTION_TUTORIAL_SEQUENCE.length;
@@ -299,7 +293,6 @@ export const useAttentionCalibration = () => {
     }
   };
 
-  // ------------- Ręczne przerwanie protokołu (abort + stop mostka) -------------
   const abortProtocol = () => {
     abortController.value?.abort();
     breakResolve = null;
@@ -310,7 +303,6 @@ export const useAttentionCalibration = () => {
     }
   };
 
-  // ------------- Stan „idle” po zakończeniu / anulowaniu podsumowania ------------
   const resetSession = () => {
     currentState.value = 'idle';
     currentTrial.value = 0;
@@ -319,12 +311,10 @@ export const useAttentionCalibration = () => {
     sessionDurationMs.value = 0;
   };
 
-  // ------------- Sprzątanie: abort przy odmontowaniu komponentu -----------------
   onBeforeUnmount(() => {
     abortProtocol();
   });
 
-  // ------------- Warunki widoku runnera (który krok protokołu wyświetlić) -------
   const showCue = computed(() => currentState.value === 'cue');
   const showTask = computed(() => currentState.value === 'active');
   const showRest = computed(() => currentState.value === 'iti');
@@ -332,7 +322,6 @@ export const useAttentionCalibration = () => {
   const showBaseline = computed(() => currentState.value === 'baseline');
   const showSummary = computed(() => currentState.value === 'summary');
 
-  // ------------- API composablea dla komponentów UI ------------------------------
   return {
     currentState,
     currentTrial,

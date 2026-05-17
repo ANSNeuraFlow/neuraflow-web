@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBridgeConnection } from '#layers/bridge-auth/app/composables/useBridgeConnection';
+import { useBciController } from '~/composables/useBciController';
 
-import { useBciController } from '../../../../../app/composables/useBciController';
 import type { EegIngressMode } from '../../models/eeg-ingress.domain';
 
 const { t } = useI18n();

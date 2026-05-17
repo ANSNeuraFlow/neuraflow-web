@@ -86,7 +86,7 @@ const protocolSteps = [
           name="material-symbols:arrow-back"
           size="1.6rem"
         />
-        {{ $t('machineLearning.sessions.motorImageryBackToChoice') }}
+        {{ $t('machineLearning.attention.page.backToChoice') }}
       </NuxtLink>
     </div>
 

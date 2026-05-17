@@ -38,8 +38,6 @@ watch(protocolEndReason, (reason) => {
   }
 });
 
-defineExpose({ runProtocol });
-
 interface BciSessionStartPayload {
   name: string;
   classes: string[];

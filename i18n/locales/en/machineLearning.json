@@ -8,6 +8,7 @@
         "title": "Attention training"
       },
       "page": {
+        "backToChoice": "Back to training types",
         "kicker": "Attention",
         "newSessionSubtitle": "Name your session and launch the fullscreen attention calibration protocol.",
         "newSessionTitle": "New session",
