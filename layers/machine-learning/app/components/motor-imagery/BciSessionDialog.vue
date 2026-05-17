@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { useBridgeConnection } from '#layers/bridge-auth/app/composables/useBridgeConnection';
 
+import { useBciController } from '../../../../../app/composables/useBciController';
+import type { EegIngressMode } from '../../models/eeg-ingress.domain';
+
 const { t } = useI18n();
 
 const props = defineProps<{ open: boolean }>();
 const emit = defineEmits<{
   'update:open': [value: boolean];
-  start: [payload: { name: string; classes: string[]; trialsPerDirection: number }];
+  start: [payload: { name: string; classes: string[]; trialsPerDirection: number; ingressMode: EegIngressMode }];
 }>();
 
 type DirectionMode = '4way' | '2way';
@@ -20,6 +23,11 @@ const directionMode = ref<DirectionMode>(DEFAULT_DIRECTION_MODE);
 const trialsPerDirectionStr = ref(DEFAULT_TRIALS_PER_DIRECTION_STR);
 const trialsError = ref('');
 const formGateError = ref('');
+const ingressMode = ref<EegIngressMode>('neuraflow-bridge');
+
+const bridgeConnection = useBridgeConnection();
+const bridgeStreamErrorMessage = computed(() => bridgeConnection.error.value);
+const { isConnected: localWsConnected } = useBciController();
 
 const trialsPerDirection = computed(() => {
   const n = parseInt(trialsPerDirectionStr.value, 10);
@@ -56,8 +64,6 @@ const directionModeOptions: { value: DirectionMode; label: string; icon: string;
   },
 ];
 
-const bridgeConnection = useBridgeConnection();
-
 watch(
   () => props.open,
   (val) => {
@@ -66,6 +72,7 @@ watch(
       sessionNameError.value = '';
       trialsError.value = '';
       formGateError.value = '';
+      ingressMode.value = 'neuraflow-bridge';
       directionMode.value = DEFAULT_DIRECTION_MODE;
       trialsPerDirectionStr.value = DEFAULT_TRIALS_PER_DIRECTION_STR;
       void bridgeConnection.fetchStatus();
@@ -85,8 +92,11 @@ const isBridgeConnecting = computed(() => bridgeConnection.isConnecting.value);
 const isStartingStream = computed(() => bridgeConnection.isStartingStream.value);
 
 const showConnectButton = computed(() => !bridgeConnection.isConnected.value);
-const showStreamButton = computed(() => bridgeConnection.isConnected.value && !bridgeConnection.isStreaming.value);
-const showStartButton = computed(() => bridgeConnection.isConnected.value && bridgeConnection.isStreaming.value);
+const showStreamButton = computed(
+  () =>
+    bridgeConnection.isConnected.value &&
+    (!bridgeConnection.isStreaming.value || !bridgeConnection.streamConnected.value),
+);
 
 const submit = () => {
   sessionNameError.value = '';
@@ -106,14 +116,67 @@ const submit = () => {
     trialsError.value = t('machineLearning.bci.session.trialsMax');
     return;
   }
-  if (!bridgeConnection.isStreaming.value) {
-    formGateError.value = t('machineLearning.bci.session.streamingRequired');
-    return;
+  if (ingressMode.value === 'local-bridge') {
+    if (!localWsConnected.value) {
+      formGateError.value = t('machineLearning.eegIngress.localWsRequired');
+      return;
+    }
+  } else {
+    if (!bridgeConnection.isStreaming.value) {
+      formGateError.value = t('machineLearning.bci.session.streamingRequired');
+      return;
+    }
+    if (!bridgeConnection.streamConnected.value) {
+      formGateError.value = t('machineLearning.bci.session.streamUplinkRequired');
+      return;
+    }
   }
 
   emit('update:open', false);
-  emit('start', { name, classes: activeClasses.value, trialsPerDirection: trialsPerDirection.value });
+  emit('start', {
+    name,
+    classes: activeClasses.value,
+    trialsPerDirection: trialsPerDirection.value,
+    ingressMode: ingressMode.value,
+  });
 };
+
+const footerPrimary = computed(() => {
+  if (ingressMode.value === 'local-bridge') {
+    return {
+      icon: 'material-symbols:play-arrow-rounded',
+      label: t('machineLearning.bci.session.start'),
+      disabled: !localWsConnected.value,
+      onClick: () => submit(),
+    };
+  }
+  if (showConnectButton.value) {
+    return {
+      icon: isBridgeConnecting.value ? 'svg-spinners:ring-resize' : 'material-symbols:link-rounded',
+      label: isBridgeConnecting.value
+        ? t('machineLearning.bci.session.connecting')
+        : t('machineLearning.bci.session.connectBridge'),
+      disabled: isBridgeConnecting.value,
+      onClick: () => connectBridge(),
+    };
+  }
+  if (showStreamButton.value) {
+    return {
+      icon: isStartingStream.value ? 'svg-spinners:ring-resize' : 'material-symbols:sensors-rounded',
+      label: isStartingStream.value
+        ? t('machineLearning.bci.session.startingStreaming')
+        : t('machineLearning.bci.session.startStreaming'),
+      disabled: isStartingStream.value,
+      onClick: () => startBridgeStreaming(),
+    };
+  }
+  return {
+    icon: 'material-symbols:play-arrow-rounded',
+    label: t('machineLearning.bci.session.start'),
+    disabled: false,
+    onClick: () => submit(),
+  };
+});
 </script>
 
 <template>
@@ -255,73 +318,36 @@ const submit = () => {
               {{ t('machineLearning.bci.session.note') }}
             </p>
 
-            <!-- Debug info -->
-            <div class="bg-info/10 text-body-x-sm p-sm text-on-surface-dim rounded">
-              <strong>Debug:</strong> isConnected={{ bridgeConnection.isConnected }}, isStreaming={{
-                bridgeConnection.isStreaming
-              }}
-            </div>
+            <EegIngressModeSelect
+              v-model="ingressMode"
+              :bridge-error="bridgeStreamErrorMessage"
+            />
 
-            <p
-              v-if="bridgeConnection.error"
-              class="text-body-sm text-error"
-            >
-              {{ bridgeConnection.error }}
-            </p>
-            <p
-              v-if="formGateError"
-              class="text-body-sm text-error"
-            >
-              {{ formGateError }}
-            </p>
+            <div class="gap-md border-on-surface/10 pt-x-lg flex flex-col items-stretch border-t">
+              <p
+                v-if="formGateError"
+                class="text-body-sm text-error"
+              >
+                {{ formGateError }}
+              </p>
+              <div class="gap-md flex flex-wrap items-center justify-end">
+                <DialogClose as-child>
+                  <AppButton variant="secondary">{{ t('machineLearning.bci.session.cancel') }}</AppButton>
+                </DialogClose>
 
-            <div class="gap-md border-on-surface/10 pt-x-lg flex justify-end border-t">
-              <DialogClose as-child>
-                <AppButton variant="secondary">{{ t('machineLearning.bci.session.cancel') }}</AppButton>
-              </DialogClose>
-              <AppButton
-                v-if="showConnectButton"
-                variant="inverse"
-                :disabled="isBridgeConnecting"
-                @click="connectBridge"
-              >
-                <Icon
-                  :name="isBridgeConnecting ? 'svg-spinners:ring-resize' : 'mdi:connect'"
-                  size="1.8rem"
-                />
-                {{
-                  isBridgeConnecting
-                    ? t('machineLearning.bci.session.connecting')
-                    : t('machineLearning.bci.session.connectBridge')
-                }}
-              </AppButton>
-              <AppButton
-                v-else-if="showStreamButton"
-                variant="inverse"
-                :disabled="isStartingStream"
-                @click="startBridgeStreaming"
-              >
-                <Icon
-                  :name="isStartingStream ? 'svg-spinners:ring-resize' : 'material-symbols:sensors-rounded'"
-                  size="1.8rem"
-                />
-                {{
-                  isStartingStream
-                    ? t('machineLearning.bci.session.startingStreaming')
-                    : t('machineLearning.bci.session.startStreaming')
-                }}
-              </AppButton>
-              <AppButton
-                v-else-if="showStartButton"
-                variant="inverse"
-                @click="submit"
-              >
-                <Icon
-                  name="material-symbols:play-arrow-rounded"
-                  size="1.8rem"
-                />
-                {{ t('machineLearning.bci.session.start') }}
-              </AppButton>
+                <AppButton
+                  variant="inverse"
+                  class="min-h-[3rem] w-fit shrink-0 justify-center whitespace-nowrap"
+                  :disabled="footerPrimary.disabled"
+                  @click="footerPrimary.onClick"
+                >
+                  <Icon
+                    :name="footerPrimary.icon"
+                    size="1.8rem"
+                  />
+                  {{ footerPrimary.label }}
+                </AppButton>
+              </div>
             </div>
           </div>
         </div>

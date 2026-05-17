@@ -1,138 +1,26 @@
-import { computed, onBeforeUnmount, onMounted, ref, shallowRef } from 'vue';
+import { useNuxtApp } from 'nuxt/app';
+import { computed, onBeforeUnmount, ref } from 'vue';
 
-import { useUserSessionStore } from '#layers/auth/app/store/user-session.store';
+import { useBridgeConnection } from '#layers/bridge-auth/app/composables/useBridgeConnection';
+import { useBridgeStreamService } from '#layers/bridge-auth/app/services/bridge-stream.service';
 import { useEegSessionService } from '#layers/eeg-sessions/app/services/eeg-session.service';
 
-class BridgeWebSocket {
-  private ws: WebSocket | null = null;
-  private url: string;
-  public connected = false;
-  private destroyed = false;
+import { useBciController } from '../../../../app/composables/useBciController';
+import type { EegIngressMode } from '../models/eeg-ingress.domain';
+import {
+  assertBridgeIngressReady,
+  assertLocalWsReady,
+  createBoundSession,
+  makeLocalMarkerSender,
+  makeNeuraflowMarkerSender,
+  sendLocalLifecycleEvent,
+} from './eeg-ingress.utils';
+import { exactWait, generateCptDigits, generateSequence, playTone } from './eeg-protocol.utils';
 
-  constructor(url: string) {
-    this.url = url;
-    this.connect();
-  }
+// ------------- Kalibracja uwagi (FOCUS / RELAX): protokół UI + markery EEG ------
 
-  private connect() {
-    if (this.destroyed || !import.meta.client) return;
-    if (typeof globalThis.WebSocket === 'undefined') {
-      console.warn('[Bridge WS] WebSocket API unavailable in this environment.');
-      return;
-    }
-    try {
-      this.ws = new WebSocket(this.url);
-    } catch (e) {
-      console.error('[Bridge WS] Failed to construct WebSocket:', e);
-      if (!this.destroyed) setTimeout(() => this.connect(), 2000);
-      return;
-    }
-    this.ws.onopen = () => {
-      this.connected = true;
-      console.log('[Bridge WS] Connected to bridge successfully.');
-    };
-    this.ws.onclose = () => {
-      this.connected = false;
-      if (!this.destroyed) {
-        console.log('[Bridge WS] Connection closed. Reconnecting in 2s...');
-        setTimeout(() => this.connect(), 2000);
-      }
-    };
-    this.ws.onerror = (err) => console.error('[Bridge WS] Connection error:', err);
-  }
-
-  sendEvent(type: string, payloadExtras: Record<string, unknown> = {}) {
-    const payload = { type, ...payloadExtras, timestamp: Date.now() };
-    if (this.ws && this.connected) {
-      this.ws.send(JSON.stringify(payload));
-    } else {
-      console.warn('[Bridge WS WARN] Cannot send event, not connected:', payload);
-    }
-  }
-
-  send(marker: string) {
-    this.sendEvent('MARKER', { marker });
-  }
-
-  close() {
-    this.destroyed = true;
-    if (this.ws) {
-      this.ws.onclose = null;
-      this.ws.close();
-      this.ws = null;
-    }
-    this.connected = false;
-  }
-}
-
-const exactWait = (ms: number, signal?: AbortSignal) =>
-  new Promise<void>((resolve, reject) => {
-    const start = performance.now();
-    const frame = (time: DOMHighResTimeStamp) => {
-      if (signal?.aborted) return reject(new Error('Aborted'));
-      if (time - start >= ms) resolve();
-      else requestAnimationFrame(frame);
-    };
-    requestAnimationFrame(frame);
-  });
-
-const playTone = (frequency: number, duration = 0.2) => {
-  try {
-    const AudioCtx =
-      window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-    const ctx = new AudioCtx();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(frequency, ctx.currentTime);
-    gain.gain.setValueAtTime(0, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0.6, ctx.currentTime + 0.01);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + duration);
-  } catch (e) {
-    console.error('Failed to play tone:', e);
-  }
-};
-
-const generateSequence = (classes: string[], total: number): string[] => {
-  const perClass = Math.floor(total / classes.length);
-  const seq: string[] = [];
-  classes.forEach((cls) => {
-    for (let i = 0; i < perClass; i++) seq.push(cls);
-  });
-  for (let i = seq.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const tmp = seq[i];
-    seq[i] = seq[j] as string;
-    seq[j] = tmp as string;
-  }
-  return seq;
-};
-
-const generateCptDigits = (count: number): string[] => {
-  const noGoCount = Math.max(1, Math.round(count * 0.3));
-  const goPool = [0, 1, 2, 4, 5, 6, 7, 8, 9];
-  const digits: string[] = [];
-
-  for (let i = 0; i < noGoCount; i++) digits.push('3');
-  for (let i = noGoCount; i < count; i++) {
-    digits.push(String(goPool[Math.floor(Math.random() * goPool.length)]!));
-  }
-
-  for (let i = digits.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const tmp = digits[i]!;
-    digits[i] = digits[j]!;
-    digits[j] = tmp;
-  }
-
-  return digits;
-};
-
-const TIMING = {
+// ------------- Stałe czasowe, liczba prób i sekwencja tutorialu ----------------
+const ATTENTION_TIMING = {
   cue: 2000,
   focusActive: 15_000,
   relaxActive: 12_000,
@@ -142,147 +30,158 @@ const TIMING = {
   itiMax: 2000,
   baseline: 120_000,
   cptDigitInterval: 1500,
-  cptSettleMs: 3000,
 } as const;
 
-const TOTAL_TRIALS = 40;
-const BREAK_AFTER_TRIAL = 20;
+const ATTENTION_TOTAL_TRIALS = 40;
+const ATTENTION_BREAK_AFTER_TRIAL = 20;
+const ATTENTION_TUTORIAL_SEQUENCE: AttentionClass[] = ['FOCUS', 'RELAX'];
 
+// ------------- Typy: klasa próby (FOCUS/RELAX) i stan maszyny UI -----------------
 export type AttentionClass = 'FOCUS' | 'RELAX';
 export type AttentionState = 'idle' | 'baseline' | 'cue' | 'active' | 'iti' | 'break' | 'summary';
 
 export const useAttentionCalibration = () => {
-  const config = useRuntimeConfig();
-  const wsRef = shallowRef<BridgeWebSocket | null>(null);
+  // ------------- Mostek NeuraFlow / WebSocket + wysyłka markerów ---------------
+  const bridge = useBridgeConnection();
+  const nuxtApp = useNuxtApp();
+  const { sendMarker } = useBridgeStreamService();
+  const sendNeuraflowAttentionMarker = makeNeuraflowMarkerSender(sendMarker, 'Attention');
+  const { isConnected: localWsConnected } = useBciController();
 
-  onMounted(() => {
-    wsRef.value = new BridgeWebSocket(String(config.public.bciWsUrl));
-  });
+  // ------------- Tryb ingressu (mostek vs lokalnie) i kanał markerów ------------
+  const activeIngressMode = ref<EegIngressMode | null>(null);
+  const markerSink = ref<((m: string) => Promise<void>) | null>(null);
 
+  const emitMarker = async (marker: string) => {
+    await markerSink.value?.(marker);
+  };
+
+  // ------------- Stan protokołu, trialu i preferencje UI -------------------------
   const abortController = ref<AbortController | null>(null);
-
   const currentState = ref<AttentionState>('idle');
   const currentTrial = ref(0);
-  const totalTrialsRef = ref(TOTAL_TRIALS);
+  const totalTrialsRef = ref(ATTENTION_TOTAL_TRIALS);
   const activeCue = ref<AttentionClass | ''>('');
   const isFullscreen = ref(false);
   const protocolEndReason = ref<'success' | 'abort' | 'tutorial-done' | null>(null);
   const tutorialMode = ref(false);
   const containerRef = ref<HTMLElement | null>(null);
   const soundEnabled = ref(true);
-
   const baselineSecondsLeft = ref(120);
-
   const cptDigit = ref<string | null>(null);
-
   const collectedTrials = ref(0);
   const sessionDurationMs = ref(0);
 
   let breakResolve: (() => void) | null = null;
 
-  const bridgeSendEvent = (type: string, extras: Record<string, unknown> = {}) => {
-    wsRef.value?.sendEvent(type, extras);
-  };
-
-  const bridgeSendMarker = (marker: string) => {
-    wsRef.value?.send(marker);
-  };
-
+  // ------------- Pełny ekran (kontener z protokołem) ------------------------------
   const toggleFullscreen = async () => {
     if (!document.fullscreenElement && containerRef.value) {
-      await containerRef.value.requestFullscreen().catch((err) => {
-        console.warn(`Error attempting to enable fullscreen: ${err.message}`);
+      await containerRef.value.requestFullscreen().catch((err: Error) => {
+        console.warn(`Fullscreen request failed: ${err.message}`);
       });
       isFullscreen.value = true;
     }
   };
 
+  // ------------- Wyjście z trybu pełnoekranowego ----------------------------------
   const exitFullscreen = () => {
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-    }
+    if (document.fullscreenElement) document.exitFullscreen();
     isFullscreen.value = false;
   };
 
+  // ------------- Wznowienie protokołu po środkowej przerwie (przycisk UI) --------
   const continueAfterBreak = () => {
     breakResolve?.();
     breakResolve = null;
   };
 
+  // ------------- Baseline przed próbami (znaczniki BASELINE_START/END) -----------
   const runBaseline = async (signal: AbortSignal) => {
     currentState.value = 'baseline';
     baselineSecondsLeft.value = 120;
-    bridgeSendMarker('BASELINE_START');
-
+    await emitMarker('BASELINE_START');
     const start = performance.now();
     while (true) {
       await exactWait(500, signal);
       const elapsed = performance.now() - start;
-      baselineSecondsLeft.value = Math.max(0, Math.ceil((TIMING.baseline - elapsed) / 1000));
-      if (elapsed >= TIMING.baseline) break;
+      baselineSecondsLeft.value = Math.max(0, Math.ceil((ATTENTION_TIMING.baseline - elapsed) / 1000));
+      if (elapsed >= ATTENTION_TIMING.baseline) break;
     }
-
-    bridgeSendMarker('BASELINE_END');
+    await emitMarker('BASELINE_END');
   };
 
+  // ------------- Jedna próba: cue → aktywacja (CPT lub relaks) → ITI ------------
   const runTrial = async (cue: AttentionClass, signal: AbortSignal, sendMarkers: boolean, tutorial = false) => {
     activeCue.value = cue;
     cptDigit.value = null;
 
     currentState.value = 'cue';
-    if (sendMarkers) bridgeSendMarker(`${cue}_CUE`);
+    if (sendMarkers) await emitMarker(`${cue}_CUE`);
     if (soundEnabled.value) playTone(cue === 'FOCUS' ? 880 : 440);
-    await exactWait(TIMING.cue, signal);
+    await exactWait(ATTENTION_TIMING.cue, signal);
 
     currentState.value = 'active';
-    if (sendMarkers) bridgeSendMarker(`${cue}_START`);
+    if (sendMarkers) await emitMarker(`${cue}_START`);
 
     if (cue === 'FOCUS') {
-      const focusDuration = tutorial ? TIMING.focusActiveTutorial : TIMING.focusActive;
-      const digitCount = Math.round(focusDuration / TIMING.cptDigitInterval);
-      const digits = generateCptDigits(digitCount);
-      for (let i = 0; i < digits.length; i++) {
-        cptDigit.value = digits[i]!;
-        await exactWait(TIMING.cptDigitInterval, signal);
+      const duration = tutorial ? ATTENTION_TIMING.focusActiveTutorial : ATTENTION_TIMING.focusActive;
+      const digits = generateCptDigits(Math.round(duration / ATTENTION_TIMING.cptDigitInterval));
+      for (const digit of digits) {
+        cptDigit.value = digit;
+        await exactWait(ATTENTION_TIMING.cptDigitInterval, signal);
       }
     } else {
-      const relaxDuration = tutorial ? TIMING.relaxActiveTutorial : TIMING.relaxActive;
+      const duration = tutorial ? ATTENTION_TIMING.relaxActiveTutorial : ATTENTION_TIMING.relaxActive;
       const start = performance.now();
       while (true) {
         await exactWait(100, signal);
-        const elapsed = performance.now() - start;
-        if (elapsed >= relaxDuration) break;
+        if (performance.now() - start >= duration) break;
       }
     }
 
-    if (sendMarkers) bridgeSendMarker(`${cue}_END`);
+    if (sendMarkers) await emitMarker(`${cue}_END`);
 
     currentState.value = 'iti';
-    const itiTime = TIMING.itiMin + Math.random() * (TIMING.itiMax - TIMING.itiMin);
-    await exactWait(itiTime, signal);
+    await exactWait(
+      ATTENTION_TIMING.itiMin + Math.random() * (ATTENTION_TIMING.itiMax - ATTENTION_TIMING.itiMin),
+      signal,
+    );
   };
 
-  const runProtocol = async (sessionName = 'Attention Calibration') => {
+  // ------------- Pełna sesja: wstęp, baseline, próby, przerwa, podsumowanie ----
+  const runProtocol = async (
+    sessionName = 'Attention Calibration',
+    ingressMode: EegIngressMode = 'neuraflow-bridge',
+  ) => {
     tutorialMode.value = false;
-
-    const sessionStore = useUserSessionStore();
-    // @ts-expect-error - TODO: WIP bridge auth
-    const token = sessionStore.user?.token;
-
-    if (!token) {
-      console.warn('Brak tokenu użytkownika. Możesz napotkać problemy z autoryzacją w bridge.');
-    }
-
-    const { createSession, stopSession } = useEegSessionService();
-    let sessionId: string | null = null;
+    activeIngressMode.value = ingressMode;
 
     try {
-      const session = await createSession({ sessionName, protocolName: 'attention' });
-      sessionId = session.id;
-    } catch (err) {
-      console.error('Failed to create EEG session via API:', err);
-      sessionId = 'local-attention-session-' + Date.now();
+      if (ingressMode === 'neuraflow-bridge') {
+        await assertBridgeIngressReady(bridge);
+      } else {
+        assertLocalWsReady(localWsConnected);
+      }
+    } catch (e) {
+      const code = e instanceof Error ? e.message : '';
+      console.error(`Attention prerequisites not met (${code}).`);
+      activeIngressMode.value = null;
+      return;
     }
+
+    let sessionId: string;
+    try {
+      sessionId = await createBoundSession(sessionName, 'attention', bridge, ingressMode);
+    } catch (e) {
+      console.error('Cannot start attention calibration without server session and Kafka bridge binding:', e);
+      bridge.error.value = e instanceof Error ? e.message : 'EEG session or bridge binding failed.';
+      activeIngressMode.value = null;
+      return;
+    }
+
+    markerSink.value =
+      ingressMode === 'neuraflow-bridge' ? sendNeuraflowAttentionMarker : makeLocalMarkerSender(nuxtApp);
 
     await toggleFullscreen();
 
@@ -290,13 +189,17 @@ export const useAttentionCalibration = () => {
     const signal = abortController.value.signal;
 
     currentTrial.value = 0;
-    totalTrialsRef.value = TOTAL_TRIALS;
+    totalTrialsRef.value = ATTENTION_TOTAL_TRIALS;
     collectedTrials.value = 0;
     const sessionStart = Date.now();
 
-    bridgeSendEvent('SESSION_START', { sessionId, token, protocol: 'attention' });
+    if (ingressMode === 'neuraflow-bridge') {
+      await emitMarker('SESSION_START');
+    } else {
+      sendLocalLifecycleEvent(nuxtApp, 'SESSION_START', sessionId, '');
+    }
 
-    const sequence = generateSequence(['FOCUS', 'RELAX'], TOTAL_TRIALS) as AttentionClass[];
+    const sequence = generateSequence(['FOCUS', 'RELAX'], ATTENTION_TOTAL_TRIALS) as AttentionClass[];
     let completedSuccessfully = false;
 
     try {
@@ -307,17 +210,15 @@ export const useAttentionCalibration = () => {
       for (let i = 0; i < sequence.length; i++) {
         currentTrial.value = i + 1;
 
-        if (i === BREAK_AFTER_TRIAL) {
+        if (i === ATTENTION_BREAK_AFTER_TRIAL) {
           exitFullscreen();
           currentState.value = 'break';
-          bridgeSendMarker('BREAK_START');
-
+          await emitMarker('BREAK_START');
           await new Promise<void>((resolve, reject) => {
             breakResolve = resolve;
             signal.addEventListener('abort', () => reject(new Error('Aborted')), { once: true });
           });
-
-          bridgeSendMarker('BREAK_END');
+          await emitMarker('BREAK_END');
           await toggleFullscreen();
         }
 
@@ -325,13 +226,9 @@ export const useAttentionCalibration = () => {
         collectedTrials.value = i + 1;
       }
 
-      bridgeSendMarker('SESSION_END');
-      bridgeSendEvent('SESSION_END_EVENT', { sessionId });
-
-      if (sessionId && !sessionId.startsWith('local-attention-session')) {
-        await stopSession(sessionId);
-      }
-
+      await emitMarker('SESSION_END');
+      const { stopSession } = useEegSessionService();
+      await stopSession(sessionId);
       completedSuccessfully = true;
     } catch (err: unknown) {
       if (err instanceof Error && err.message === 'Aborted') {
@@ -339,15 +236,19 @@ export const useAttentionCalibration = () => {
       } else {
         console.error(err);
       }
-      bridgeSendEvent('SESSION_ABORTED', { sessionId });
-      if (sessionId && !sessionId.startsWith('local-attention-session')) {
-        await stopSession(sessionId).catch(() => {});
-      }
+      await emitMarker('SESSION_ABORTED');
+      const { stopSession } = useEegSessionService();
+      await stopSession(sessionId).catch(() => {});
       currentTrial.value = 0;
       activeCue.value = '';
       currentState.value = 'idle';
       protocolEndReason.value = 'abort';
     } finally {
+      if (ingressMode === 'neuraflow-bridge') {
+        await bridge.stopStreaming({ waitForDeviceStopped: false }).catch(() => {});
+      }
+      markerSink.value = null;
+      activeIngressMode.value = null;
       exitFullscreen();
       breakResolve = null;
     }
@@ -358,11 +259,10 @@ export const useAttentionCalibration = () => {
     }
   };
 
-  const TUTORIAL_SEQUENCE: AttentionClass[] = ['FOCUS', 'RELAX'];
-
+  // ------------- Tutorial: krótsze próby, bez markerów na EEG -------------------
   const runTutorial = async () => {
     tutorialMode.value = true;
-    totalTrialsRef.value = TUTORIAL_SEQUENCE.length;
+    totalTrialsRef.value = ATTENTION_TUTORIAL_SEQUENCE.length;
 
     await toggleFullscreen();
 
@@ -375,17 +275,13 @@ export const useAttentionCalibration = () => {
 
     try {
       await exactWait(1000, signal);
-
-      for (let i = 0; i < TUTORIAL_SEQUENCE.length; i++) {
+      for (let i = 0; i < ATTENTION_TUTORIAL_SEQUENCE.length; i++) {
         currentTrial.value = i + 1;
-        await runTrial(TUTORIAL_SEQUENCE[i]!, signal, false, true);
+        await runTrial(ATTENTION_TUTORIAL_SEQUENCE[i]!, signal, false, true);
       }
-
       completedSuccessfully = true;
     } catch (err: unknown) {
-      if (!(err instanceof Error && err.message === 'Aborted')) {
-        console.error(err);
-      }
+      if (!(err instanceof Error && err.message === 'Aborted')) console.error(err);
       currentTrial.value = 0;
       activeCue.value = '';
       currentState.value = 'idle';
@@ -403,14 +299,18 @@ export const useAttentionCalibration = () => {
     }
   };
 
+  // ------------- Ręczne przerwanie protokołu (abort + stop mostka) -------------
   const abortProtocol = () => {
     abortController.value?.abort();
     breakResolve = null;
     exitFullscreen();
-    // TODO: Bezpiecznejsze zakończenie komunikacji w wypadku błędu
-    bridgeSendMarker('ABORTED');
+    void emitMarker('ABORTED');
+    if (activeIngressMode.value === 'neuraflow-bridge') {
+      void bridge.stopStreaming({ waitForDeviceStopped: false }).catch(() => {});
+    }
   };
 
+  // ------------- Stan „idle” po zakończeniu / anulowaniu podsumowania ------------
   const resetSession = () => {
     currentState.value = 'idle';
     currentTrial.value = 0;
@@ -419,12 +319,12 @@ export const useAttentionCalibration = () => {
     sessionDurationMs.value = 0;
   };
 
+  // ------------- Sprzątanie: abort przy odmontowaniu komponentu -----------------
   onBeforeUnmount(() => {
     abortProtocol();
-    wsRef.value?.close();
-    wsRef.value = null;
   });
 
+  // ------------- Warunki widoku runnera (który krok protokołu wyświetlić) -------
   const showCue = computed(() => currentState.value === 'cue');
   const showTask = computed(() => currentState.value === 'active');
   const showRest = computed(() => currentState.value === 'iti');
@@ -432,8 +332,8 @@ export const useAttentionCalibration = () => {
   const showBaseline = computed(() => currentState.value === 'baseline');
   const showSummary = computed(() => currentState.value === 'summary');
 
+  // ------------- API composablea dla komponentów UI ------------------------------
   return {
-    ws: wsRef,
     currentState,
     currentTrial,
     totalTrialsRef,

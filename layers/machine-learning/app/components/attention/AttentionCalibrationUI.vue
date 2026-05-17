@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useAttentionCalibration } from '../../composables/useAttentionCalibration';
+import type { EegIngressMode } from '../../models/eeg-ingress.domain';
 
 const emit = defineEmits<{
   finished: [];
@@ -50,9 +51,9 @@ watch(protocolEndReason, (reason) => {
 
 defineExpose({ runProtocol });
 
-const onSessionStart = async (name: string) => {
+const onSessionStart = async (payload: { name: string; ingressMode: EegIngressMode }) => {
   showSessionDialog.value = false;
-  await runProtocol(name);
+  await runProtocol(payload.name, payload.ingressMode);
 };
 
 const onTutorialStart = async () => {

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useBciCalibration } from '../../composables/useBciCalibration';
+import type { EegIngressMode } from '../../models/eeg-ingress.domain';
 
 const emit = defineEmits<{
   finished: [];
@@ -43,10 +44,11 @@ interface BciSessionStartPayload {
   name: string;
   classes: string[];
   trialsPerDirection: number;
+  ingressMode: EegIngressMode;
 }
 
 const onSessionStart = async (payload: BciSessionStartPayload) => {
-  await runProtocol(payload.name, payload.classes, payload.trialsPerDirection);
+  await runProtocol(payload.name, payload.classes, payload.trialsPerDirection, payload.ingressMode);
 };
 
 const onTutorialStart = async () => {

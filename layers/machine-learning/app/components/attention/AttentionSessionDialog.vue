@@ -1,14 +1,25 @@
 <script setup lang="ts">
+import { useBridgeConnection } from '#layers/bridge-auth/app/composables/useBridgeConnection';
+
+import { useBciController } from '../../../../../app/composables/useBciController';
+import type { EegIngressMode } from '../../models/eeg-ingress.domain';
+
 const { t } = useI18n();
 
 const props = defineProps<{ open: boolean }>();
 const emit = defineEmits<{
   'update:open': [value: boolean];
-  start: [name: string];
+  start: [payload: { name: string; ingressMode: EegIngressMode }];
 }>();
 
 const sessionNameInput = ref('');
 const sessionNameError = ref('');
+const formGateError = ref('');
+const ingressMode = ref<EegIngressMode>('neuraflow-bridge');
+
+const bridgeConnection = useBridgeConnection();
+const bridgeStreamErrorMessage = computed(() => bridgeConnection.error.value);
+const { isConnected: localWsConnected } = useBciController();
 
 watch(
   () => props.open,
@@ -16,20 +27,94 @@ watch(
     if (val) {
       sessionNameInput.value = '';
       sessionNameError.value = '';
+      formGateError.value = '';
+      ingressMode.value = 'neuraflow-bridge';
+      void bridgeConnection.fetchStatus();
     }
   },
 );
 
+const connectBridge = () => {
+  void bridgeConnection.connect();
+};
+
+const startBridgeStreaming = () => {
+  void bridgeConnection.startStreaming();
+};
+
+const isBridgeConnecting = computed(() => bridgeConnection.isConnecting.value);
+const isStartingStream = computed(() => bridgeConnection.isStartingStream.value);
+
+const showConnectButton = computed(() => !bridgeConnection.isConnected.value);
+const showStreamButton = computed(
+  () =>
+    bridgeConnection.isConnected.value &&
+    (!bridgeConnection.isStreaming.value || !bridgeConnection.streamConnected.value),
+);
+
 const submit = () => {
   sessionNameError.value = '';
+  formGateError.value = '';
   const name = sessionNameInput.value.trim();
   if (!name) {
     sessionNameError.value = t('machineLearning.attention.session.nameRequired');
     return;
   }
+  if (ingressMode.value === 'local-bridge') {
+    if (!localWsConnected.value) {
+      formGateError.value = t('machineLearning.eegIngress.localWsRequired');
+      return;
+    }
+  } else {
+    if (!bridgeConnection.isStreaming.value) {
+      formGateError.value = t('machineLearning.bci.session.streamingRequired');
+      return;
+    }
+    if (!bridgeConnection.streamConnected.value) {
+      formGateError.value = t('machineLearning.bci.session.streamUplinkRequired');
+      return;
+    }
+  }
   emit('update:open', false);
-  emit('start', name);
+  emit('start', { name, ingressMode: ingressMode.value });
 };
+
+const footerPrimary = computed(() => {
+  if (ingressMode.value === 'local-bridge') {
+    return {
+      icon: 'material-symbols:play-arrow-rounded',
+      label: t('machineLearning.attention.session.start'),
+      disabled: !localWsConnected.value,
+      onClick: () => submit(),
+    };
+  }
+  if (showConnectButton.value) {
+    return {
+      icon: isBridgeConnecting.value ? 'svg-spinners:ring-resize' : 'material-symbols:link-rounded',
+      label: isBridgeConnecting.value
+        ? t('machineLearning.bci.session.connecting')
+        : t('machineLearning.bci.session.connectBridge'),
+      disabled: isBridgeConnecting.value,
+      onClick: () => connectBridge(),
+    };
+  }
+  if (showStreamButton.value) {
+    return {
+      icon: isStartingStream.value ? 'svg-spinners:ring-resize' : 'material-symbols:sensors-rounded',
+      label: isStartingStream.value
+        ? t('machineLearning.bci.session.startingStreaming')
+        : t('machineLearning.bci.session.startStreaming'),
+      disabled: isStartingStream.value,
+      onClick: () => startBridgeStreaming(),
+    };
+  }
+  return {
+    icon: 'material-symbols:play-arrow-rounded',
+    label: t('machineLearning.attention.session.start'),
+    disabled: false,
+    onClick: () => submit(),
+  };
+});
 </script>
 
 <template>
@@ -110,22 +195,38 @@ const submit = () => {
               {{ t('machineLearning.attention.session.note') }}
             </p>
 
-            <div class="gap-md border-on-surface/10 pt-x-lg flex justify-end border-t">
-              <DialogClose as-child>
-                <AppButton variant="secondary">
-                  {{ t('machineLearning.attention.session.cancel') }}
-                </AppButton>
-              </DialogClose>
-              <AppButton
-                variant="inverse"
-                @click="submit"
+            <EegIngressModeSelect
+              v-model="ingressMode"
+              :bridge-error="bridgeStreamErrorMessage"
+            />
+
+            <div class="gap-md border-on-surface/10 pt-x-lg flex flex-col items-stretch border-t">
+              <p
+                v-if="formGateError"
+                class="text-body-sm text-error"
               >
-                <Icon
-                  name="material-symbols:play-arrow-rounded"
-                  size="1.8rem"
-                />
-                {{ t('machineLearning.attention.session.start') }}
-              </AppButton>
+                {{ formGateError }}
+              </p>
+              <div class="gap-md flex flex-wrap items-center justify-end">
+                <DialogClose as-child>
+                  <AppButton variant="secondary">
+                    {{ t('machineLearning.attention.session.cancel') }}
+                  </AppButton>
+                </DialogClose>
+
+                <AppButton
+                  variant="inverse"
+                  class="min-h-[3rem] w-fit shrink-0 justify-center whitespace-nowrap"
+                  :disabled="footerPrimary.disabled"
+                  @click="footerPrimary.onClick"
+                >
+                  <Icon
+                    :name="footerPrimary.icon"
+                    size="1.8rem"
+                  />
+                  {{ footerPrimary.label }}
+                </AppButton>
+              </div>
             </div>
           </div>
         </div>
