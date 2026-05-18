@@ -6,19 +6,47 @@ const { t } = useI18n();
 const session = useRemoteSession();
 
 const controlMode = ref<'bci' | 'manual'>('bci');
+const bciSource = ref<'app' | 'local-bridge'>('app');
 const view = ref<'config' | 'control'>('config');
+
+const mainBridgeReady = ref(false);
+
+const localBridgeReady = ref(false);
 
 watch(controlMode, (mode, prev) => {
   if (prev === 'bci' && mode === 'manual' && view.value === 'config') {
     void session.stopDeployment();
+    bciSource.value = 'app';
+    localBridgeReady.value = false;
   }
 });
 
-const modeFootnote = computed(() =>
-  controlMode.value === 'bci' ? t('remote.droneConfig.modeFootnoteBci') : t('remote.droneConfig.modeFootnoteManual'),
-);
+watch(bciSource, (src, prev) => {
+  if (prev === 'app' && src === 'local-bridge' && view.value === 'config') {
+    void session.stopDeployment();
+  }
+  if (src === 'app') localBridgeReady.value = false;
+});
 
-const canStartSession = computed(() => controlMode.value === 'manual' || session.canStartControl.value);
+const showMainCytonBridgePanel = computed(() => controlMode.value === 'bci' && bciSource.value === 'app');
+
+const canStartSession = computed(() => {
+  if (showMainCytonBridgePanel.value && !mainBridgeReady.value) return false;
+  if (controlMode.value === 'manual') return true;
+  if (bciSource.value === 'local-bridge') return localBridgeReady.value;
+  return session.canStartControl.value;
+});
+
+const startSessionHint = computed(() => {
+  if (showMainCytonBridgePanel.value && !mainBridgeReady.value) {
+    return t('remote.control.mainBridgeStartHint');
+  }
+  if (controlMode.value === 'manual') return t('remote.droneManual.startHint');
+  if (bciSource.value === 'local-bridge') {
+    return canStartSession.value ? t('remote.control.localBridgeReadyHint') : t('remote.control.localBridgeStartHint');
+  }
+  return canStartSession.value ? t('remote.control.readyHint') : t('remote.control.startHint');
+});
 
 const startControl = () => {
   view.value = 'control';
@@ -33,6 +61,14 @@ const segmentBtnClass = (mode: 'bci' | 'manual') =>
   [
     'text-body-sm min-h-[3.2rem] min-w-0 flex-1 px-x-sm py-x-sm text-center font-semibold transition-colors duration-150 sm:px-x-lg sm:py-x-sm',
     controlMode.value === mode
+      ? 'bg-on-surface text-surface'
+      : 'text-on-surface-dim hover:bg-on-surface/[0.07] hover:text-on-surface',
+  ].join(' ');
+
+const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
+  [
+    'text-body-sm min-h-[3.2rem] min-w-0 flex-1 px-x-sm py-x-sm text-center font-semibold transition-colors duration-150 sm:px-x-lg sm:py-x-sm',
+    bciSource.value === source
       ? 'bg-on-surface text-surface'
       : 'text-on-surface-dim hover:bg-on-surface/[0.07] hover:text-on-surface',
   ].join(' ');
@@ -94,7 +130,7 @@ const segmentBtnClass = (mode: 'bci' | 'manual') =>
           {{ t('remote.droneConfig.segmentLabel') }}
         </p>
 
-        <div class="w-full max-w-[30rem] self-start sm:max-w-[36rem]">
+        <div class="w-full max-w-[30rem] self-start sm:max-w-[40rem]">
           <div
             class="border-on-surface/[0.08] bg-on-surface/[0.03] divide-on-surface/[0.08] flex w-full divide-x overflow-hidden rounded-xl border"
             role="group"
@@ -121,9 +157,41 @@ const segmentBtnClass = (mode: 'bci' | 'manual') =>
           </div>
         </div>
 
-        <p class="text-body-x-sm text-on-surface-dim leading-relaxed">
-          {{ modeFootnote }}
-        </p>
+        <template v-if="controlMode === 'bci'">
+          <p
+            id="drone-bci-model-source-label"
+            class="text-body-sm text-on-surface-dim mt-md font-medium"
+          >
+            {{ t('remote.droneConfig.bciSourceLabel') }}
+          </p>
+
+          <div class="w-full max-w-[30rem] self-start sm:max-w-[40rem]">
+            <div
+              class="border-on-surface/[0.08] bg-on-surface/[0.03] divide-on-surface/[0.08] flex w-full divide-x overflow-hidden rounded-xl border"
+              role="group"
+              aria-labelledby="drone-bci-model-source-label"
+            >
+              <button
+                type="button"
+                :class="segmentBtnClassBciSource('app')"
+                role="radio"
+                :aria-checked="bciSource === 'app'"
+                @click="bciSource = 'app'"
+              >
+                {{ t('remote.droneConfig.bciSourceCloud') }}
+              </button>
+              <button
+                type="button"
+                :class="segmentBtnClassBciSource('local-bridge')"
+                role="radio"
+                :aria-checked="bciSource === 'local-bridge'"
+                @click="bciSource = 'local-bridge'"
+              >
+                {{ t('remote.droneConfig.bciSourceLocalBridge') }}
+              </button>
+            </div>
+          </div>
+        </template>
       </div>
     </section>
 
@@ -132,11 +200,11 @@ const segmentBtnClass = (mode: 'bci' | 'manual') =>
       class="gap-x-lg gap-y-lg flex flex-col"
     >
       <div
-        class="gap-x-lg gap-y-lg lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-stretch lg:justify-items-stretch"
+        class="gap-x-lg gap-y-lg flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-stretch lg:justify-items-stretch"
       >
         <div class="min-h-[22rem] min-w-0 lg:col-start-1 lg:row-start-1 lg:min-h-[24rem]">
           <DeploymentConfigPanel
-            v-if="controlMode === 'bci'"
+            v-if="controlMode === 'bci' && bciSource === 'app'"
             class="h-full min-h-0 min-w-0 lg:min-h-0"
             :ready-models="session.readyModels.value"
             :is-loading-models="session.isLoadingModels.value"
@@ -153,6 +221,12 @@ const segmentBtnClass = (mode: 'bci' | 'manual') =>
             @stop="session.stopDeployment"
           />
 
+          <BciLocalBridgeConfigPanel
+            v-else-if="controlMode === 'bci' && bciSource === 'local-bridge'"
+            class="h-full min-h-0 min-w-0 lg:min-h-0"
+            @update:ready="localBridgeReady = $event"
+          />
+
           <aside
             v-else
             class="glass-card border-on-surface/[0.08] p-md flex h-full min-h-[22rem] flex-col items-center justify-center border border-dashed lg:min-h-0"
@@ -164,14 +238,18 @@ const segmentBtnClass = (mode: 'bci' | 'manual') =>
           </aside>
         </div>
 
-        <aside
-          class="glass-card border-on-surface/[0.08] flex min-h-[20rem] min-w-0 flex-col items-center justify-center border border-dashed lg:col-start-2 lg:row-start-1 lg:min-h-0"
-          :aria-label="t('remote.session.wip')"
-        >
-          <p class="text-body-sm text-on-surface-dim/80 font-medium italic">
-            {{ t('remote.session.wip') }}
-          </p>
-        </aside>
+        <div class="min-h-[22rem] min-w-0 lg:col-start-2 lg:row-start-1 lg:min-h-[24rem]">
+          <DroneMainBridgeConfigPanel
+            v-if="showMainCytonBridgePanel"
+            class="h-full min-h-0 min-w-0"
+            @update:ready="mainBridgeReady = $event"
+          />
+          <aside
+            v-else
+            class="glass-card border-on-surface/[0.08] flex h-full min-h-[22rem] min-w-0 flex-col items-center justify-center border border-dashed lg:min-h-[24rem]"
+            aria-hidden="true"
+          />
+        </div>
       </div>
 
       <div
@@ -195,13 +273,7 @@ const segmentBtnClass = (mode: 'bci' | 'manual') =>
               {{ t('remote.control.startSession') }}
             </p>
             <p class="text-body-sm text-on-surface-dim mt-xx-sm">
-              {{
-                controlMode === 'manual'
-                  ? t('remote.droneManual.startHint')
-                  : canStartSession
-                    ? t('remote.control.readyHint')
-                    : t('remote.control.startHint')
-              }}
+              {{ startSessionHint }}
             </p>
           </div>
         </div>

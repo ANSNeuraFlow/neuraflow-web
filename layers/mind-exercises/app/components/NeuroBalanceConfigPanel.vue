@@ -40,12 +40,14 @@ const { t } = useI18n();
         {{ t('mindExercises.neuroBalance.config.selectDuration') }}
       </p>
 
-      <div class="border-on-surface/[0.08] bg-on-surface/[0.03] flex overflow-hidden rounded-xl border">
+      <div
+        class="border-on-surface/[0.08] bg-on-surface/[0.03] divide-on-surface/[0.08] flex w-full max-w-[40rem] divide-x overflow-hidden rounded-xl border"
+      >
         <button
           v-for="d in SESSION_DURATIONS"
           :key="d"
           type="button"
-          class="text-body-sm py-sm flex-1 text-center font-semibold transition-colors duration-150"
+          class="text-body-sm px-x-sm py-x-sm sm:px-x-lg sm:py-x-sm min-h-[3.2rem] min-w-0 flex-1 text-center font-semibold transition-colors duration-150"
           :class="
             config.durationMinutes === d
               ? 'bg-on-surface text-surface'

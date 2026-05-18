@@ -38,7 +38,7 @@ const formatTime = (date: Date): string =>
 </script>
 
 <template>
-  <div class="glass-card gap-md p-md sm:p-x-lg flex h-full max-h-full min-h-0 w-full flex-col overflow-hidden">
+  <div class="glass-card gap-md p-md sm:p-x-lg flex min-h-0 w-full flex-col overflow-hidden">
     <div class="flex shrink-0 items-center justify-between">
       <div class="gap-sm flex items-center">
         <Icon
@@ -61,7 +61,7 @@ const formatTime = (date: Date): string =>
     </div>
 
     <div
-      class="border-on-surface/[0.06] bg-on-surface/[0.02] px-xx-sm py-xx-sm flex min-h-0 flex-[1_1_0%] flex-col overflow-y-auto overflow-x-hidden overscroll-contain rounded-lg border"
+      class="border-on-surface/[0.06] bg-on-surface/[0.02] px-xx-sm py-xx-sm flex h-[20rem] shrink-0 flex-col overflow-y-auto overflow-x-hidden overscroll-contain rounded-lg border sm:h-[22rem] xl:h-[24rem]"
     >
       <div
         v-if="props.entries.length === 0"

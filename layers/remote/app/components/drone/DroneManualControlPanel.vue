@@ -59,9 +59,7 @@ watch(
         />
       </div>
 
-      <div
-        class="gap-x-lg gap-y-lg grid min-h-0 flex-1 grid-cols-1 md:grid-cols-2 md:items-stretch xl:contents xl:flex-none"
-      >
+      <div class="gap-x-lg gap-y-lg grid min-h-0 grid-cols-1 md:grid-cols-2 md:items-stretch xl:contents xl:flex-none">
         <DroneMap
           compact
           class="h-full min-h-0 w-full min-w-0 xl:col-span-2 xl:col-start-1 xl:row-start-2"
@@ -71,7 +69,7 @@ watch(
         />
         <DroneCommandLog
           :entries="drone.commandLog.value"
-          class="h-full min-h-0 w-full min-w-0 xl:col-start-3 xl:row-start-2"
+          class="min-h-0 w-full min-w-0 md:self-start xl:col-start-3 xl:row-start-2"
           @clear="drone.clearLog"
         />
       </div>

@@ -91,7 +91,7 @@
         },
         "durationLabel": "{min} min",
         "selectDuration": "Session length",
-        "subtitle": "Choose how long the exercise runs before you start",
+        "subtitle": "Choose session length on this page before you open the exercise.",
         "title": "Session settings"
       },
       "focusTime": "Focus: {s} s",
@@ -111,6 +111,7 @@
       "ready": {
         "start": "Start",
         "subtitle": "Press Start (Space). While running, ← → match left- and right-hand BCI commands.",
+        "subtitleManual": "Press Start (Space). Use ← → arrow keys to control the sphere.",
         "title": "Ready?"
       },
       "recovering": {

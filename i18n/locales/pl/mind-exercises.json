@@ -91,7 +91,7 @@
         },
         "durationLabel": "{min} min",
         "selectDuration": "Czas sesji",
-        "subtitle": "Wybierz czas trwania przed wejściem w ćwiczenie",
+        "subtitle": "Wybierz długość sesji przed przejściem do ćwiczenia.",
         "title": "Ustawienia sesji"
       },
       "focusTime": "Skupienie: {s} s",
@@ -111,6 +111,7 @@
       "ready": {
         "start": "Start",
         "subtitle": "Naciśnij Start (Spacja). W trakcie ćwiczenia strzałki ← → działają tak samo jak komendy BCI lewej i prawej dłoni.",
+        "subtitleManual": "Naciśnij Start (Spacja). Steruj sferą strzałkami ← → na klawiaturze.",
         "title": "Gotowi?"
       },
       "recovering": {
