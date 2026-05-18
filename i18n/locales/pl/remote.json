@@ -8,6 +8,9 @@
     },
     "control": {
       "endSession": "Zakończ sesję",
+      "localBridgeReadyHint": "Lokalny bridge połączony — możesz rozpocząć sesję. Inferencja modelu działa bezpośrednio na Twoim komputerze.",
+      "localBridgeStartHint": "Najpierw połącz lokalny bridge.",
+      "mainBridgeStartHint": "Najpierw połącz główny bridge i uruchom stream EEG.",
       "placeholder": {
         "body": "Intensywne prace",
         "title": "XXXX"
@@ -60,10 +63,15 @@
       }
     },
     "droneConfig": {
+      "bciSourceCloud": "Model z NeuraFlow",
+      "bciSourceLabel": "Źródło modelu BCI",
+      "bciSourceLocalBridge": "Model lokalny",
+      "bciSourceLocalBridgeFootnote": "Wybierz lokalny model załadowany w NeuraFlow Bridge — bez wdrożenia w chmurze; inferecja będzie działać po stronie bridge.",
       "controlTileSubtitle": "Wybierz tryb przed konfiguracją szczegółów poniżej.",
       "controlTileTitle": "Sterowanie dronem",
       "introSubtitle": "Ustawiasz tu opcje lotu i — według wyboru — konfigurację pod spodem. Na końcu strony uruchamiasz sesję sterowania.",
-      "modeFootnoteBci": "Wybór wytrenowanego modelu, uruchomienie wdrożenia w NeuraFlow i dopiero potem sterowanie dronem sygnałem z interfejsu. Sesję zaczniesz dopiero gdy model będzie w stanie „działa”.",
+      "modeFootnoteBciCloud": "Wybór wytrenowanego modelu, uruchomienie wdrożenia w NeuraFlow i dopiero potem sterowanie dronem sygnałem z interfejsu. Sesję zaczniesz dopiero gdy model będzie w stanie „działa”.",
+      "modeFootnoteBciLocalBridge": "Model i inferencja działają lokalnie po stronie mostka. Gdy WebSocket jest połączony, możesz rozpocząć sesję — bez listy modeli w aplikacji webowej i bez wdrożenia w chmurze.",
       "modeFootnoteManual": "Sterowanie strzałkami na ekranie bez modelu BCI i bez wdrożenia. Konfiguracja dodatków jest uproszczona — możesz przejść do sesji od razu po ustawieniu tego, co poniżej.",
       "segmentLabel": "Źródło sterowania"
     },
@@ -143,7 +151,7 @@
       "manualTitle": "Sterowanie ręczne"
     },
     "droneManual": {
-      "configPlaceholder": "Tu pojawi się konfiguracja sterowania strzałkami na ekranie — bez BCI.",
+      "configPlaceholder": "Tu na razie jest ściernisko ale będzie San Francisco",
       "kicker": "Ręczne",
       "pageTitle": "Dron — sterowanie ręczne — NeuraFlow",
       "startHint": "Możesz od razu rozpocząć sesję — bez wdrażania modelu BCI.",
@@ -165,6 +173,23 @@
       "pageTitle": "Pojazdy RC — przegląd — NeuraFlow",
       "subtitle": "Wybierz pojazd. Ćwiczenia umysłu (BCI, koncentracja) są w osobnej sekcji.",
       "title": "Sterowanie pojazdami"
+    },
+    "localBridgePanel": {
+      "connected": "Bridge połączony",
+      "statusDisconnected": "Nie połączono",
+      "subtitle": "Inferencja na Twoim komputerze. Model ładujesz w aplikacji mostka — aplikacja webowa tylko nawiązuje połączenie WebSocket.",
+      "title": "Model lokalny"
+    },
+    "mainBridgePanel": {
+      "connectBridge": "Połącz bridge",
+      "connected": "Bridge połączony",
+      "launchBridge": "Uruchom bridge",
+      "startStreaming": "Uruchom stream",
+      "statusDisconnected": "Nie połączono",
+      "streaming": "Stream aktywny",
+      "streamingIdle": "Stream wyłączony",
+      "subtitle": "Połącz aplikację bridge i uruchom stream EEG przed startem sesji.",
+      "title": "NeuraFlow Bridge"
     },
     "meta": {
       "defaultTitle": "NeuraFlow — pojazdy RC"

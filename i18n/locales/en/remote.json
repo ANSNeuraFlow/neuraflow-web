@@ -8,6 +8,9 @@
     },
     "control": {
       "endSession": "End session",
+      "localBridgeReadyHint": "Local bridge connected — you can start the session. Model inference runs directly on your computer.",
+      "localBridgeStartHint": "Connect the local bridge first.",
+      "mainBridgeStartHint": "Connect the main bridge and start the EEG stream first.",
       "placeholder": {
         "body": "The vehicle control components are being developed. The model is running and ready.",
         "title": "Control panel coming soon"
@@ -60,10 +63,15 @@
       }
     },
     "droneConfig": {
+      "bciSourceCloud": "Trained in app",
+      "bciSourceLabel": "BCI model",
+      "bciSourceLocalBridge": "Trained locally",
+      "bciSourceLocalBridgeFootnote": "A model trained locally on the user's machine. Inference runs on the local bridge — no deployment through the app required.",
       "controlTileSubtitle": "Pick a mode before you configure the sections below.",
       "controlTileTitle": "Drone control",
       "introSubtitle": "Set up your flight options and then the sections below. When you are ready, start the control session at the bottom of the page.",
-      "modeFootnoteBci": "BCI mode: choose a trained model, deploy it in NeuraFlow, then fly using the brain–computer signal from the interface. The session button unlocks only once the model is running.",
+      "modeFootnoteBciCloud": "Select a model trained in the NeuraFlow app, start the deployment, then fly using the BCI signal. The session starts once the deployment is in the running state.",
+      "modeFootnoteBciLocalBridge": "The model and inference run in your local bridge. When the WebSocket is connected, you can start — no model list in the web app and no cloud deployment.",
       "modeFootnoteManual": "Manual mode: fly with on-screen arrows — no BCI model or deployment. Extra settings stay lightweight so you can jump into a session quickly after what you set up below.",
       "segmentLabel": "Control source"
     },
@@ -165,6 +173,23 @@
       "pageTitle": "RC vehicles — overview — NeuraFlow",
       "subtitle": "Pick a vehicle. Mind exercises (BCI, focus) live in a separate area.",
       "title": "Vehicle control"
+    },
+    "localBridgePanel": {
+      "connected": "Bridge connected",
+      "statusDisconnected": "Not connected",
+      "subtitle": "Inference on your machine. Load the model in the bridge app — the web app only opens the WebSocket link.",
+      "title": "Local model (bridge)"
+    },
+    "mainBridgePanel": {
+      "connectBridge": "Connect bridge",
+      "connected": "Bridge connected",
+      "launchBridge": "Launch bridge",
+      "startStreaming": "Start stream",
+      "statusDisconnected": "Not connected",
+      "streaming": "Stream active",
+      "streamingIdle": "Stream off",
+      "subtitle": "Connect the bridge application and start the EEG stream before you begin the session.",
+      "title": "Main bridge (Cyton)"
     },
     "meta": {
       "defaultTitle": "NeuraFlow — RC vehicles"

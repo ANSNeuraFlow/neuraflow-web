@@ -6,6 +6,7 @@ defineOptions({ name: 'NeuroBalanceExercise' });
 
 const props = defineProps<{
   config: NeuroBalanceConfig;
+  controlMode?: 'bci' | 'manual';
 }>();
 
 const emit = defineEmits<{
@@ -34,8 +35,14 @@ const {
 
 const { currentCommand, currentConfidence, isConnected, onCommand } = useBciController();
 
-onCommand('RIGHT_HAND', (confidence) => applyRight(confidence));
-onCommand('LEFT_HAND', (confidence) => applyLeft(confidence));
+const isBciMode = computed(() => props.controlMode !== 'manual');
+
+onCommand('RIGHT_HAND', (confidence) => {
+  if (isBciMode.value) applyRight(confidence);
+});
+onCommand('LEFT_HAND', (confidence) => {
+  if (isBciMode.value) applyLeft(confidence);
+});
 
 const KEYBOARD_CONFIDENCE = 0.85;
 
@@ -145,7 +152,10 @@ onUnmounted(() => {
           {{ t('mindExercises.neuroBalance.sessionTime', { s: sessionTime }) }}
         </span>
 
-        <div class="gap-x-sm flex items-center">
+        <div
+          v-if="isBciMode"
+          class="gap-x-sm flex items-center"
+        >
           <span
             class="size-2 shrink-0 rounded-full"
             :class="isConnected ? 'bg-green-400' : 'bg-red-500'"
@@ -162,6 +172,19 @@ onUnmounted(() => {
             class="text-on-surface-dim/70"
             >BCI: —</span
           >
+        </div>
+
+        <div
+          v-else
+          class="gap-x-sm flex items-center"
+        >
+          <Icon
+            name="lucide:keyboard"
+            size="1.1rem"
+            class="text-on-surface-dim/70 shrink-0"
+            aria-hidden="true"
+          />
+          <span class="text-on-surface-dim/70">{{ t('remote.droneHub.manualKicker') }}</span>
         </div>
 
         <AppButton
@@ -203,7 +226,11 @@ onUnmounted(() => {
               {{ t('mindExercises.neuroBalance.ready.title') }}
             </p>
             <p class="text-body-md text-on-surface-dim max-w-[32rem] text-center">
-              {{ t('mindExercises.neuroBalance.ready.subtitle') }}
+              {{
+                isBciMode
+                  ? t('mindExercises.neuroBalance.ready.subtitle')
+                  : t('mindExercises.neuroBalance.ready.subtitleManual')
+              }}
             </p>
             <AppButton
               variant="inverse"

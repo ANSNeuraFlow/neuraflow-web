@@ -9,12 +9,65 @@ const { t } = useI18n();
 const session = useRemoteSession();
 
 const view = ref<'config' | 'exercise'>('config');
+const controlMode = ref<'bci' | 'manual'>('bci');
+const bciSource = ref<'app' | 'local-bridge'>('app');
 
 const exerciseConfig = ref<NeuroBalanceConfig>({
   durationMinutes: 10,
 });
 
-const canGoToExercise = computed(() => true);
+const mainBridgeReady = ref(false);
+
+const localBridgeReady = ref(false);
+
+watch(controlMode, (mode, prev) => {
+  if (prev === 'bci' && mode === 'manual' && view.value === 'config') {
+    void session.stopDeployment();
+    bciSource.value = 'app';
+    localBridgeReady.value = false;
+  }
+});
+
+watch(bciSource, (src, prev) => {
+  if (prev === 'app' && src === 'local-bridge' && view.value === 'config') {
+    void session.stopDeployment();
+  }
+  if (src === 'app') localBridgeReady.value = false;
+});
+
+const showMainCytonBridgePanel = computed(() => controlMode.value === 'bci' && bciSource.value === 'app');
+
+const canStartSession = computed(() => {
+  if (showMainCytonBridgePanel.value && !mainBridgeReady.value) return false;
+  if (controlMode.value === 'manual') return true;
+  if (bciSource.value === 'local-bridge') return localBridgeReady.value;
+  return session.canStartControl.value;
+});
+
+const goToExercise = () => {
+  view.value = 'exercise';
+};
+
+const closeExercise = async () => {
+  view.value = 'config';
+  await session.stopDeployment();
+};
+
+const segmentBtnClass = (mode: 'bci' | 'manual') =>
+  [
+    'text-body-sm min-h-[3.2rem] min-w-0 flex-1 px-x-sm py-x-sm text-center font-semibold transition-colors duration-150 sm:px-x-lg sm:py-x-sm',
+    controlMode.value === mode
+      ? 'bg-on-surface text-surface'
+      : 'text-on-surface-dim hover:bg-on-surface/[0.07] hover:text-on-surface',
+  ].join(' ');
+
+const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
+  [
+    'text-body-sm min-h-[3.2rem] min-w-0 flex-1 px-x-sm py-x-sm text-center font-semibold transition-colors duration-150 sm:px-x-lg sm:py-x-sm',
+    bciSource.value === source
+      ? 'bg-on-surface text-surface'
+      : 'text-on-surface-dim hover:bg-on-surface/[0.07] hover:text-on-surface',
+  ].join(' ');
 </script>
 
 <template>
@@ -49,44 +102,169 @@ const canGoToExercise = computed(() => true);
           </div>
         </section>
 
-        <div class="gap-x-lg gap-y-lg lg:grid lg:grid-cols-2 lg:items-stretch">
-          <DeploymentConfigPanel
-            class="h-full min-w-0"
-            :ready-models="session.readyModels.value"
-            :is-loading-models="session.isLoadingModels.value"
-            :selected-model-id="session.selectedModel.value?.id ?? null"
-            :deployment="session.deployment.value"
-            :is-running="session.isRunning.value"
-            :is-transitional="session.isTransitional.value"
-            :is-deploying="session.isDeploying.value"
-            :is-stopping="session.isStopping.value"
-            :can-deploy="session.canDeploy.value"
-            :api-error="session.apiError.value"
-            @select-model="session.selectModel"
-            @deploy="session.handleDeploy"
-            @stop="session.stopDeployment"
-          />
+        <section class="glass-card p-md sm:p-x-lg">
+          <div class="gap-sm mb-md flex flex-wrap items-start justify-between">
+            <div class="min-w-0">
+              <h2 class="text-heading-sm text-on-surface font-display font-bold">
+                {{ t('remote.droneConfig.controlTileTitle') }}
+              </h2>
+              <p class="text-body-sm text-on-surface-dim mt-xx-sm max-w-[72rem] leading-relaxed">
+                {{ t('remote.droneConfig.controlTileSubtitle') }}
+              </p>
+            </div>
+            <Icon
+              name="lucide:settings-2"
+              size="2.4rem"
+              class="text-on-surface shrink-0"
+              aria-hidden="true"
+            />
+          </div>
 
-          <NeuroBalanceConfigPanel
-            class="min-w-0"
-            :config="exerciseConfig"
-            @update:config="exerciseConfig = $event"
-          />
+          <div class="gap-md flex flex-col">
+            <p
+              id="neuro-balance-control-mode-label"
+              class="text-body-sm text-on-surface-dim font-medium"
+            >
+              {{ t('remote.droneConfig.segmentLabel') }}
+            </p>
+
+            <div class="w-full max-w-[30rem] self-start sm:max-w-[40rem]">
+              <div
+                class="border-on-surface/[0.08] bg-on-surface/[0.03] divide-on-surface/[0.08] flex w-full divide-x overflow-hidden rounded-xl border"
+                role="group"
+                aria-labelledby="neuro-balance-control-mode-label"
+              >
+                <button
+                  type="button"
+                  :class="segmentBtnClass('bci')"
+                  role="radio"
+                  :aria-checked="controlMode === 'bci'"
+                  @click="controlMode = 'bci'"
+                >
+                  {{ t('remote.droneHub.bciKicker') }}
+                </button>
+                <button
+                  type="button"
+                  :class="segmentBtnClass('manual')"
+                  role="radio"
+                  :aria-checked="controlMode === 'manual'"
+                  @click="controlMode = 'manual'"
+                >
+                  {{ t('remote.droneHub.manualKicker') }}
+                </button>
+              </div>
+            </div>
+
+            <template v-if="controlMode === 'bci'">
+              <p
+                id="neuro-balance-bci-model-source-label"
+                class="text-body-sm text-on-surface-dim mt-md font-medium"
+              >
+                {{ t('remote.droneConfig.bciSourceLabel') }}
+              </p>
+
+              <div class="w-full max-w-[30rem] self-start sm:max-w-[40rem]">
+                <div
+                  class="border-on-surface/[0.08] bg-on-surface/[0.03] divide-on-surface/[0.08] flex w-full divide-x overflow-hidden rounded-xl border"
+                  role="group"
+                  aria-labelledby="neuro-balance-bci-model-source-label"
+                >
+                  <button
+                    type="button"
+                    :class="segmentBtnClassBciSource('app')"
+                    role="radio"
+                    :aria-checked="bciSource === 'app'"
+                    @click="bciSource = 'app'"
+                  >
+                    {{ t('remote.droneConfig.bciSourceCloud') }}
+                  </button>
+                  <button
+                    type="button"
+                    :class="segmentBtnClassBciSource('local-bridge')"
+                    role="radio"
+                    :aria-checked="bciSource === 'local-bridge'"
+                    @click="bciSource = 'local-bridge'"
+                  >
+                    {{ t('remote.droneConfig.bciSourceLocalBridge') }}
+                  </button>
+                </div>
+              </div>
+            </template>
+          </div>
+        </section>
+
+        <div
+          class="gap-x-lg gap-y-lg flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-stretch lg:justify-items-stretch"
+        >
+          <div class="min-h-[22rem] min-w-0 lg:col-start-1 lg:row-start-1 lg:min-h-[24rem]">
+            <DeploymentConfigPanel
+              v-if="controlMode === 'bci' && bciSource === 'app'"
+              class="h-full min-h-0 min-w-0 lg:min-h-0"
+              :ready-models="session.readyModels.value"
+              :is-loading-models="session.isLoadingModels.value"
+              :selected-model-id="session.selectedModel.value?.id ?? null"
+              :deployment="session.deployment.value"
+              :is-running="session.isRunning.value"
+              :is-transitional="session.isTransitional.value"
+              :is-deploying="session.isDeploying.value"
+              :is-stopping="session.isStopping.value"
+              :can-deploy="session.canDeploy.value"
+              :api-error="session.apiError.value"
+              @select-model="session.selectModel"
+              @deploy="session.handleDeploy"
+              @stop="session.stopDeployment"
+            />
+
+            <BciLocalBridgeConfigPanel
+              v-else-if="controlMode === 'bci' && bciSource === 'local-bridge'"
+              class="h-full min-h-0 min-w-0 lg:min-h-0"
+              @update:ready="localBridgeReady = $event"
+            />
+
+            <aside
+              v-else
+              class="glass-card border-on-surface/[0.08] p-md flex h-full min-h-[22rem] flex-col items-center justify-center border border-dashed lg:min-h-0"
+              :aria-label="t('remote.droneManual.configPlaceholder')"
+            >
+              <p class="text-body-sm text-on-surface-dim/80 max-w-[36rem] text-center font-medium italic">
+                {{ t('remote.droneManual.configPlaceholder') }}
+              </p>
+            </aside>
+          </div>
+
+          <div class="min-h-[22rem] min-w-0 lg:col-start-2 lg:row-start-1 lg:min-h-[24rem]">
+            <DroneMainBridgeConfigPanel
+              v-if="showMainCytonBridgePanel"
+              class="h-full min-h-0 min-w-0"
+              @update:ready="mainBridgeReady = $event"
+            />
+            <aside
+              v-else
+              class="glass-card border-on-surface/[0.08] flex h-full min-h-[22rem] min-w-0 flex-col items-center justify-center border border-dashed lg:min-h-[24rem]"
+              aria-hidden="true"
+            />
+          </div>
         </div>
+
+        <NeuroBalanceConfigPanel
+          class="min-w-0"
+          :config="exerciseConfig"
+          @update:config="exerciseConfig = $event"
+        />
 
         <div
           class="glass-card p-md sm:p-x-lg gap-md flex flex-wrap items-center justify-between"
-          :class="canGoToExercise ? 'border-success/20' : 'border-on-surface/[0.06]'"
+          :class="canStartSession ? 'border-success/20' : 'border-on-surface/[0.06]'"
         >
           <div class="gap-md flex items-center">
             <div
               :class="[
                 'flex h-[4rem] w-[4rem] shrink-0 items-center justify-center rounded-full transition-colors duration-300',
-                canGoToExercise ? 'bg-success/10 text-success' : 'bg-on-surface/[0.06] text-on-surface-dim',
+                canStartSession ? 'bg-success/10 text-success' : 'bg-on-surface/[0.06] text-on-surface-dim',
               ]"
             >
               <Icon
-                :name="canGoToExercise ? 'material-symbols:play-circle-outline' : 'material-symbols:play-disabled'"
+                :name="canStartSession ? 'material-symbols:play-circle-outline' : 'material-symbols:play-disabled'"
                 size="2.2rem"
               />
             </div>
@@ -94,22 +272,20 @@ const canGoToExercise = computed(() => true);
               <p class="text-body-md text-on-surface font-semibold">
                 {{ t('mindExercises.neuroBalance.goToExercise') }}
               </p>
-              <p class="text-body-sm text-on-surface-dim mt-xx-sm">
-                {{ t('mindExercises.neuroBalance.goToExerciseHint') }}
-              </p>
             </div>
           </div>
 
           <AppButton
             variant="inverse"
-            size="md"
-            :disabled="!canGoToExercise"
-            @click="view = 'exercise'"
+            size="sm"
+            class="shrink-0"
+            :disabled="!canStartSession"
+            @click="goToExercise"
           >
             <Icon
               name="material-symbols:play-arrow"
-              size="2rem"
-              class="mr-xs"
+              size="1.35rem"
+              class="mr-xx-sm"
             />
             {{ t('mindExercises.neuroBalance.goToExercise') }}
           </AppButton>
@@ -120,7 +296,8 @@ const canGoToExercise = computed(() => true);
         v-else
         key="exercise"
         :config="exerciseConfig"
-        @close="view = 'config'"
+        :control-mode="controlMode"
+        @close="closeExercise"
       />
     </Transition>
   </div>
