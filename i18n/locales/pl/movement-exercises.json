@@ -1,5 +1,5 @@
-{
-  "mindExercises": {
+﻿{
+  "movementExercises": {
     "blockSlide": {
       "backShort": "Wstecz",
       "calibrationSubtitle": "Sprawdź, jak reaguje oś pozioma — potem odtwarzaj to samo intencją w myślach.",
@@ -66,12 +66,12 @@
       "cardNeuroBalanceLead": "Utrzymuj lewitującą sferę w centrum pola intencją ruchu dłoni.",
       "cardNeuroBalanceTitle": "Neuro-Balance",
       "open": "Otwórz",
-      "pageTitle": "Ćwiczenia umysłu — NeuraFlow",
-      "subtitle": "Powtarzalne, spokojne sesje: jedna oś, jedna intencja — uczysz się utrzymać uwagę i czytelnie odtwarzać ruch w myślach. To trening koncentracji i stabilnego sygnału pod BCI, krok po kroku, w swoim tempie.",
-      "title": "Ćwiczenia umysłu"
+      "pageTitle": "Ćwiczenia ruchowe — NeuraFlow",
+      "subtitle": "Powtarzalne, spokojne sesje motor-imagery: jedna oś, jedna intencja — uczysz się utrzymać uwagę i czytelnie odtwarzać ruch w myślach. Trening koncentracji i stabilnego sygnału BCI, krok po kroku, w swoim tempie.",
+      "title": "Ćwiczenia ruchowe"
     },
     "meta": {
-      "defaultTitle": "NeuraFlow — ćwiczenia umysłu"
+      "defaultTitle": "NeuraFlow — ćwiczenia ruchowe"
     },
     "navigation": {
       "blockSlide": "Przesuń klocek",
@@ -80,7 +80,7 @@
       "hub": "Przegląd",
       "neuroBalance": "Neuro-Balance",
       "openMenu": "Otwórz menu",
-      "section": "Ćwiczenia"
+      "section": "Ćwiczenia ruchowe"
     },
     "neuroBalance": {
       "about": "Utrzymuj świetlistą sferę w centrum pola za pomocą wyobrażeń ruchowych. Gdy sfera odchyla się w lewo — wywołaj intencję prawej dłoni. Gdy w prawo — intencję lewej. Trenujesz zdolność długotrwałego skupienia i czytelności sygnału Mu/Beta.",

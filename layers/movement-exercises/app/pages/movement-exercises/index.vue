@@ -4,8 +4,8 @@ const { t } = useI18n();
 const localePath = useLocalePath();
 
 definePageMeta({
-  layout: 'mind-exercises',
-  title: 'mindExercises.hub.pageTitle',
+  layout: 'movement-exercises',
+  title: 'movementExercises.hub.pageTitle',
 });
 </script>
 
@@ -13,31 +13,31 @@ definePageMeta({
   <div class="mx-auto w-full max-w-[120rem]">
     <section class="glass-card mb-x-lg p-md sm:p-x-lg">
       <h1 class="text-heading-lg tracking-sm text-on-surface font-display font-bold">
-        {{ t('mindExercises.hub.title') }}
+        {{ t('movementExercises.hub.title') }}
       </h1>
       <p class="text-body-md mt-xx-sm text-on-surface-dim max-w-[64rem]">
-        {{ t('mindExercises.hub.subtitle') }}
+        {{ t('movementExercises.hub.subtitle') }}
       </p>
     </section>
 
     <div class="gap-x-lg gap-y-lg grid sm:grid-cols-2">
       <NuxtLink
-        :to="localePath('/mind-exercises/slide-block')"
+        :to="localePath('/movement-exercises/slide-block')"
         class="glass-card p-md sm:p-x-lg hover:border-on-surface-inverted/40 group border border-transparent transition-colors"
       >
         <div class="gap-md flex items-start justify-between">
           <div class="min-w-0 flex-1">
             <p class="text-body-x-sm mb-xx-sm text-on-surface font-semibold uppercase tracking-wider">
-              {{ t('mindExercises.blockSlide.kicker') }}
+              {{ t('movementExercises.blockSlide.kicker') }}
             </p>
             <h2 class="text-heading-md text-on-surface font-display font-bold">
-              {{ t('mindExercises.hub.cardBlockSlideTitle') }}
+              {{ t('movementExercises.hub.cardBlockSlideTitle') }}
             </h2>
             <p class="text-body-sm text-on-surface/90 mt-x-sm font-medium leading-relaxed">
-              {{ t('mindExercises.hub.cardBlockSlideLead') }}
+              {{ t('movementExercises.hub.cardBlockSlideLead') }}
             </p>
             <p class="text-body-sm text-on-surface-dim mt-x-sm max-w-[48rem] leading-relaxed">
-              {{ t('mindExercises.hub.cardBlockSlideDescription') }}
+              {{ t('movementExercises.hub.cardBlockSlideDescription') }}
             </p>
           </div>
           <Icon
@@ -47,28 +47,28 @@ definePageMeta({
           />
         </div>
         <p class="text-body-sm mt-x-lg text-on-surface font-semibold">
-          {{ t('mindExercises.hub.open') }}
+          {{ t('movementExercises.hub.open') }}
           <span aria-hidden="true"> →</span>
         </p>
       </NuxtLink>
 
       <NuxtLink
-        :to="localePath('/mind-exercises/neuro-balance')"
+        :to="localePath('/movement-exercises/neuro-balance')"
         class="glass-card p-md sm:p-x-lg hover:border-on-surface-inverted/40 group border border-transparent transition-colors"
       >
         <div class="gap-md flex items-start justify-between">
           <div class="min-w-0 flex-1">
             <p class="text-body-x-sm mb-xx-sm text-on-surface font-semibold uppercase tracking-wider">
-              {{ t('mindExercises.neuroBalance.kicker') }}
+              {{ t('movementExercises.neuroBalance.kicker') }}
             </p>
             <h2 class="text-heading-md text-on-surface font-display font-bold">
-              {{ t('mindExercises.hub.cardNeuroBalanceTitle') }}
+              {{ t('movementExercises.hub.cardNeuroBalanceTitle') }}
             </h2>
             <p class="text-body-sm text-on-surface/90 mt-x-sm font-medium leading-relaxed">
-              {{ t('mindExercises.hub.cardNeuroBalanceLead') }}
+              {{ t('movementExercises.hub.cardNeuroBalanceLead') }}
             </p>
             <p class="text-body-sm text-on-surface-dim mt-x-sm max-w-[48rem] leading-relaxed">
-              {{ t('mindExercises.hub.cardNeuroBalanceDescription') }}
+              {{ t('movementExercises.hub.cardNeuroBalanceDescription') }}
             </p>
           </div>
           <Icon
@@ -78,28 +78,28 @@ definePageMeta({
           />
         </div>
         <p class="text-body-sm mt-x-lg text-on-surface font-semibold">
-          {{ t('mindExercises.hub.open') }}
+          {{ t('movementExercises.hub.open') }}
           <span aria-hidden="true"> →</span>
         </p>
       </NuxtLink>
 
       <NuxtLink
-        :to="localePath('/mind-exercises/forward-gate')"
+        :to="localePath('/movement-exercises/forward-gate')"
         class="glass-card p-md sm:p-x-lg hover:border-on-surface-inverted/40 group border border-transparent transition-colors"
       >
         <div class="gap-md flex items-start justify-between">
           <div class="min-w-0 flex-1">
             <p class="text-body-x-sm mb-xx-sm text-on-surface font-semibold uppercase tracking-wider">
-              {{ t('mindExercises.forwardGate.kicker') }}
+              {{ t('movementExercises.forwardGate.kicker') }}
             </p>
             <h2 class="text-heading-md text-on-surface font-display font-bold">
-              {{ t('mindExercises.hub.cardForwardGateTitle') }}
+              {{ t('movementExercises.hub.cardForwardGateTitle') }}
             </h2>
             <p class="text-body-sm text-on-surface/90 mt-x-sm font-medium leading-relaxed">
-              {{ t('mindExercises.hub.cardForwardGateLead') }}
+              {{ t('movementExercises.hub.cardForwardGateLead') }}
             </p>
             <p class="text-body-sm text-on-surface-dim mt-x-sm max-w-[48rem] leading-relaxed">
-              {{ t('mindExercises.hub.cardForwardGateDescription') }}
+              {{ t('movementExercises.hub.cardForwardGateDescription') }}
             </p>
           </div>
           <Icon
@@ -109,7 +109,7 @@ definePageMeta({
           />
         </div>
         <p class="text-body-sm mt-x-lg text-on-surface font-semibold">
-          {{ t('mindExercises.hub.open') }}
+          {{ t('movementExercises.hub.open') }}
           <span aria-hidden="true"> →</span>
         </p>
       </NuxtLink>

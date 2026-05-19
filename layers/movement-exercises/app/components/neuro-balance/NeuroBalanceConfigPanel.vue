@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { type ForwardGateConfig, SESSION_DURATIONS } from '../../composables/useForwardGate';
+import { type NeuroBalanceConfig, SESSION_DURATIONS } from '../../composables/useNeuroBalance';
 
-defineOptions({ name: 'ForwardGateConfigPanel' });
+defineOptions({ name: 'NeuroBalanceConfigPanel' });
 
 defineProps<{
-  config: ForwardGateConfig;
+  config: NeuroBalanceConfig;
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:config', config: ForwardGateConfig): void;
+  (e: 'update:config', config: NeuroBalanceConfig): void;
 }>();
 
 const { t } = useI18n();
@@ -27,17 +27,17 @@ const { t } = useI18n();
       </div>
       <div>
         <h2 class="text-heading-sm text-on-surface font-display font-bold">
-          {{ t('mindExercises.forwardGate.config.title') }}
+          {{ t('movementExercises.neuroBalance.config.title') }}
         </h2>
         <p class="text-body-sm text-on-surface-dim mt-xx-sm">
-          {{ t('mindExercises.forwardGate.config.subtitle') }}
+          {{ t('movementExercises.neuroBalance.config.subtitle') }}
         </p>
       </div>
     </div>
 
     <div class="gap-md flex flex-1 flex-col justify-center">
       <p class="text-body-sm text-on-surface-dim font-medium">
-        {{ t('mindExercises.forwardGate.config.selectDuration') }}
+        {{ t('movementExercises.neuroBalance.config.selectDuration') }}
       </p>
 
       <div
@@ -55,12 +55,12 @@ const { t } = useI18n();
           "
           @click="emit('update:config', { ...config, durationMinutes: d })"
         >
-          {{ t('mindExercises.forwardGate.config.durationLabel', { min: d }) }}
+          {{ t('movementExercises.neuroBalance.config.durationLabel', { min: d }) }}
         </button>
       </div>
 
       <p class="text-body-x-sm text-on-surface-dim leading-relaxed">
-        {{ t(`mindExercises.forwardGate.config.durationDesc.${config.durationMinutes}`) }}
+        {{ t(`movementExercises.neuroBalance.config.durationDesc.${config.durationMinutes}`) }}
       </p>
     </div>
   </div>

@@ -1,10 +1,10 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-defineOptions({ name: 'MindExercisesNeuroBalancePage' });
+defineOptions({ name: 'MovementExercisesNeuroBalancePage' });
 
 definePageMeta({
-  layout: 'mind-exercises',
-  title: 'mindExercises.neuroBalance.pageTitle',
+  layout: 'movement-exercises',
+  title: 'movementExercises.neuroBalance.pageTitle',
 });
 </script>
 

@@ -29,9 +29,14 @@ const remoteVehiclesNav = computed(() => ({
   label: t('landing.nav.remoteVehicles'),
 }));
 
-const mindExercisesNav = computed(() => ({
-  to: localePath('/mind-exercises'),
-  label: t('landing.nav.mindExercises'),
+const movementExercisesNav = computed(() => ({
+  to: localePath('/movement-exercises'),
+  label: t('landing.nav.movementExercises'),
+}));
+
+const focusExercisesNav = computed(() => ({
+  to: localePath('/focus-exercises'),
+  label: t('landing.nav.focusExercises'),
 }));
 
 const minigamesNav = computed(() => ({
@@ -188,13 +193,22 @@ onUnmounted(() => {
                   {{ remoteVehiclesNav.label }}
                 </NuxtLink>
                 <NuxtLink
-                  :to="mindExercisesNav.to"
+                  :to="movementExercisesNav.to"
                   role="menuitem"
                   class="px-md py-sm text-on-surface-dim hover:bg-on-surface/8 hover:text-on-surface block font-medium transition-colors"
                   active-class="!bg-on-surface/10 !text-on-surface"
                   @click="closeAppsMenu"
                 >
-                  {{ mindExercisesNav.label }}
+                  {{ movementExercisesNav.label }}
+                </NuxtLink>
+                <NuxtLink
+                  :to="focusExercisesNav.to"
+                  role="menuitem"
+                  class="px-md py-sm text-on-surface-dim hover:bg-on-surface/8 hover:text-on-surface block font-medium transition-colors"
+                  active-class="!bg-on-surface/10 !text-on-surface"
+                  @click="closeAppsMenu"
+                >
+                  {{ focusExercisesNav.label }}
                 </NuxtLink>
                 <NuxtLink
                   :to="minigamesNav.to"
@@ -294,13 +308,22 @@ onUnmounted(() => {
             {{ remoteVehiclesNav.label }}
           </NuxtLink>
           <NuxtLink
-            :to="mindExercisesNav.to"
+            :to="movementExercisesNav.to"
             :class="navLinkClassMobile"
             active-class="bg-white/[0.08] text-white"
-            :aria-label="mindExercisesNav.label"
+            :aria-label="movementExercisesNav.label"
             @click="closeMenu"
           >
-            {{ mindExercisesNav.label }}
+            {{ movementExercisesNav.label }}
+          </NuxtLink>
+          <NuxtLink
+            :to="focusExercisesNav.to"
+            :class="navLinkClassMobile"
+            active-class="bg-white/[0.08] text-white"
+            :aria-label="focusExercisesNav.label"
+            @click="closeMenu"
+          >
+            {{ focusExercisesNav.label }}
           </NuxtLink>
           <NuxtLink
             :to="minigamesNav.to"

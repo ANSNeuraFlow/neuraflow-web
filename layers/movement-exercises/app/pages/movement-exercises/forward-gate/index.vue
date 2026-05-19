@@ -1,10 +1,10 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-defineOptions({ name: 'MindExercisesForwardGatePage' });
+defineOptions({ name: 'MovementExercisesForwardGatePage' });
 
 definePageMeta({
-  layout: 'mind-exercises',
-  title: 'mindExercises.forwardGate.pageTitle',
+  layout: 'movement-exercises',
+  title: 'movementExercises.forwardGate.pageTitle',
 });
 </script>
 

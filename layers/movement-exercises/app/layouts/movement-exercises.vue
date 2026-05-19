@@ -1,4 +1,6 @@
 <script setup lang="ts">
+defineOptions({ name: 'MovementExercisesLayout' });
+
 const head = useLocaleHead();
 const route = useRoute();
 const { t, te } = useI18n();
@@ -10,7 +12,7 @@ const title = computed(() => {
   if (route.meta.title && te(route.meta.title as string)) {
     return t(route.meta.title as string);
   }
-  return t('mindExercises.meta.defaultTitle');
+  return t('movementExercises.meta.defaultTitle');
 });
 
 useHead({
@@ -25,42 +27,42 @@ useHead({
   },
 });
 
-type MindExerciseNavItem = {
+type MovementExerciseNavItem = {
   path:
-    | '/mind-exercises'
-    | '/mind-exercises/slide-block'
-    | '/mind-exercises/neuro-balance'
-    | '/mind-exercises/forward-gate';
+    | '/movement-exercises'
+    | '/movement-exercises/slide-block'
+    | '/movement-exercises/neuro-balance'
+    | '/movement-exercises/forward-gate';
   label: string;
   icon: string;
 };
 
-const mindExerciseNavItems = computed<MindExerciseNavItem[]>(() => [
+const movementExerciseNavItems = computed<MovementExerciseNavItem[]>(() => [
   {
-    path: '/mind-exercises',
-    label: t('mindExercises.navigation.hub'),
+    path: '/movement-exercises',
+    label: t('movementExercises.navigation.hub'),
     icon: 'lucide:layout-grid',
   },
   {
-    path: '/mind-exercises/slide-block',
-    label: t('mindExercises.navigation.blockSlide'),
+    path: '/movement-exercises/slide-block',
+    label: t('movementExercises.navigation.blockSlide'),
     icon: 'lucide:move-horizontal',
   },
   {
-    path: '/mind-exercises/neuro-balance',
-    label: t('mindExercises.navigation.neuroBalance'),
+    path: '/movement-exercises/neuro-balance',
+    label: t('movementExercises.navigation.neuroBalance'),
     icon: 'lucide:brain-circuit',
   },
   {
-    path: '/mind-exercises/forward-gate',
-    label: t('mindExercises.navigation.forwardGate'),
+    path: '/movement-exercises/forward-gate',
+    label: t('movementExercises.navigation.forwardGate'),
     icon: 'lucide:milestone',
   },
 ]);
 
 const normalizedPath = computed(() => route.path.replace(/\/$/, '') || '/');
 
-const isNavActive = (item: MindExerciseNavItem): boolean => {
+const isNavActive = (item: MovementExerciseNavItem): boolean => {
   const target = item.path.replace(/\/$/, '') || '/';
   return normalizedPath.value === target;
 };
@@ -69,14 +71,14 @@ const toggleTheme = () => {
   isDark.value = !isDark.value;
   if (typeof document !== 'undefined') {
     document.documentElement.setAttribute('data-theme', isDark.value ? 'dark' : 'light');
-    localStorage.setItem('neuraflow-mind-exercises-theme', isDark.value ? 'dark' : 'light');
+    localStorage.setItem('neuraflow-movement-exercises-theme', isDark.value ? 'dark' : 'light');
   }
 };
 
 onMounted(() => {
   document.body.classList.add('overflow-hidden');
 
-  const saved = localStorage.getItem('neuraflow-mind-exercises-theme');
+  const saved = localStorage.getItem('neuraflow-movement-exercises-theme');
   if (saved === 'light') {
     isDark.value = false;
     document.documentElement.setAttribute('data-theme', 'light');
@@ -111,7 +113,7 @@ onBeforeUnmount(() => {
       >
         <defs>
           <pattern
-            id="mind-exercises-grid"
+            id="movement-exercises-grid"
             width="60"
             height="60"
             patternUnits="userSpaceOnUse"
@@ -127,7 +129,7 @@ onBeforeUnmount(() => {
         <rect
           width="100%"
           height="100%"
-          fill="url(#mind-exercises-grid)"
+          fill="url(#movement-exercises-grid)"
         />
       </svg>
     </div>
@@ -164,7 +166,7 @@ onBeforeUnmount(() => {
           </NuxtLink>
           <button
             class="p-xx-sm text-on-surface-dim duration-short hover:bg-on-surface/10 hover:text-on-surface rounded-lg transition-colors"
-            :aria-label="t('mindExercises.navigation.closeMenu')"
+            :aria-label="t('movementExercises.navigation.closeMenu')"
             @click="isMobileSidebarOpen = false"
           >
             <Icon
@@ -176,11 +178,11 @@ onBeforeUnmount(() => {
 
         <div class="px-md py-x-lg flex flex-1 flex-col overflow-y-auto">
           <p class="text-body-x-sm mb-x-sm px-sm text-on-surface-dim font-semibold uppercase tracking-wider">
-            {{ t('mindExercises.navigation.section') }}
+            {{ t('movementExercises.navigation.section') }}
           </p>
           <nav class="gap-xx-sm flex flex-col">
             <NuxtLink
-              v-for="item in mindExerciseNavItems"
+              v-for="item in movementExerciseNavItems"
               :key="item.path"
               :to="localePath(item.path)"
               class="gap-sm px-sm py-sm text-body-sm text-on-surface-dim duration-short hover:bg-on-surface/[0.06] hover:text-on-surface flex items-center rounded-lg font-medium transition-colors"
@@ -210,7 +212,7 @@ onBeforeUnmount(() => {
         <div class="gap-md flex items-center">
           <button
             class="p-xx-sm text-on-surface-dim duration-short hover:bg-on-surface/10 hover:text-on-surface rounded-lg transition-colors md:hidden"
-            :aria-label="t('mindExercises.navigation.openMenu')"
+            :aria-label="t('movementExercises.navigation.openMenu')"
             @click="isMobileSidebarOpen = true"
           >
             <Icon
@@ -256,7 +258,9 @@ onBeforeUnmount(() => {
         <div class="gap-sm flex items-center">
           <button
             class="p-xx-sm text-on-surface-dim duration-short hover:bg-on-surface/10 hover:text-on-surface rounded-lg transition-colors"
-            :aria-label="isDark ? t('mindExercises.theme.switchToLight') : t('mindExercises.theme.switchToDark')"
+            :aria-label="
+              isDark ? t('movementExercises.theme.switchToLight') : t('movementExercises.theme.switchToDark')
+            "
             @click="toggleTheme"
           >
             <Icon
@@ -275,15 +279,15 @@ onBeforeUnmount(() => {
         <aside
           class="border-on-surface/[0.08] bg-surface/70 hidden min-h-0 w-[22rem] shrink-0 flex-col overflow-hidden border-r backdrop-blur-xl md:flex"
           role="navigation"
-          :aria-label="t('mindExercises.navigation.section')"
+          :aria-label="t('movementExercises.navigation.section')"
         >
           <div class="px-md py-x-lg flex flex-1 flex-col">
             <p class="text-body-x-sm mb-x-sm px-sm text-on-surface-dim font-semibold uppercase tracking-wider">
-              {{ t('mindExercises.navigation.section') }}
+              {{ t('movementExercises.navigation.section') }}
             </p>
             <nav class="gap-xx-sm flex flex-col">
               <NuxtLink
-                v-for="item in mindExerciseNavItems"
+                v-for="item in movementExerciseNavItems"
                 :key="item.path"
                 :to="localePath(item.path)"
                 class="gap-sm px-sm py-sm text-body-sm text-on-surface-dim duration-short hover:bg-on-surface/[0.06] hover:text-on-surface flex items-center rounded-lg font-medium transition-colors"

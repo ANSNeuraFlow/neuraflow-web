@@ -84,7 +84,7 @@ onUnmounted(() => {
           size="1.25rem"
           class="text-on-surface shrink-0"
         />
-        <span class="max-sm:sr-only">{{ t('mindExercises.blockSlide.backShort') }}</span>
+        <span class="max-sm:sr-only">{{ t('movementExercises.blockSlide.backShort') }}</span>
       </AppButton>
 
       <div
@@ -134,7 +134,7 @@ onUnmounted(() => {
             class="text-on-surface text-[3rem] font-semibold leading-tight tracking-tight"
             style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif"
           >
-            {{ t('mindExercises.blockSlide.calibrationTitle') }}
+            {{ t('movementExercises.blockSlide.calibrationTitle') }}
           </h2>
           <p
             class="text-on-surface-dim mt-xs max-w-[40rem] text-[1.2rem] font-medium"
@@ -142,8 +142,8 @@ onUnmounted(() => {
           >
             {{
               isBciMode
-                ? t('mindExercises.blockSlide.calibrationSubtitle')
-                : t('mindExercises.blockSlide.calibrationSubtitleManual')
+                ? t('movementExercises.blockSlide.calibrationSubtitle')
+                : t('movementExercises.blockSlide.calibrationSubtitleManual')
             }}
           </p>
         </div>
@@ -170,21 +170,21 @@ onUnmounted(() => {
             type="button"
             @click="moveLeft()"
           >
-            {{ t('mindExercises.blockSlide.left') }}
+            {{ t('movementExercises.blockSlide.left') }}
           </button>
           <button
             class="px-md py-sm hover:bg-surface-hover text-body-md text-on-surface-dim rounded-full bg-transparent font-medium transition-all active:scale-95"
             type="button"
             @click="reset"
           >
-            {{ t('mindExercises.blockSlide.center') }}
+            {{ t('movementExercises.blockSlide.center') }}
           </button>
           <button
             class="px-x-lg py-sm bg-surface-container-highest hover:bg-surface-hover text-body-md border-on-surface/[0.05] text-on-surface rounded-full border font-semibold shadow-sm transition-all active:scale-95"
             type="button"
             @click="moveRight()"
           >
-            {{ t('mindExercises.blockSlide.right') }}
+            {{ t('movementExercises.blockSlide.right') }}
           </button>
         </div>
       </div>

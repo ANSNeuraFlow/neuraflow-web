@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import { useRemoteSession } from '#layers/remote/app/composables/useRemoteSession';
 
-defineOptions({ name: 'MindExerciseSessionView' });
+import type { ForwardGateConfig } from '../../composables/useForwardGate';
+
+defineOptions({ name: 'ForwardGateSessionView' });
 
 const { t } = useI18n();
-
 const session = useRemoteSession();
 
 const view = ref<'config' | 'exercise'>('config');
 const controlMode = ref<'bci' | 'manual'>('bci');
 const bciSource = ref<'app' | 'local-bridge'>('app');
+
+const exerciseConfig = ref<ForwardGateConfig>({
+  durationMinutes: 10,
+});
 
 const mainBridgeReady = ref(false);
 
@@ -80,17 +85,17 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
           <div class="gap-sm flex flex-wrap items-start justify-between">
             <div>
               <p class="text-body-x-sm mb-xx-sm text-on-surface font-semibold uppercase tracking-wider">
-                {{ t('mindExercises.blockSlide.kicker') }}
+                {{ t('movementExercises.forwardGate.kicker') }}
               </p>
               <h1 class="text-heading-lg tracking-sm text-on-surface font-display font-bold">
-                {{ t('mindExercises.blockSlide.title') }}
+                {{ t('movementExercises.forwardGate.title') }}
               </h1>
               <p class="text-body-md text-on-surface-dim mt-x-sm max-w-[56rem]">
-                {{ t('mindExercises.blockSlide.sessionAbout') }}
+                {{ t('movementExercises.forwardGate.about') }}
               </p>
             </div>
             <Icon
-              name="lucide:move-horizontal"
+              name="lucide:milestone"
               size="2.4rem"
               class="text-on-surface shrink-0"
             />
@@ -117,7 +122,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
 
           <div class="gap-md flex flex-col">
             <p
-              id="block-slide-control-mode-label"
+              id="forward-gate-control-mode-label"
               class="text-body-sm text-on-surface-dim font-medium"
             >
               {{ t('remote.droneConfig.segmentLabel') }}
@@ -127,7 +132,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
               <div
                 class="border-on-surface/[0.08] bg-on-surface/[0.03] divide-on-surface/[0.08] flex w-full divide-x overflow-hidden rounded-xl border"
                 role="group"
-                aria-labelledby="block-slide-control-mode-label"
+                aria-labelledby="forward-gate-control-mode-label"
               >
                 <button
                   type="button"
@@ -152,7 +157,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
 
             <template v-if="controlMode === 'bci'">
               <p
-                id="block-slide-bci-model-source-label"
+                id="forward-gate-bci-model-source-label"
                 class="text-body-sm text-on-surface-dim mt-md font-medium"
               >
                 {{ t('remote.droneConfig.bciSourceLabel') }}
@@ -162,7 +167,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
                 <div
                   class="border-on-surface/[0.08] bg-on-surface/[0.03] divide-on-surface/[0.08] flex w-full divide-x overflow-hidden rounded-xl border"
                   role="group"
-                  aria-labelledby="block-slide-bci-model-source-label"
+                  aria-labelledby="forward-gate-bci-model-source-label"
                 >
                   <button
                     type="button"
@@ -241,6 +246,12 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
           </div>
         </div>
 
+        <ForwardGateConfigPanel
+          class="min-w-0"
+          :config="exerciseConfig"
+          @update:config="exerciseConfig = $event"
+        />
+
         <div
           class="glass-card p-md sm:p-x-lg gap-md flex flex-wrap items-center justify-between"
           :class="canStartSession ? 'border-success/20' : 'border-on-surface/[0.06]'"
@@ -259,7 +270,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
             </div>
             <div>
               <p class="text-body-md text-on-surface font-semibold">
-                {{ t('mindExercises.control.startSession') }}
+                {{ t('movementExercises.forwardGate.goToExercise') }}
               </p>
             </div>
           </div>
@@ -276,16 +287,17 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
               size="1.35rem"
               class="mr-xx-sm"
             />
-            {{ t('mindExercises.control.startSession') }}
+            {{ t('movementExercises.forwardGate.goToExercise') }}
           </AppButton>
         </div>
       </div>
 
-      <MindExerciseControlPlaceholder
+      <ForwardGateExercise
         v-else
         key="exercise"
+        :config="exerciseConfig"
         :control-mode="controlMode"
-        @end-session="closeExercise"
+        @close="closeExercise"
       />
     </Transition>
   </div>
