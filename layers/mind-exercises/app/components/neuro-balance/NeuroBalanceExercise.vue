@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useBciController } from '../../../../app/composables/useBciController';
-import { type NeuroBalanceConfig, useNeuroBalance } from '../composables/useNeuroBalance';
+import { useBciController } from '../../../../../app/composables/useBciController';
+import { type NeuroBalanceConfig, useNeuroBalance } from '../../composables/useNeuroBalance';
 
 defineOptions({ name: 'NeuroBalanceExercise' });
 

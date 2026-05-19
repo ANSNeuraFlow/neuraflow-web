@@ -6,6 +6,7 @@ defineOptions({ name: 'DodgeGame' });
 
 const props = defineProps<{
   config: DodgeGameConfig;
+  controlMode?: 'bci' | 'manual';
 }>();
 
 const emit = defineEmits<{
@@ -36,8 +37,14 @@ const {
 
 const { currentCommand, currentConfidence, isConnected, onCommand } = useBciController();
 
-onCommand('LEFT_HAND', () => moveLeft());
-onCommand('RIGHT_HAND', () => moveRight());
+const isBciMode = computed(() => props.controlMode !== 'manual');
+
+onCommand('LEFT_HAND', () => {
+  if (isBciMode.value) moveLeft();
+});
+onCommand('RIGHT_HAND', () => {
+  if (isBciMode.value) moveRight();
+});
 
 const resizeCanvas = () => {
   const canvas = canvasRef.value;
@@ -161,7 +168,10 @@ onUnmounted(() => {
           aria-live="polite"
           >★</span
         >
-        <div class="gap-x-sm text-on-surface-dim flex w-full items-center font-medium sm:ml-0 sm:w-auto">
+        <div
+          v-if="isBciMode"
+          class="gap-x-sm text-on-surface-dim flex w-full items-center font-medium sm:ml-0 sm:w-auto"
+        >
           <span
             class="size-2 shrink-0 rounded-full"
             :class="isConnected ? 'bg-green-400' : 'bg-red-500'"
@@ -178,6 +188,19 @@ onUnmounted(() => {
             class="opacity-50"
             >BCI: —</span
           >
+        </div>
+
+        <div
+          v-else
+          class="gap-x-sm text-on-surface-dim flex w-full items-center font-medium sm:ml-0 sm:w-auto"
+        >
+          <Icon
+            name="lucide:keyboard"
+            size="1.1rem"
+            class="shrink-0 opacity-70"
+            aria-hidden="true"
+          />
+          <span class="opacity-70">{{ t('remote.droneHub.manualKicker') }}</span>
         </div>
 
         <AppButton
@@ -216,8 +239,17 @@ onUnmounted(() => {
         <Transition name="fade-game">
           <div
             v-if="gameState === 'ready'"
-            class="bg-on-surface/55 absolute inset-0 flex items-center justify-center backdrop-blur-sm"
+            class="bg-on-surface/55 px-md absolute inset-0 flex flex-col items-center justify-center gap-4 backdrop-blur-sm"
           >
+            <p class="text-heading-md text-on-surface text-center font-display font-bold">
+              {{ t('minigames.dodge.readyTitle') }}
+            </p>
+            <p class="text-body-md text-on-surface-dim max-w-[34rem] text-center">
+              {{ isBciMode ? t('minigames.dodge.readySubtitle') : t('minigames.dodge.readySubtitleManual') }}
+            </p>
+            <p class="text-body-sm text-on-surface-dim text-center">
+              {{ t('minigames.dodge.readyKeyHint') }}
+            </p>
             <AppButton
               variant="inverse"
               size="lg"

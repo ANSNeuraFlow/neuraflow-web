@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { DIFFICULTY_PRESETS, type DodgeGameConfig } from '../composables/useDodgeGame';
+import { type NeuroBalanceConfig, SESSION_DURATIONS } from '../../composables/useNeuroBalance';
 
-defineOptions({ name: 'DodgeGameConfigPanel' });
+defineOptions({ name: 'NeuroBalanceConfigPanel' });
 
 defineProps<{
-  config: DodgeGameConfig;
+  config: NeuroBalanceConfig;
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:config', config: DodgeGameConfig): void;
+  (e: 'update:config', config: NeuroBalanceConfig): void;
 }>();
 
 const { t } = useI18n();
@@ -21,46 +21,46 @@ const { t } = useI18n();
         class="bg-on-surface/10 text-on-surface flex h-[4rem] w-[4rem] shrink-0 items-center justify-center rounded-full"
       >
         <Icon
-          name="lucide:gauge"
+          name="lucide:timer"
           size="2rem"
         />
       </div>
       <div>
         <h2 class="text-heading-sm text-on-surface font-display font-bold">
-          {{ t('minigames.dodge.config.title') }}
+          {{ t('mindExercises.neuroBalance.config.title') }}
         </h2>
         <p class="text-body-sm text-on-surface-dim mt-xx-sm">
-          {{ t('minigames.dodge.config.subtitle') }}
+          {{ t('mindExercises.neuroBalance.config.subtitle') }}
         </p>
       </div>
     </div>
 
     <div class="gap-md flex flex-1 flex-col justify-center">
       <p class="text-body-sm text-on-surface-dim font-medium">
-        {{ t('minigames.dodge.config.selectDifficulty') }}
+        {{ t('mindExercises.neuroBalance.config.selectDuration') }}
       </p>
 
       <div
         class="border-on-surface/[0.08] bg-on-surface/[0.03] divide-on-surface/[0.08] flex w-full max-w-[40rem] divide-x overflow-hidden rounded-xl border"
       >
         <button
-          v-for="d in DIFFICULTY_PRESETS"
+          v-for="d in SESSION_DURATIONS"
           :key="d"
           type="button"
           class="text-body-sm px-x-sm py-x-sm sm:px-x-lg sm:py-x-sm min-h-[3.2rem] min-w-0 flex-1 text-center font-semibold transition-colors duration-150"
           :class="
-            config.difficulty === d
+            config.durationMinutes === d
               ? 'bg-on-surface text-surface'
               : 'text-on-surface-dim hover:bg-on-surface/[0.07] hover:text-on-surface'
           "
-          @click="emit('update:config', { ...config, difficulty: d })"
+          @click="emit('update:config', { ...config, durationMinutes: d })"
         >
-          {{ t(`minigames.dodge.difficulty.${d}`) }}
+          {{ t('mindExercises.neuroBalance.config.durationLabel', { min: d }) }}
         </button>
       </div>
 
       <p class="text-body-x-sm text-on-surface-dim leading-relaxed">
-        {{ t(`minigames.dodge.difficultyDesc.${config.difficulty}`) }}
+        {{ t(`mindExercises.neuroBalance.config.durationDesc.${config.durationMinutes}`) }}
       </p>
     </div>
   </div>

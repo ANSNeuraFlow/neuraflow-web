@@ -1,4 +1,8 @@
 <script setup lang="ts">
+defineProps<{
+  controlMode?: 'bci' | 'manual';
+}>();
+
 const emit = defineEmits<{
   endSession: [];
 }>();
@@ -6,6 +10,9 @@ const emit = defineEmits<{
 
 <template>
   <div class="gap-x-lg flex flex-col">
-    <BlockSlideGame @close="emit('endSession')" />
+    <BlockSlideGame
+      :control-mode="controlMode"
+      @close="emit('endSession')"
+    />
   </div>
 </template>
