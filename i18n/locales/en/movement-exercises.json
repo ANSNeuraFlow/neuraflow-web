@@ -1,16 +1,16 @@
-{
-  "mindExercises": {
+﻿{
+  "movementExercises": {
     "blockSlide": {
       "backShort": "Back",
       "calibrationSubtitle": "Map the horizontal axis on screen, then aim to match it with intention alone.",
-      "calibrationSubtitleManual": "Use the buttons or arrow keys to explore the axis — Space centers the block.",
+      "calibrationSubtitleManual": "Use the buttons or arrow keys to explore the axis \u2014 Space centers the block.",
       "calibrationTitle": "Drill: slide the block",
       "center": "Center",
       "kicker": "Exercise",
       "left": "Left",
-      "pageTitle": "Slide the block — NeuraFlow",
+      "pageTitle": "Slide the block \u2014 NeuraFlow",
       "right": "Right",
-      "sessionAbout": "You steer a single block side to side. Imagine a gentle nudge left, right, or back to center — that is how you train a clear intention and a calm, steady focus before a longer run or a recording.",
+      "sessionAbout": "You steer a single block side to side. Imagine a gentle nudge left, right, or back to center \u2014 that is how you train a clear intention and a calm, steady focus before a longer run or a recording.",
       "title": "Slide the block"
     },
     "control": {
@@ -18,7 +18,7 @@
       "startSession": "Start session"
     },
     "forwardGate": {
-      "about": "Gates approach from above — steer the sphere into each opening with motor imagery (left/right hand, same mapping as Neuro-Balance). You pass when the sphere crosses the gate inside the gap; green marks your alignment on the active gate only.",
+      "about": "Gates approach from above \u2014 steer the sphere into each opening with motor imagery (left/right hand, same mapping as Neuro-Balance). You pass when the sphere crosses the gate inside the gap; green marks your alignment on the active gate only.",
       "backShort": "Back",
       "complete": {
         "back": "Back to settings",
@@ -27,9 +27,9 @@
       },
       "config": {
         "durationDesc": {
-          "10": "Standard training session — recommended for most users.",
-          "15": "Advanced run — expect sustained focus for the full duration.",
-          "5": "Short run — a good warm-up and daily habit."
+          "10": "Standard training session \u2014 recommended for most users.",
+          "15": "Advanced run \u2014 expect sustained focus for the full duration.",
+          "5": "Short run \u2014 a good warm-up and daily habit."
         },
         "durationLabel": "{min} min",
         "selectDuration": "Session length",
@@ -44,11 +44,11 @@
       "goToExercise": "Start exercise",
       "goToExerciseHint": "You can set up the BCI model now or launch it later.",
       "kicker": "Exercise",
-      "pageTitle": "Forward Gate Control — NeuraFlow",
+      "pageTitle": "Forward Gate Control \u2014 NeuraFlow",
       "ready": {
         "start": "Start",
-        "subtitle": "Press Start (Space). Gates scroll from above — use ← → or BCI to steer into each gap. Green shows you are aligned with the current gate.",
-        "subtitleManual": "Press Start (Space). Gates scroll from above — use ← → arrow keys to steer into each gap.",
+        "subtitle": "Press Start (Space). Gates scroll from above \u2014 use \u2190 \u2192 or BCI to steer into each gap. Green shows you are aligned with the current gate.",
+        "subtitleManual": "Press Start (Space). Gates scroll from above \u2014 use \u2190 \u2192 arrow keys to steer into each gap.",
         "title": "Ready?"
       },
       "sessionTime": "Elapsed: {s} s",
@@ -59,19 +59,19 @@
       "cardBlockSlideDescription": "That is how you train a clear intention and a calm, steady focus before a longer run or a recording.",
       "cardBlockSlideLead": "You steer a single block side to side. Imagine a gentle nudge left, right, or back to center.",
       "cardBlockSlideTitle": "Slide the block",
-      "cardForwardGateDescription": "Steer through openings before they reach you — smooth horizontal control matters more than reflex.",
+      "cardForwardGateDescription": "Align early with each gap \u2014 smooth horizontal control matters more than reflex.",
       "cardForwardGateLead": "Gates drift toward you from above; align with each gap using motor imagery (same as Neuro-Balance).",
       "cardForwardGateTitle": "Forward Gate Control",
-      "cardNeuroBalanceDescription": "Mu/Beta focus training: you practice sustained attention and a stable BCI signal without game-like chrome.",
+      "cardNeuroBalanceDescription": "Mu/Beta focus training: you practice sustained attention and a stable BCI signal without game-like elements.",
       "cardNeuroBalanceLead": "Keep a levitating sphere in the center using motor imagery of your hands.",
       "cardNeuroBalanceTitle": "Neuro-Balance",
       "open": "Open",
-      "pageTitle": "Mind exercises — NeuraFlow",
-      "subtitle": "Calm, repeatable sessions: one axis, one intention at a time — you practice holding attention and replaying a movement in your mind. Step by step, training focus and a stable signal for BCI, at your own pace.",
-      "title": "Mind exercises"
+      "pageTitle": "Movement exercises \u2014 NeuraFlow",
+      "subtitle": "Calm, repeatable motor-imagery sessions: one axis, one intention at a time \u2014 training clear BCI signal and sustained attention, step by step, at your own pace.",
+      "title": "Movement exercises"
     },
     "meta": {
-      "defaultTitle": "NeuraFlow — mind exercises"
+      "defaultTitle": "NeuraFlow \u2014 movement exercises"
     },
     "navigation": {
       "blockSlide": "Slide the block",
@@ -80,7 +80,7 @@
       "hub": "Overview",
       "neuroBalance": "Neuro-Balance",
       "openMenu": "Open menu",
-      "section": "Exercises"
+      "section": "Movement exercises"
     },
     "neuroBalance": {
       "about": "Keep a luminous sphere near the center using motor imagery. If it drifts left, imagine your right hand. If it drifts right, imagine your left. You train sustained focus and a clear Mu/Beta control signal.",
@@ -88,9 +88,9 @@
       "bestStreak": "Best: {s} s",
       "config": {
         "durationDesc": {
-          "10": "Standard training session — recommended for most users.",
-          "15": "Advanced run — expect sustained focus for the full duration.",
-          "5": "Short run — a good warm-up and daily habit."
+          "10": "Standard training session \u2014 recommended for most users.",
+          "15": "Advanced run \u2014 expect sustained focus for the full duration.",
+          "5": "Short run \u2014 a good warm-up and daily habit."
         },
         "durationLabel": "{min} min",
         "selectDuration": "Session length",
@@ -106,19 +106,19 @@
       "goToExerciseHint": "You can set up the BCI model now or launch it later.",
       "hint": {
         "center": "Hold the sphere in the focus band",
-        "left": "The sphere leans right — use left-hand imagery",
-        "right": "The sphere leans left — use right-hand imagery"
+        "left": "The sphere leans right \u2014 use left-hand imagery",
+        "right": "The sphere leans left \u2014 use right-hand imagery"
       },
       "kicker": "Exercise",
-      "pageTitle": "Neuro-Balance — NeuraFlow",
+      "pageTitle": "Neuro-Balance \u2014 NeuraFlow",
       "ready": {
         "start": "Start",
-        "subtitle": "Press Start (Space). While running, ← → match left- and right-hand BCI commands.",
-        "subtitleManual": "Press Start (Space). Use ← → arrow keys to control the sphere.",
+        "subtitle": "Press Start (Space). While running, \u2190 \u2192 match left- and right-hand BCI commands.",
+        "subtitleManual": "Press Start (Space). Use \u2190 \u2192 arrow keys to control the sphere.",
         "title": "Ready?"
       },
       "recovering": {
-        "countdown": "Resuming in {s} s…",
+        "countdown": "Resuming in {s} s\u2026",
         "subtitle": "The sphere lost balance. Take a calm breath and try again.",
         "title": "Relax"
       },

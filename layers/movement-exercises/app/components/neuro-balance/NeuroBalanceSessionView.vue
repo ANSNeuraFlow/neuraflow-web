@@ -85,13 +85,13 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
           <div class="gap-sm flex flex-wrap items-start justify-between">
             <div>
               <p class="text-body-x-sm mb-xx-sm text-on-surface font-semibold uppercase tracking-wider">
-                {{ t('mindExercises.neuroBalance.kicker') }}
+                {{ t('movementExercises.neuroBalance.kicker') }}
               </p>
               <h1 class="text-heading-lg tracking-sm text-on-surface font-display font-bold">
-                {{ t('mindExercises.neuroBalance.title') }}
+                {{ t('movementExercises.neuroBalance.title') }}
               </h1>
               <p class="text-body-md text-on-surface-dim mt-x-sm max-w-[56rem]">
-                {{ t('mindExercises.neuroBalance.about') }}
+                {{ t('movementExercises.neuroBalance.about') }}
               </p>
             </div>
             <Icon
@@ -270,7 +270,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
             </div>
             <div>
               <p class="text-body-md text-on-surface font-semibold">
-                {{ t('mindExercises.neuroBalance.goToExercise') }}
+                {{ t('movementExercises.neuroBalance.goToExercise') }}
               </p>
             </div>
           </div>
@@ -287,7 +287,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
               size="1.35rem"
               class="mr-xx-sm"
             />
-            {{ t('mindExercises.neuroBalance.goToExercise') }}
+            {{ t('movementExercises.neuroBalance.goToExercise') }}
           </AppButton>
         </div>
       </div>

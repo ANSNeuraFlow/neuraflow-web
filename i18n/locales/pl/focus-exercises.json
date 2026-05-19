@@ -1,0 +1,25 @@
+{
+  "focusExercises": {
+    "hub": {
+      "comingSoon": "Spokojne ćwiczenia skupiające i relaksacyjne pojawią się tutaj wkrótce — trening uwagi, oddechu i stabilnej koncentracji w synchronizacji z sygnałem BCI.",
+      "comingSoonTitle": "W przygotowaniu",
+      "kicker": "Ćwiczenia skupiające",
+      "pageTitle": "Ćwiczenia skupiające — NeuraFlow",
+      "subtitle": "Strefa spokojnych ćwiczeń na koncentrację, focus i relaks — idealna do wyciszenia i przygotowania mózgu do dalszej pracy z BCI.",
+      "title": "Ćwiczenia skupiające"
+    },
+    "meta": {
+      "defaultTitle": "NeuraFlow — ćwiczenia skupiające"
+    },
+    "navigation": {
+      "closeMenu": "Zamknij menu",
+      "hub": "Przegląd",
+      "openMenu": "Otwórz menu",
+      "section": "Skupienie"
+    },
+    "theme": {
+      "switchToDark": "Tryb ciemny",
+      "switchToLight": "Tryb jasny"
+    }
+  }
+}

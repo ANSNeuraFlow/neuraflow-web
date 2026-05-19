@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useBciController } from '../../../../../app/composables/useBciController';
-import { type NeuroBalanceConfig, useNeuroBalance } from '../../composables/useNeuroBalance';
+import { type ForwardGateConfig, useForwardGate } from '../../composables/useForwardGate';
 
-defineOptions({ name: 'NeuroBalanceExercise' });
+defineOptions({ name: 'ForwardGateExercise' });
 
 const props = defineProps<{
-  config: NeuroBalanceConfig;
+  config: ForwardGateConfig;
   controlMode?: 'bci' | 'manual';
 }>();
 
@@ -21,17 +21,18 @@ const isFullscreen = ref(false);
 
 const {
   exerciseState,
-  focusTime,
-  bestStreak,
   sessionTime,
-  recoverySecondsRemaining,
+  successfulPasses,
+  failedPasses,
+  totalGates,
+  passRate,
   applyLeft,
   applyRight,
   initialize,
   startExercise,
   stop,
   handleResize,
-} = useNeuroBalance(canvasRef, () => props.config);
+} = useForwardGate(canvasRef, () => props.config);
 
 const { currentCommand, currentConfidence, isConnected, onCommand } = useBciController();
 
@@ -136,21 +137,19 @@ onUnmounted(() => {
           size="1.25rem"
           class="text-on-surface shrink-0"
         />
-        <span class="max-sm:sr-only">{{ t('mindExercises.neuroBalance.backShort') }}</span>
+        <span class="max-sm:sr-only">{{ t('movementExercises.forwardGate.backShort') }}</span>
       </AppButton>
 
       <div
         class="text-body-x-sm text-on-surface-dim gap-x-md sm:gap-x-lg ml-auto flex flex-wrap items-center justify-end font-semibold tabular-nums leading-tight"
       >
-        <span>
-          {{ t('mindExercises.neuroBalance.focusTime', { s: focusTime }) }}
+        <span class="text-green-400">
+          {{ t('movementExercises.forwardGate.successfulPasses', { n: successfulPasses }) }}
         </span>
-        <span>
-          {{ t('mindExercises.neuroBalance.bestStreak', { s: bestStreak }) }}
+        <span class="text-orange-400">
+          {{ t('movementExercises.forwardGate.failedPasses', { n: failedPasses }) }}
         </span>
-        <span>
-          {{ t('mindExercises.neuroBalance.sessionTime', { s: sessionTime }) }}
-        </span>
+        <span>{{ t('movementExercises.forwardGate.sessionTime', { s: sessionTime }) }}</span>
 
         <div
           v-if="isBciMode"
@@ -193,8 +192,8 @@ onUnmounted(() => {
           class="text-on-surface hover:text-on-surface"
           :aria-label="
             isFullscreen
-              ? t('mindExercises.neuroBalance.fullscreen.exit')
-              : t('mindExercises.neuroBalance.fullscreen.enter')
+              ? t('movementExercises.forwardGate.fullscreen.exit')
+              : t('movementExercises.forwardGate.fullscreen.enter')
           "
           @click="toggleFullscreen"
         >
@@ -217,19 +216,19 @@ onUnmounted(() => {
           class="absolute inset-0 h-full w-full"
         />
 
-        <Transition name="fade-nb">
+        <Transition name="fade-fg">
           <div
             v-if="exerciseState === 'ready'"
             class="bg-surface/85 px-md absolute inset-0 flex flex-col items-center justify-center gap-4 backdrop-blur-md"
           >
             <p class="text-heading-md text-on-surface font-display font-bold">
-              {{ t('mindExercises.neuroBalance.ready.title') }}
+              {{ t('movementExercises.forwardGate.ready.title') }}
             </p>
-            <p class="text-body-md text-on-surface-dim max-w-[32rem] text-center">
+            <p class="text-body-md text-on-surface-dim max-w-[36rem] text-center">
               {{
                 isBciMode
-                  ? t('mindExercises.neuroBalance.ready.subtitle')
-                  : t('mindExercises.neuroBalance.ready.subtitleManual')
+                  ? t('movementExercises.forwardGate.ready.subtitle')
+                  : t('movementExercises.forwardGate.ready.subtitleManual')
               }}
             </p>
             <AppButton
@@ -237,48 +236,34 @@ onUnmounted(() => {
               size="lg"
               @click="startExercise"
             >
-              {{ t('mindExercises.neuroBalance.ready.start') }}
+              {{ t('movementExercises.forwardGate.ready.start') }}
             </AppButton>
           </div>
         </Transition>
 
-        <Transition name="fade-nb">
-          <div
-            v-if="exerciseState === 'recovering'"
-            class="bg-surface/80 px-md absolute inset-0 flex flex-col items-center justify-center gap-3 backdrop-blur-md"
-          >
-            <p class="text-heading-sm text-on-surface font-display font-bold drop-shadow-lg">
-              {{ t('mindExercises.neuroBalance.recovering.title') }}
-            </p>
-            <p class="text-body-md text-on-surface-dim max-w-[36rem] text-center drop-shadow">
-              {{ t('mindExercises.neuroBalance.recovering.subtitle') }}
-            </p>
-            <p
-              v-if="recoverySecondsRemaining > 0"
-              class="text-body-sm text-on-surface/80 tabular-nums"
-            >
-              {{ t('mindExercises.neuroBalance.recovering.countdown', { s: recoverySecondsRemaining }) }}
-            </p>
-          </div>
-        </Transition>
-
-        <Transition name="fade-nb">
+        <Transition name="fade-fg">
           <div
             v-if="exerciseState === 'complete'"
             class="bg-surface/85 px-md absolute inset-0 flex flex-col items-center justify-center gap-4 backdrop-blur-md"
           >
             <p class="text-heading-md text-on-surface font-display font-bold">
-              {{ t('mindExercises.neuroBalance.sessionComplete.title') }}
+              {{ t('movementExercises.forwardGate.complete.title') }}
             </p>
-            <p class="text-body-md text-on-surface-dim max-w-[32rem] text-center">
-              {{ t('mindExercises.neuroBalance.sessionComplete.subtitle', { s: bestStreak }) }}
+            <p class="text-body-md text-on-surface-dim max-w-[36rem] text-center">
+              {{
+                t('movementExercises.forwardGate.complete.subtitle', {
+                  n: successfulPasses,
+                  total: totalGates,
+                  pct: Math.round(passRate * 100),
+                })
+              }}
             </p>
             <AppButton
               variant="inverse"
               size="md"
               @click="emit('close')"
             >
-              {{ t('mindExercises.neuroBalance.sessionComplete.back') }}
+              {{ t('movementExercises.forwardGate.complete.back') }}
             </AppButton>
           </div>
         </Transition>
@@ -288,13 +273,13 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.fade-nb-enter-active,
-.fade-nb-leave-active {
+.fade-fg-enter-active,
+.fade-fg-leave-active {
   transition: opacity 0.4s ease;
 }
 
-.fade-nb-enter-from,
-.fade-nb-leave-to {
+.fade-fg-enter-from,
+.fade-fg-leave-to {
   opacity: 0;
 }
 </style>

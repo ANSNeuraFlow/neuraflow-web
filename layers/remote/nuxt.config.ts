@@ -8,8 +8,8 @@ const currentDir = dirname(fileURLToPath(import.meta.url));
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   routeRules: {
-    '/remote/game': { redirect: { to: '/mind-exercises/slide-block', statusCode: 302 } },
-    '/remote/game/': { redirect: { to: '/mind-exercises/slide-block', statusCode: 302 } },
+    '/remote/game': { redirect: { to: '/movement-exercises/slide-block', statusCode: 302 } },
+    '/remote/game/': { redirect: { to: '/movement-exercises/slide-block', statusCode: 302 } },
     '/drone': { redirect: { to: '/remote', statusCode: 302 } },
     '/drone/': { redirect: { to: '/remote', statusCode: 302 } },
     '/drone/eeg': { redirect: { to: '/remote', statusCode: 302 } },

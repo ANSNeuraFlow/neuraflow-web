@@ -1,0 +1,25 @@
+{
+  "focusExercises": {
+    "hub": {
+      "comingSoon": "Calm focus and relaxation exercises will appear here soon \u2014 attention training, breathing, and stable concentration in sync with your BCI signal.",
+      "comingSoonTitle": "Coming soon",
+      "kicker": "Focus exercises",
+      "pageTitle": "Focus exercises \u2014 NeuraFlow",
+      "subtitle": "A zone for calm concentration, focus, and relaxation exercises \u2014 ideal for quieting the mind and preparing the brain for deeper BCI work.",
+      "title": "Focus exercises"
+    },
+    "meta": {
+      "defaultTitle": "NeuraFlow \u2014 focus exercises"
+    },
+    "navigation": {
+      "closeMenu": "Close menu",
+      "hub": "Overview",
+      "openMenu": "Open menu",
+      "section": "Focus"
+    },
+    "theme": {
+      "switchToDark": "Dark mode",
+      "switchToLight": "Light mode"
+    }
+  }
+}
