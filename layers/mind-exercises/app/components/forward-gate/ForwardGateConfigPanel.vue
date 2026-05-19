@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { type NeuroBalanceConfig, SESSION_DURATIONS } from '../composables/useNeuroBalance';
+import { type ForwardGateConfig, SESSION_DURATIONS } from '../../composables/useForwardGate';
 
-defineOptions({ name: 'NeuroBalanceConfigPanel' });
+defineOptions({ name: 'ForwardGateConfigPanel' });
 
 defineProps<{
-  config: NeuroBalanceConfig;
+  config: ForwardGateConfig;
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:config', config: NeuroBalanceConfig): void;
+  (e: 'update:config', config: ForwardGateConfig): void;
 }>();
 
 const { t } = useI18n();
@@ -27,17 +27,17 @@ const { t } = useI18n();
       </div>
       <div>
         <h2 class="text-heading-sm text-on-surface font-display font-bold">
-          {{ t('mindExercises.neuroBalance.config.title') }}
+          {{ t('mindExercises.forwardGate.config.title') }}
         </h2>
         <p class="text-body-sm text-on-surface-dim mt-xx-sm">
-          {{ t('mindExercises.neuroBalance.config.subtitle') }}
+          {{ t('mindExercises.forwardGate.config.subtitle') }}
         </p>
       </div>
     </div>
 
     <div class="gap-md flex flex-1 flex-col justify-center">
       <p class="text-body-sm text-on-surface-dim font-medium">
-        {{ t('mindExercises.neuroBalance.config.selectDuration') }}
+        {{ t('mindExercises.forwardGate.config.selectDuration') }}
       </p>
 
       <div
@@ -55,12 +55,12 @@ const { t } = useI18n();
           "
           @click="emit('update:config', { ...config, durationMinutes: d })"
         >
-          {{ t('mindExercises.neuroBalance.config.durationLabel', { min: d }) }}
+          {{ t('mindExercises.forwardGate.config.durationLabel', { min: d }) }}
         </button>
       </div>
 
       <p class="text-body-x-sm text-on-surface-dim leading-relaxed">
-        {{ t(`mindExercises.neuroBalance.config.durationDesc.${config.durationMinutes}`) }}
+        {{ t(`mindExercises.forwardGate.config.durationDesc.${config.durationMinutes}`) }}
       </p>
     </div>
   </div>

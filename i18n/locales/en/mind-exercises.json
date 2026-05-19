@@ -1,7 +1,9 @@
 {
   "mindExercises": {
     "blockSlide": {
+      "backShort": "Back",
       "calibrationSubtitle": "Map the horizontal axis on screen, then aim to match it with intention alone.",
+      "calibrationSubtitleManual": "Use the buttons or arrow keys to explore the axis — Space centers the block.",
       "calibrationTitle": "Drill: slide the block",
       "center": "Center",
       "kicker": "Exercise",
@@ -46,6 +48,7 @@
       "ready": {
         "start": "Start",
         "subtitle": "Press Start (Space). Gates scroll from above — use ← → or BCI to steer into each gap. Green shows you are aligned with the current gate.",
+        "subtitleManual": "Press Start (Space). Gates scroll from above — use ← → arrow keys to steer into each gap.",
         "title": "Ready?"
       },
       "sessionTime": "Elapsed: {s} s",

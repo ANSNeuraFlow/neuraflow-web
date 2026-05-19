@@ -1,7 +1,9 @@
 {
   "mindExercises": {
     "blockSlide": {
+      "backShort": "Wstecz",
       "calibrationSubtitle": "Sprawdź, jak reaguje oś pozioma — potem odtwarzaj to samo intencją w myślach.",
+      "calibrationSubtitleManual": "Sprawdź przyciskami lub strzałkami oś poziomą — Spacja wyśrodkuje klocek.",
       "calibrationTitle": "Ćwiczenie: przesuń klocek",
       "center": "Wyśrodkuj",
       "kicker": "Ćwiczenie",
@@ -46,6 +48,7 @@
       "ready": {
         "start": "Start",
         "subtitle": "Naciśnij Start (Spacja). Bramki nadjeżdżają z góry — strzałkami ← → lub BCI wjedź w każdą szczelinę. Zielony oznacza dopasowanie do bieżącej bramki.",
+        "subtitleManual": "Naciśnij Start (Spacja). Bramki nadjeżdżają z góry — steruj strzałkami ← → i trafiaj w każdą szczelinę.",
         "title": "Gotowi?"
       },
       "sessionTime": "Czas: {s} s",

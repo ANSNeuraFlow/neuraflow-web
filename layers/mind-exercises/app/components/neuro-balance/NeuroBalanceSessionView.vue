@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { useRemoteSession } from '#layers/remote/app/composables/useRemoteSession';
 
-import type { DodgeGameConfig } from '../composables/useDodgeGame';
+import type { NeuroBalanceConfig } from '../../composables/useNeuroBalance';
 
-defineOptions({ name: 'DodgeGameSessionView' });
+defineOptions({ name: 'NeuroBalanceSessionView' });
 
 const { t } = useI18n();
 const session = useRemoteSession();
 
-const view = ref<'config' | 'game'>('config');
+const view = ref<'config' | 'exercise'>('config');
 const controlMode = ref<'bci' | 'manual'>('bci');
 const bciSource = ref<'app' | 'local-bridge'>('app');
 
-const gameConfig = ref<DodgeGameConfig>({
-  difficulty: 'medium',
+const exerciseConfig = ref<NeuroBalanceConfig>({
+  durationMinutes: 10,
 });
 
 const mainBridgeReady = ref(false);
@@ -44,11 +44,11 @@ const canStartSession = computed(() => {
   return session.canStartControl.value;
 });
 
-const goToGame = () => {
-  view.value = 'game';
+const goToExercise = () => {
+  view.value = 'exercise';
 };
 
-const closeGame = async () => {
+const closeExercise = async () => {
   view.value = 'config';
   await session.stopDeployment();
 };
@@ -85,17 +85,17 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
           <div class="gap-sm flex flex-wrap items-start justify-between">
             <div>
               <p class="text-body-x-sm mb-xx-sm text-on-surface font-semibold uppercase tracking-wider">
-                {{ t('minigames.dodge.kicker') }}
+                {{ t('mindExercises.neuroBalance.kicker') }}
               </p>
               <h1 class="text-heading-lg tracking-sm text-on-surface font-display font-bold">
-                {{ t('minigames.dodge.title') }}
+                {{ t('mindExercises.neuroBalance.title') }}
               </h1>
               <p class="text-body-md text-on-surface-dim mt-x-sm max-w-[56rem]">
-                {{ t('minigames.dodge.about') }}
+                {{ t('mindExercises.neuroBalance.about') }}
               </p>
             </div>
             <Icon
-              name="lucide:rocket"
+              name="lucide:brain-circuit"
               size="2.4rem"
               class="text-on-surface shrink-0"
             />
@@ -122,7 +122,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
 
           <div class="gap-md flex flex-col">
             <p
-              id="dodge-game-control-mode-label"
+              id="neuro-balance-control-mode-label"
               class="text-body-sm text-on-surface-dim font-medium"
             >
               {{ t('remote.droneConfig.segmentLabel') }}
@@ -132,7 +132,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
               <div
                 class="border-on-surface/[0.08] bg-on-surface/[0.03] divide-on-surface/[0.08] flex w-full divide-x overflow-hidden rounded-xl border"
                 role="group"
-                aria-labelledby="dodge-game-control-mode-label"
+                aria-labelledby="neuro-balance-control-mode-label"
               >
                 <button
                   type="button"
@@ -157,7 +157,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
 
             <template v-if="controlMode === 'bci'">
               <p
-                id="dodge-game-bci-model-source-label"
+                id="neuro-balance-bci-model-source-label"
                 class="text-body-sm text-on-surface-dim mt-md font-medium"
               >
                 {{ t('remote.droneConfig.bciSourceLabel') }}
@@ -167,7 +167,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
                 <div
                   class="border-on-surface/[0.08] bg-on-surface/[0.03] divide-on-surface/[0.08] flex w-full divide-x overflow-hidden rounded-xl border"
                   role="group"
-                  aria-labelledby="dodge-game-bci-model-source-label"
+                  aria-labelledby="neuro-balance-bci-model-source-label"
                 >
                   <button
                     type="button"
@@ -246,10 +246,10 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
           </div>
         </div>
 
-        <DodgeGameConfigPanel
+        <NeuroBalanceConfigPanel
           class="min-w-0"
-          :config="gameConfig"
-          @update:config="gameConfig = $event"
+          :config="exerciseConfig"
+          @update:config="exerciseConfig = $event"
         />
 
         <div
@@ -270,7 +270,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
             </div>
             <div>
               <p class="text-body-md text-on-surface font-semibold">
-                {{ t('minigames.dodge.goToGame') }}
+                {{ t('mindExercises.neuroBalance.goToExercise') }}
               </p>
             </div>
           </div>
@@ -280,24 +280,24 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
             size="sm"
             class="shrink-0"
             :disabled="!canStartSession"
-            @click="goToGame"
+            @click="goToExercise"
           >
             <Icon
               name="material-symbols:play-arrow"
               size="1.35rem"
               class="mr-xx-sm"
             />
-            {{ t('minigames.dodge.goToGame') }}
+            {{ t('mindExercises.neuroBalance.goToExercise') }}
           </AppButton>
         </div>
       </div>
 
-      <DodgeGame
+      <NeuroBalanceExercise
         v-else
-        key="game"
-        :config="gameConfig"
+        key="exercise"
+        :config="exerciseConfig"
         :control-mode="controlMode"
-        @close="closeGame"
+        @close="closeExercise"
       />
     </Transition>
   </div>

@@ -1,20 +1,15 @@
 <script setup lang="ts">
 import { useRemoteSession } from '#layers/remote/app/composables/useRemoteSession';
 
-import type { NeuroBalanceConfig } from '../composables/useNeuroBalance';
-
-defineOptions({ name: 'NeuroBalanceSessionView' });
+defineOptions({ name: 'MindExerciseSessionView' });
 
 const { t } = useI18n();
+
 const session = useRemoteSession();
 
 const view = ref<'config' | 'exercise'>('config');
 const controlMode = ref<'bci' | 'manual'>('bci');
 const bciSource = ref<'app' | 'local-bridge'>('app');
-
-const exerciseConfig = ref<NeuroBalanceConfig>({
-  durationMinutes: 10,
-});
 
 const mainBridgeReady = ref(false);
 
@@ -85,17 +80,17 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
           <div class="gap-sm flex flex-wrap items-start justify-between">
             <div>
               <p class="text-body-x-sm mb-xx-sm text-on-surface font-semibold uppercase tracking-wider">
-                {{ t('mindExercises.neuroBalance.kicker') }}
+                {{ t('mindExercises.blockSlide.kicker') }}
               </p>
               <h1 class="text-heading-lg tracking-sm text-on-surface font-display font-bold">
-                {{ t('mindExercises.neuroBalance.title') }}
+                {{ t('mindExercises.blockSlide.title') }}
               </h1>
               <p class="text-body-md text-on-surface-dim mt-x-sm max-w-[56rem]">
-                {{ t('mindExercises.neuroBalance.about') }}
+                {{ t('mindExercises.blockSlide.sessionAbout') }}
               </p>
             </div>
             <Icon
-              name="lucide:brain-circuit"
+              name="lucide:move-horizontal"
               size="2.4rem"
               class="text-on-surface shrink-0"
             />
@@ -122,7 +117,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
 
           <div class="gap-md flex flex-col">
             <p
-              id="neuro-balance-control-mode-label"
+              id="block-slide-control-mode-label"
               class="text-body-sm text-on-surface-dim font-medium"
             >
               {{ t('remote.droneConfig.segmentLabel') }}
@@ -132,7 +127,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
               <div
                 class="border-on-surface/[0.08] bg-on-surface/[0.03] divide-on-surface/[0.08] flex w-full divide-x overflow-hidden rounded-xl border"
                 role="group"
-                aria-labelledby="neuro-balance-control-mode-label"
+                aria-labelledby="block-slide-control-mode-label"
               >
                 <button
                   type="button"
@@ -157,7 +152,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
 
             <template v-if="controlMode === 'bci'">
               <p
-                id="neuro-balance-bci-model-source-label"
+                id="block-slide-bci-model-source-label"
                 class="text-body-sm text-on-surface-dim mt-md font-medium"
               >
                 {{ t('remote.droneConfig.bciSourceLabel') }}
@@ -167,7 +162,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
                 <div
                   class="border-on-surface/[0.08] bg-on-surface/[0.03] divide-on-surface/[0.08] flex w-full divide-x overflow-hidden rounded-xl border"
                   role="group"
-                  aria-labelledby="neuro-balance-bci-model-source-label"
+                  aria-labelledby="block-slide-bci-model-source-label"
                 >
                   <button
                     type="button"
@@ -246,12 +241,6 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
           </div>
         </div>
 
-        <NeuroBalanceConfigPanel
-          class="min-w-0"
-          :config="exerciseConfig"
-          @update:config="exerciseConfig = $event"
-        />
-
         <div
           class="glass-card p-md sm:p-x-lg gap-md flex flex-wrap items-center justify-between"
           :class="canStartSession ? 'border-success/20' : 'border-on-surface/[0.06]'"
@@ -270,7 +259,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
             </div>
             <div>
               <p class="text-body-md text-on-surface font-semibold">
-                {{ t('mindExercises.neuroBalance.goToExercise') }}
+                {{ t('mindExercises.control.startSession') }}
               </p>
             </div>
           </div>
@@ -287,17 +276,16 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
               size="1.35rem"
               class="mr-xx-sm"
             />
-            {{ t('mindExercises.neuroBalance.goToExercise') }}
+            {{ t('mindExercises.control.startSession') }}
           </AppButton>
         </div>
       </div>
 
-      <NeuroBalanceExercise
+      <MindExerciseControlPlaceholder
         v-else
         key="exercise"
-        :config="exerciseConfig"
         :control-mode="controlMode"
-        @close="closeExercise"
+        @end-session="closeExercise"
       />
     </Transition>
   </div>
