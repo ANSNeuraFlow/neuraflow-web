@@ -8,6 +8,10 @@
       "retry": "Try again"
     },
     "cluster": {
+      "connection": {
+        "live": "Live connection",
+        "polling": "Polling"
+      },
       "errors": {
         "fetchFailed": "Failed to fetch cluster metrics"
       },
@@ -39,10 +43,6 @@
         "title": "NODE TELEMETRY"
       },
       "title": "Cluster metrics"
-    },
-    "connection": {
-      "live": "LIVE",
-      "polling": "POLLING"
     },
     "createUser": {
       "passwordChangeNote": "The user will be prompted to change their password on first login.",
