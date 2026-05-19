@@ -25,18 +25,31 @@ useHead({
   },
 });
 
-const adminNavItems = computed(() => [
+type AdminNavItem = {
+  path: '/admin/users' | '/admin/cluster';
+  label: string;
+  icon: string;
+};
+
+const adminNavItems = computed<AdminNavItem[]>(() => [
   {
-    to: localePath('/admin/users'),
+    path: '/admin/users',
     label: t('admin.navigation.users'),
     icon: 'material-symbols:group',
   },
   {
-    to: localePath('/admin/cluster'),
+    path: '/admin/cluster',
     label: t('admin.navigation.clusters'),
     icon: 'material-symbols:dns',
   },
 ]);
+
+const normalizedPath = computed(() => route.path.replace(/\/$/, '') || '/');
+
+const isNavActive = (item: AdminNavItem): boolean => {
+  const target = item.path.replace(/\/$/, '') || '/';
+  return normalizedPath.value === target || normalizedPath.value.endsWith(target);
+};
 
 const toggleTheme = () => {
   isDark.value = !isDark.value;
@@ -47,6 +60,8 @@ const toggleTheme = () => {
 };
 
 onMounted(() => {
+  document.body.classList.add('overflow-hidden');
+
   const saved = localStorage.getItem('neuraflow-admin-theme');
   if (saved === 'light') {
     isDark.value = false;
@@ -56,10 +71,14 @@ onMounted(() => {
     document.documentElement.setAttribute('data-theme', 'dark');
   }
 });
+
+onBeforeUnmount(() => {
+  document.body.classList.remove('overflow-hidden');
+});
 </script>
 
 <template>
-  <div class="bg-surface text-on-surface relative min-h-screen overflow-x-hidden">
+  <div class="bg-surface text-on-surface relative h-dvh max-h-dvh min-h-0 overflow-hidden">
     <div
       class="pointer-events-none absolute inset-0 bg-hero-pattern"
       aria-hidden="true"
@@ -105,7 +124,6 @@ onMounted(() => {
       aria-hidden="true"
     />
 
-    <!-- Mobile overlay -->
     <Transition name="fade-overlay">
       <div
         v-if="isMobileSidebarOpen"
@@ -115,7 +133,6 @@ onMounted(() => {
       />
     </Transition>
 
-    <!-- Mobile sidebar drawer -->
     <Transition name="slide-sidebar">
       <aside
         v-if="isMobileSidebarOpen"
@@ -146,16 +163,16 @@ onMounted(() => {
         </div>
 
         <div class="px-md py-x-lg flex flex-1 flex-col overflow-y-auto">
-          <p class="mb-sm px-sm text-body-x-sm text-on-surface-dim font-semibold uppercase tracking-wider">
+          <p class="text-body-x-sm mb-x-sm px-sm text-on-surface-dim font-semibold uppercase tracking-wider">
             {{ t('admin.navigation.section') }}
           </p>
           <nav class="gap-xx-sm flex flex-col">
             <NuxtLink
               v-for="item in adminNavItems"
-              :key="item.label"
-              :to="item.to"
+              :key="item.path"
+              :to="localePath(item.path)"
               class="gap-sm px-sm py-sm text-body-sm text-on-surface-dim duration-short hover:bg-on-surface/[0.06] hover:text-on-surface flex items-center rounded-lg font-medium transition-colors"
-              active-class="bg-on-surface/[0.15] text-on-surface"
+              :class="isNavActive(item) ? 'bg-on-surface/[0.15] text-on-surface' : ''"
               @click="isMobileSidebarOpen = false"
             >
               <Icon
@@ -174,7 +191,7 @@ onMounted(() => {
       </aside>
     </Transition>
 
-    <div class="relative z-10 flex h-screen flex-col">
+    <div class="relative z-10 flex h-full min-h-0 flex-col">
       <header
         class="border-on-surface/[0.08] bg-surface/80 px-x-lg sm:px-xx-lg flex h-[6.8rem] shrink-0 items-center justify-between border-b backdrop-blur-xl"
       >
@@ -242,31 +259,39 @@ onMounted(() => {
         </div>
       </header>
 
-      <div class="pb-lg px-x-lg relative z-20 flex w-full shrink-0 justify-center pt-7">
-        <nav
-          class="gap-x-sm lg:gap-md xl:gap-x-lg glass-card px-md py-sm hidden items-center !rounded-full shadow-2xl md:flex"
+      <div class="flex min-h-0 flex-1 overflow-hidden">
+        <aside
+          class="border-on-surface/[0.08] bg-surface/70 hidden min-h-0 w-[22rem] shrink-0 flex-col overflow-hidden border-r backdrop-blur-xl md:flex"
           role="navigation"
+          :aria-label="t('admin.navigation.section')"
         >
-          <NuxtLink
-            v-for="item in adminNavItems"
-            :key="item.label"
-            :to="item.to"
-            class="px-md py-sm text-body-sm duration-short text-on-surface-dim hover:bg-on-surface/5 hover:text-on-surface gap-sm flex shrink-0 items-center whitespace-nowrap rounded-full font-medium transition-colors ease-out"
-            active-class="bg-on-surface/10 text-on-surface font-semibold"
-          >
-            <Icon
-              :name="item.icon"
-              size="1.8rem"
-              class="shrink-0"
-            />
-            {{ item.label }}
-          </NuxtLink>
-        </nav>
-      </div>
+          <div class="px-md py-x-lg flex flex-1 flex-col">
+            <p class="text-body-x-sm mb-x-sm px-sm text-on-surface-dim font-semibold uppercase tracking-wider">
+              {{ t('admin.navigation.section') }}
+            </p>
+            <nav class="gap-xx-sm flex flex-col">
+              <NuxtLink
+                v-for="item in adminNavItems"
+                :key="item.path"
+                :to="localePath(item.path)"
+                class="gap-sm px-sm py-sm text-body-sm text-on-surface-dim duration-short hover:bg-on-surface/[0.06] hover:text-on-surface flex items-center rounded-lg font-medium transition-colors"
+                :class="isNavActive(item) ? 'bg-on-surface/[0.12] text-on-surface font-semibold' : ''"
+              >
+                <Icon
+                  :name="item.icon"
+                  size="1.8rem"
+                  class="shrink-0"
+                />
+                <span>{{ item.label }}</span>
+              </NuxtLink>
+            </nav>
+          </div>
+        </aside>
 
-      <div class="flex flex-1 overflow-hidden">
-        <main class="px-x-lg sm:px-xx-lg pb-xx-lg flex-1 overflow-y-auto">
-          <div class="mx-auto w-full max-w-[132rem]">
+        <main
+          class="px-x-lg sm:px-xx-lg pb-xx-lg pt-x-lg min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain"
+        >
+          <div class="mx-auto min-h-0 w-full max-w-[132rem]">
             <slot />
           </div>
         </main>

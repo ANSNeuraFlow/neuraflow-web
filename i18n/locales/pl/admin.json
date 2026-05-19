@@ -8,6 +8,10 @@
       "retry": "Spróbuj ponownie"
     },
     "cluster": {
+      "connection": {
+        "live": "Połączenie na żywo",
+        "polling": "Odświeżanie"
+      },
       "errors": {
         "fetchFailed": "Nie udało się pobrać metryk klastra"
       },
@@ -39,10 +43,6 @@
         "title": "TELEMETRIA WĘZŁÓW"
       },
       "title": "Metryki klastra"
-    },
-    "connection": {
-      "live": "Aktywne",
-      "polling": "Pobieranie"
     },
     "createUser": {
       "passwordChangeNote": "Użytkownik zostanie poproszony o zmianę hasła przy pierwszym logowaniu.",
