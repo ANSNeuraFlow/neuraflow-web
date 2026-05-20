@@ -171,9 +171,14 @@
       }
     },
     "eegIngress": {
+      "connectLocalBridge": "Połącz z lokalnym bridge",
+      "localBridgeConnecting": "Łączenie…",
       "localBridgeTitle": "Lokalny Bridge",
+      "localWsConnected": "Lokalny bridge WebSocket połączony",
+      "localWsDisconnected": "Brak połączenia z lokalnym bridge — uruchom python main.py",
       "localWsRequired": "Podłącz lokalny bridge WebSocket przed startem sesji.",
       "neuraflowBridgeTitle": "NeuraFlow Bridge",
+      "reconnectLocalBridge": "Połącz ponownie",
       "streamingMethodLabel": "Sposób streamowania"
     },
     "models": {
