@@ -27,7 +27,22 @@ const ingressMode = ref<EegIngressMode>('neuraflow-bridge');
 
 const bridgeConnection = useBridgeConnection();
 const bridgeStreamErrorMessage = computed(() => bridgeConnection.error.value);
-const { isConnected: localWsConnected } = useBciController();
+const {
+  isConnected: localWsConnected,
+  connectionError: localWsError,
+  reconnect: reconnectLocalWs,
+} = useBciController();
+
+const isLocalWsConnecting = ref(false);
+
+const connectLocalBridge = () => {
+  if (localWsConnected.value) return;
+  isLocalWsConnecting.value = true;
+  reconnectLocalWs();
+  setTimeout(() => {
+    isLocalWsConnecting.value = false;
+  }, 3000);
+};
 
 const trialsPerDirection = computed(() => {
   const n = parseInt(trialsPerDirectionStr.value, 10);
@@ -79,6 +94,12 @@ watch(
     }
   },
 );
+
+watch(ingressMode, (mode) => {
+  if (mode === 'local-bridge' && !localWsConnected.value) {
+    connectLocalBridge();
+  }
+});
 
 const connectBridge = () => {
   void bridgeConnection.connect();
@@ -143,10 +164,20 @@ const submit = () => {
 
 const footerPrimary = computed(() => {
   if (ingressMode.value === 'local-bridge') {
+    if (!localWsConnected.value) {
+      return {
+        icon: isLocalWsConnecting.value ? 'svg-spinners:ring-resize' : 'material-symbols:link-rounded',
+        label: isLocalWsConnecting.value
+          ? t('machineLearning.eegIngress.localBridgeConnecting')
+          : t('machineLearning.eegIngress.connectLocalBridge'),
+        disabled: isLocalWsConnecting.value,
+        onClick: () => connectLocalBridge(),
+      };
+    }
     return {
       icon: 'material-symbols:play-arrow-rounded',
       label: t('machineLearning.bci.session.start'),
-      disabled: !localWsConnected.value,
+      disabled: false,
       onClick: () => submit(),
     };
   }
@@ -322,6 +353,36 @@ const footerPrimary = computed(() => {
               v-model="ingressMode"
               :bridge-error="bridgeStreamErrorMessage"
             />
+
+            <div
+              v-if="ingressMode === 'local-bridge'"
+              class="gap-sm border-on-surface/8 bg-on-surface/[0.03] p-sm flex items-center rounded-xl border"
+            >
+              <div
+                class="h-2 w-2 shrink-0 rounded-full transition-colors"
+                :class="localWsConnected ? 'bg-success' : isLocalWsConnecting ? 'bg-warning animate-pulse' : 'bg-error'"
+              />
+              <p class="text-body-x-sm text-on-surface-dim flex-1">
+                <template v-if="localWsConnected">
+                  {{ t('machineLearning.eegIngress.localWsConnected') }}
+                </template>
+                <template v-else-if="isLocalWsConnecting">
+                  {{ t('machineLearning.eegIngress.localBridgeConnecting') }}
+                </template>
+                <template v-else>
+                  {{ localWsError ?? t('machineLearning.eegIngress.localWsDisconnected') }}
+                </template>
+              </p>
+              <button
+                v-if="!localWsConnected"
+                type="button"
+                :disabled="isLocalWsConnecting"
+                class="text-body-x-sm text-accent hover:text-accent/80 font-medium transition-opacity disabled:opacity-50"
+                @click="connectLocalBridge"
+              >
+                {{ t('machineLearning.eegIngress.reconnectLocalBridge') }}
+              </button>
+            </div>
 
             <div class="gap-md border-on-surface/10 pt-x-lg flex flex-col items-stretch border-t">
               <p

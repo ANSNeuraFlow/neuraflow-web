@@ -33,8 +33,8 @@ export default defineNuxtPlugin(() => {
   let commandHoldTimer: ReturnType<typeof setTimeout> | null = null;
   let destroyed = false;
   let reconnectAttempt = 0;
-  const maxReconnectAttempts = 10;
-  const reconnectDelayMs = 3000;
+  const baseReconnectDelayMs = 3_000;
+  const maxReconnectDelayMs = 30_000;
 
   const clearCommandHold = () => {
     if (commandHoldTimer) {
@@ -60,9 +60,10 @@ export default defineNuxtPlugin(() => {
   };
 
   const scheduleReconnect = () => {
-    if (destroyed || reconnectAttempt >= maxReconnectAttempts) return;
+    if (destroyed) return;
+    const delay = Math.min(baseReconnectDelayMs * 2 ** reconnectAttempt, maxReconnectDelayMs);
     reconnectAttempt += 1;
-    reconnectTimer = setTimeout(connect, reconnectDelayMs);
+    reconnectTimer = setTimeout(connect, delay);
   };
 
   function connect() {
