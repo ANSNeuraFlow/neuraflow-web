@@ -1,6 +1,6 @@
 import { useWakeLock } from '@vueuse/core';
 import { useNuxtApp } from 'nuxt/app';
-import { computed, onBeforeUnmount, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
 import { useBridgeConnection } from '#layers/bridge-auth/app/composables/useBridgeConnection';
 import { useBridgeStreamService } from '#layers/bridge-auth/app/services/bridge-stream.service';
@@ -19,15 +19,21 @@ import {
 } from './eeg-ingress.utils';
 import { exactWait, generateSequence, playTone } from './eeg-protocol.utils';
 
+// ------------- Kalibracja motor imagery (paradygmat BCI + markery EEG) ---------
+// Używane przez BciCalibrationUI. Markery trafiają do neuraflow-bridge (REST)
+// albo local-bridge (WebSocket Python) — patrz eeg-ingress.utils.ts.
+
+// ------------- Timing faz protokołu (ms) --------------------------------------
 const BCI_TIMING = {
-  relaxation: 2000,
-  cue: 1250,
-  execution: 2750,
-  rest: 2000,
-  itiMin: 500,
-  itiMax: 1500,
+  relaxation: 2000, // krzyżyk — przygotowanie przed cue
+  cue: 1250, // strzałka + marker BCI (LEFT_HAND / …)
+  execution: 2750, // wyobrażenie ruchu (marker już wysłany)
+  rest: 2000, // odpoczynek + marker REST
+  itiMin: 500, // losowy odstęp między próbami (min)
+  itiMax: 1500, // losowy odstęp między próbami (max)
 } as const;
 
+// ------------- Kierunek UI → marker EEG (zgodne z train.py / backend.py) ------
 const BCI_MARKER_MAP: Record<string, string> = {
   LEFT: 'LEFT_HAND',
   RIGHT: 'RIGHT_HAND',
@@ -35,8 +41,10 @@ const BCI_MARKER_MAP: Record<string, string> = {
   DOWN: 'FEET',
 };
 
+// ------------- Tutorial bez nagrywania (4 próby L/R) ----------------------------
 const BCI_TUTORIAL_SEQUENCE: string[] = ['LEFT', 'RIGHT', 'LEFT', 'RIGHT'];
 
+// ------------- Typy stanu maszyny protokołu -----------------------------------
 export type BciProtocolState = 'idle' | 'relaxation' | 'cue' | 'execution' | 'rest' | 'iti';
 
 export interface BciRunConfig {
@@ -44,6 +52,7 @@ export interface BciRunConfig {
   trialsPerDirection: number;
 }
 
+// ------------- Composable: protokół kalibracji BCI ------------------------------
 export const useBciCalibration = () => {
   const bridge = useBridgeConnection();
   const nuxtApp = useNuxtApp();
@@ -54,6 +63,7 @@ export const useBciCalibration = () => {
 
   const { isSupported: wakeLockSupported, request: requestWakeLock, release: releaseWakeLock } = useWakeLock();
 
+  // ------------- Tryb ingress i kanał wysyłki markerów ----------------------
   const activeIngressMode = ref<EegIngressMode | null>(null);
   const markerSink = ref<((m: string) => Promise<void>) | null>(null);
 
@@ -61,6 +71,7 @@ export const useBciCalibration = () => {
     await markerSink.value?.(marker);
   };
 
+  // ------------- Stan UI protokołu (BciSessionRunner / BciCalibrationUI) ------
   const abortController = ref<AbortController | null>(null);
   const currentState = ref<BciProtocolState>('idle');
   const currentTrial = ref(0);
@@ -71,6 +82,9 @@ export const useBciCalibration = () => {
   const tutorialMode = ref(false);
   const containerRef = ref<HTMLElement | null>(null);
 
+  let expectFullscreenExit = false;
+
+  // ------------- Fullscreen + wake lock (ekran nie gaśnie w sesji) ------------
   const toggleFullscreen = async () => {
     if (!document.fullscreenElement && containerRef.value) {
       await containerRef.value.requestFullscreen().catch((err: unknown) => {
@@ -88,10 +102,33 @@ export const useBciCalibration = () => {
 
   const exitFullscreen = () => {
     void releaseWakeLock();
-    if (document.fullscreenElement) document.exitFullscreen();
+    if (document.fullscreenElement) {
+      expectFullscreenExit = true;
+      void document.exitFullscreen();
+    }
     isFullscreen.value = false;
   };
 
+  const handleFullscreenChange = () => {
+    const nowFullscreen = !!document.fullscreenElement;
+    isFullscreen.value = nowFullscreen;
+
+    if (expectFullscreenExit) {
+      expectFullscreenExit = false;
+      return;
+    }
+
+    if (
+      !nowFullscreen &&
+      abortController.value &&
+      !abortController.value.signal.aborted &&
+      currentState.value !== 'idle'
+    ) {
+      abortProtocol();
+    }
+  };
+
+  // ------------- Sesja z nagrywaniem EEG (neuraflow-bridge lub local-bridge) --
   const runProtocol = async (
     sessionName = 'Sesja EEG',
     classes: string[],
@@ -207,6 +244,7 @@ export const useBciCalibration = () => {
     }
   };
 
+  // ------------- Tutorial — ten sam timing UI, bez markerów i bridge --------------
   const runTutorial = async () => {
     tutorialMode.value = true;
     totalTrialsRef.value = BCI_TUTORIAL_SEQUENCE.length;
@@ -264,6 +302,7 @@ export const useBciCalibration = () => {
     }
   };
 
+  // ------------- Przerwanie sesji (Abort / unmount komponentu) ------------------
   const abortProtocol = () => {
     abortController.value?.abort();
     exitFullscreen();
@@ -277,10 +316,16 @@ export const useBciCalibration = () => {
     currentState.value = 'idle';
   };
 
+  onMounted(() => {
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+  });
+
   onBeforeUnmount(() => {
+    document.removeEventListener('fullscreenchange', handleFullscreenChange);
     abortProtocol();
   });
 
+  // ------------- Flagi widoku dla BciSessionRunner ------------------------------
   const showCross = computed(() => ['relaxation', 'cue', 'execution'].includes(currentState.value));
   const showCue = computed(() => currentState.value === 'cue');
   const showBlank = computed(() => ['rest', 'iti'].includes(currentState.value));

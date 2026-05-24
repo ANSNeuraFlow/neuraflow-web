@@ -124,7 +124,6 @@ export default defineNuxtPlugin(() => {
     connect();
   };
 
-  /** Send JSON to the local BCI bridge WebSocket (markers, session lifecycle). */
   const sendJson = (payload: Record<string, unknown>): boolean => {
     if (!ws || ws.readyState !== WebSocket.OPEN) {
       return false;

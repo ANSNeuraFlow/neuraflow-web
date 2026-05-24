@@ -1,6 +1,6 @@
 import { useWakeLock } from '@vueuse/core';
 import { useNuxtApp } from 'nuxt/app';
-import { computed, onBeforeUnmount, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
 import { useBridgeConnection } from '#layers/bridge-auth/app/composables/useBridgeConnection';
 import { useBridgeStreamService } from '#layers/bridge-auth/app/services/bridge-stream.service';
@@ -71,6 +71,7 @@ export const useAttentionCalibration = () => {
   const sessionDurationMs = ref(0);
 
   let breakResolve: (() => void) | null = null;
+  let expectFullscreenExit = false;
 
   const toggleFullscreen = async () => {
     if (!document.fullscreenElement && containerRef.value) {
@@ -89,8 +90,31 @@ export const useAttentionCalibration = () => {
 
   const exitFullscreen = () => {
     void releaseWakeLock();
-    if (document.fullscreenElement) document.exitFullscreen();
+    if (document.fullscreenElement) {
+      expectFullscreenExit = true;
+      void document.exitFullscreen();
+    }
     isFullscreen.value = false;
+  };
+
+  const handleFullscreenChange = () => {
+    const nowFullscreen = !!document.fullscreenElement;
+    isFullscreen.value = nowFullscreen;
+
+    if (expectFullscreenExit) {
+      expectFullscreenExit = false;
+      return;
+    }
+
+    if (
+      !nowFullscreen &&
+      abortController.value &&
+      !abortController.value.signal.aborted &&
+      currentState.value !== 'idle' &&
+      currentState.value !== 'break'
+    ) {
+      abortProtocol();
+    }
   };
 
   const continueAfterBreak = () => {
@@ -311,7 +335,12 @@ export const useAttentionCalibration = () => {
     sessionDurationMs.value = 0;
   };
 
+  onMounted(() => {
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+  });
+
   onBeforeUnmount(() => {
+    document.removeEventListener('fullscreenchange', handleFullscreenChange);
     abortProtocol();
   });
 
