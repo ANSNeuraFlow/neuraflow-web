@@ -8,6 +8,8 @@ import type {
 export type { DroneCommand, DroneCommandEntry, DroneDirection, DroneTelemetryData };
 
 export function useDroneState() {
+  const { $mavlinkBridge } = useNuxtApp();
+
   const isArmed = ref(false);
   const isFlying = ref(false);
 
@@ -28,12 +30,17 @@ export function useDroneState() {
 
   const commandLog = ref<DroneCommandEntry[]>([]);
 
-  const logCommand = (command: DroneCommand) => {
-    commandLog.value.unshift({
+  const logCommand = (command: DroneCommand, ack?: { success: boolean; result: string }) => {
+    const entry: DroneCommandEntry = {
       id: crypto.randomUUID(),
       command,
       timestamp: new Date(),
-    });
+    };
+    if (ack) {
+      entry.ackSuccess = ack.success;
+      entry.ackResult = ack.result;
+    }
+    commandLog.value.unshift(entry);
     if (commandLog.value.length > 100) {
       commandLog.value.length = 100;
     }
@@ -43,34 +50,67 @@ export function useDroneState() {
     commandLog.value = [];
   };
 
+  const send = (command: DroneCommand, params?: Record<string, unknown>) => {
+    logCommand(command);
+    $mavlinkBridge.sendCommand(command, params);
+  };
+
   const arm = () => {
     if (isArmed.value) return;
-    isArmed.value = true;
-    logCommand('arm');
+    send('arm');
   };
 
   const disarm = () => {
-    isArmed.value = false;
-    isFlying.value = false;
-    logCommand('disarm');
+    send('disarm');
   };
 
   const takeoff = () => {
     if (!isArmed.value || isFlying.value) return;
-    isFlying.value = true;
-    logCommand('takeoff');
+    send('takeoff', { altitude: 5 });
   };
 
   const land = () => {
     if (!isFlying.value) return;
-    isFlying.value = false;
-    logCommand('land');
+    send('land');
   };
 
   const move = (direction: DroneDirection) => {
     if (!isArmed.value) return;
-    logCommand(`move_${direction}` as DroneCommand);
+    send(`move_${direction}` as DroneCommand);
   };
+
+  let unsubTelemetry: (() => void) | undefined;
+  let unsubStatus: (() => void) | undefined;
+  let unsubAck: (() => void) | undefined;
+
+  onMounted(() => {
+    unsubTelemetry = $mavlinkBridge.onTelemetry((msg) => {
+      Object.assign(telemetry, msg.data);
+    });
+
+    unsubStatus = $mavlinkBridge.onStatus((msg) => {
+      telemetry.connected = msg.connected;
+      isArmed.value = msg.armed;
+      isFlying.value = Boolean(msg.airborne);
+    });
+
+    unsubAck = $mavlinkBridge.onCommandAck((msg) => {
+      const cmd = msg.command as DroneCommand;
+      const head = commandLog.value[0];
+      if (head && head.command === cmd) {
+        head.ackSuccess = msg.success;
+        head.ackResult = msg.result;
+      } else {
+        logCommand(cmd, { success: msg.success, result: msg.result });
+      }
+    });
+  });
+
+  onBeforeUnmount(() => {
+    unsubTelemetry?.();
+    unsubStatus?.();
+    unsubAck?.();
+  });
 
   return {
     isArmed,

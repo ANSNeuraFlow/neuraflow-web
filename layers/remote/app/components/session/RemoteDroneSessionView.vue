@@ -12,6 +12,7 @@ const view = ref<'config' | 'control'>('config');
 const mainBridgeReady = ref(false);
 
 const localBridgeReady = ref(false);
+const videoBridgeReady = ref(false);
 
 watch(controlMode, (mode, prev) => {
   if (prev === 'bci' && mode === 'manual' && view.value === 'config') {
@@ -30,8 +31,11 @@ watch(bciSource, (src, prev) => {
 
 const showMainCytonBridgePanel = computed(() => controlMode.value === 'bci' && bciSource.value === 'app');
 
+const showVideoBridgePanel = computed(() => controlMode.value === 'manual');
+
 const canStartSession = computed(() => {
   if (showMainCytonBridgePanel.value && !mainBridgeReady.value) return false;
+  if (showVideoBridgePanel.value && !videoBridgeReady.value) return false;
   if (controlMode.value === 'manual') return true;
   if (bciSource.value === 'local-bridge') return localBridgeReady.value;
   return session.canStartControl.value;
@@ -40,6 +44,9 @@ const canStartSession = computed(() => {
 const startSessionHint = computed(() => {
   if (showMainCytonBridgePanel.value && !mainBridgeReady.value) {
     return t('remote.control.mainBridgeStartHint');
+  }
+  if (showVideoBridgePanel.value && !videoBridgeReady.value) {
+    return t('remote.videoBridgePanel.startHint');
   }
   if (controlMode.value === 'manual') return t('remote.droneManual.startHint');
   if (bciSource.value === 'local-bridge') {
@@ -243,6 +250,11 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
             v-if="showMainCytonBridgePanel"
             class="h-full min-h-0 min-w-0"
             @update:ready="mainBridgeReady = $event"
+          />
+          <DroneVideoBridgeConfigPanel
+            v-else-if="showVideoBridgePanel"
+            class="h-full min-h-0 min-w-0"
+            @update:ready="videoBridgeReady = $event"
           />
           <aside
             v-else

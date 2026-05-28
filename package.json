@@ -43,6 +43,7 @@
     "echarts": "^6.0.0",
     "http-status-codes": "^2.3.0",
     "leaflet": "^1.9.4",
+    "mediasoup-client": "^3.9.5",
     "nuxt": "^4.3.1",
     "nuxt-security": "2.4.0",
     "nuxt-ssr-api-logger": "2.0.2",

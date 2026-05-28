@@ -79,7 +79,9 @@
       "camera": {
         "label": "Kamera",
         "noSignal": "Brak sygnału z kamery",
-        "noSignalHint": "Podłącz kamerę, aby wyświetlić podgląd na żywo."
+        "noSignalHint": "Uruchom RTMP w DJI Fly na lokalny adres MAVLink bridge, aby włączyć podgląd.",
+        "reconnect": "Połącz ponownie",
+        "waitingForStream": "Oczekiwanie na stream z DJI Fly…"
       },
       "controls": {
         "arm": "Uzbrój",
@@ -208,6 +210,21 @@
     "theme": {
       "switchToDark": "Tryb ciemny",
       "switchToLight": "Tryb jasny"
+    },
+    "videoBridgePanel": {
+      "connect": "Połącz video bridge",
+      "connecting": "Oczekiwanie na autoryzację…",
+      "djiHint": "DJI Fly wysyła obraz na komputer; MAVLink bridge przekazuje wideo do NeuraFlow.",
+      "errorGeneric": "Połączenie video bridge nie powiodło się.",
+      "notReady": "Video bridge niepołączony",
+      "ready": "Video bridge połączony",
+      "startHint": "Połącz MAVLink bridge i autoryzuj streaming wideo.",
+      "stepConnect": "Kliknij Połącz i zaloguj się do NeuraFlow w przeglądarce.",
+      "stepDjiFly": "W DJI Fly ustaw RTMP na adres z aplikacji MAVLink Bridge.",
+      "stepMavlink": "Uruchom aplikację MAVLink Bridge na tym komputerze.",
+      "subtitle": "Podłącz podgląd z kamery DJI O4 do panelu sterowania.",
+      "timeoutHint": "Przekroczono czas. Dokończ logowanie i upewnij się, że MAVLink Bridge działa.",
+      "title": "Wideo drona (DJI Fly)"
     }
   }
 }

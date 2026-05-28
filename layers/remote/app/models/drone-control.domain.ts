@@ -14,6 +14,8 @@ export interface DroneCommandEntry {
   id: string;
   command: DroneCommand;
   timestamp: Date;
+  ackSuccess?: boolean;
+  ackResult?: string;
 }
 
 export interface DroneTelemetryData {
@@ -30,3 +32,22 @@ export interface DroneTelemetryData {
   distanceFromHome: number | null;
   connected: boolean;
 }
+
+export interface DroneBridgeStatus {
+  connected: boolean;
+  armed: boolean;
+  flightMode: string;
+  airborne?: boolean;
+}
+
+export interface DroneCommandAck {
+  command: DroneCommand | string;
+  success: boolean;
+  result: string;
+}
+
+export interface TakeoffParams {
+  altitude?: number;
+}
+
+export type DroneCommandParams = TakeoffParams | Record<string, unknown>;
