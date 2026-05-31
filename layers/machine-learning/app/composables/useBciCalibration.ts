@@ -11,11 +11,14 @@ import type { EegIngressMode } from '../models/eeg-ingress.domain';
 import {
   assertBridgeIngressReady,
   assertLocalWsReady,
+  clearBoundSession,
   createBoundSession,
   makeLocalMarkerSender,
   makeNeuraflowMarkerSender,
   resolveBciEegProtocolId,
   sendLocalLifecycleEvent,
+  usesNeuraflowBackendIngress,
+  usesNeuraflowBridgeStreaming,
 } from './eeg-ingress.utils';
 import { exactWait, generateSequence, playTone } from './eeg-protocol.utils';
 
@@ -138,9 +141,9 @@ export const useBciCalibration = () => {
     activeIngressMode.value = ingressMode;
 
     try {
-      if (ingressMode === 'neuraflow-bridge') {
+      if (usesNeuraflowBridgeStreaming(ingressMode)) {
         await assertBridgeIngressReady(bridge);
-      } else {
+      } else if (ingressMode === 'local-bridge') {
         assertLocalWsReady(localWsConnected);
       }
     } catch (e) {
@@ -160,10 +163,12 @@ export const useBciCalibration = () => {
       return;
     }
 
-    markerSink.value = ingressMode === 'neuraflow-bridge' ? sendNeuraflowBciMarker : makeLocalMarkerSender(nuxtApp);
+    markerSink.value = usesNeuraflowBackendIngress(ingressMode)
+      ? sendNeuraflowBciMarker
+      : makeLocalMarkerSender(nuxtApp);
 
     const notifyLifecycle = async (kind: 'SESSION_START' | 'SESSION_END' | 'SESSION_ABORTED') => {
-      if (ingressMode === 'neuraflow-bridge') {
+      if (usesNeuraflowBackendIngress(ingressMode)) {
         await emitMarker(kind);
       } else {
         sendLocalLifecycleEvent(nuxtApp, kind, sessionId, '');
@@ -194,6 +199,7 @@ export const useBciCalibration = () => {
         activeCue.value = sequence[i] ?? '';
 
         currentState.value = 'relaxation';
+        await emitMarker('IDLE');
         await exactWait(BCI_TIMING.relaxation, signal);
 
         currentState.value = 'cue';
@@ -209,6 +215,7 @@ export const useBciCalibration = () => {
         await exactWait(BCI_TIMING.rest, signal);
 
         currentState.value = 'iti';
+        await emitMarker('IDLE');
         await exactWait(BCI_TIMING.itiMin + Math.random() * (BCI_TIMING.itiMax - BCI_TIMING.itiMin), signal);
       }
 
@@ -228,9 +235,10 @@ export const useBciCalibration = () => {
       currentState.value = 'idle';
       protocolEndReason.value = 'abort';
     } finally {
-      if (ingressMode === 'neuraflow-bridge') {
+      if (usesNeuraflowBridgeStreaming(ingressMode)) {
         await bridge.stopStreaming({ waitForDeviceStopped: false }).catch(() => {});
       }
+      await clearBoundSession(bridge, ingressMode);
       markerSink.value = null;
       activeIngressMode.value = null;
       exitFullscreen();
@@ -307,8 +315,12 @@ export const useBciCalibration = () => {
     abortController.value?.abort();
     exitFullscreen();
     void emitMarker('ABORTED');
-    if (activeIngressMode.value === 'neuraflow-bridge') {
+    const mode = activeIngressMode.value;
+    if (mode && usesNeuraflowBridgeStreaming(mode)) {
       void bridge.stopStreaming({ waitForDeviceStopped: false }).catch(() => {});
+    }
+    if (mode) {
+      void clearBoundSession(bridge, mode).catch(() => {});
     }
   };
 

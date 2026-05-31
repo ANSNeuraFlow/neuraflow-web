@@ -15,9 +15,18 @@ export interface BridgeHandle {
   isStreaming: Ref<boolean>;
   streamConnected: Ref<boolean>;
   setSession: (id: string) => Promise<void>;
+  clearSession: () => Promise<void>;
 }
 
 export type MarkerSender = (marker: string) => Promise<void>;
+
+export function usesNeuraflowBackendIngress(mode: EegIngressMode): boolean {
+  return mode === 'neuraflow-bridge';
+}
+
+export function usesNeuraflowBridgeStreaming(mode: EegIngressMode): boolean {
+  return mode === 'neuraflow-bridge';
+}
 
 // ------------- Fabryki senderów markerów (Kafka vs lokalny bridge) ------------
 export function makeNeuraflowMarkerSender(sendMarker: (m: string) => Promise<unknown>, label: string): MarkerSender {
@@ -82,4 +91,10 @@ export async function createBoundSession(
     await bridge.setSession(session.id);
   }
   return session.id;
+}
+
+export async function clearBoundSession(bridge: BridgeHandle, mode: EegIngressMode): Promise<void> {
+  if (usesNeuraflowBackendIngress(mode)) {
+    await bridge.clearSession().catch(() => {});
+  }
 }

@@ -16,7 +16,7 @@ export interface BridgeSessionResponse {
 }
 
 export const useBridgeStreamService = () => {
-  const { get, post } = useApi();
+  const { get, post, delete: deleteFn } = useApi();
 
   const getStatus = () => get<BridgeStatus>('/bridge/control/status');
 
@@ -29,5 +29,7 @@ export const useBridgeStreamService = () => {
   const setSession = (sessionId: string) =>
     post<BridgeSessionResponse>('/bridge/control/session', { body: { sessionId } });
 
-  return { getStatus, sendCommand, sendMarker, setSession };
+  const clearSession = () => deleteFn<BridgeSessionResponse>('/bridge/control/session');
+
+  return { getStatus, sendCommand, sendMarker, setSession, clearSession };
 };

@@ -65,7 +65,7 @@ const submit = () => {
       formGateError.value = t('machineLearning.eegIngress.localWsRequired');
       return;
     }
-  } else {
+  } else if (ingressMode.value === 'neuraflow-bridge') {
     if (!bridgeConnection.isStreaming.value) {
       formGateError.value = t('machineLearning.bci.session.streamingRequired');
       return;
