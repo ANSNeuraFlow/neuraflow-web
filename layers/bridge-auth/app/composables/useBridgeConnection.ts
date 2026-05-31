@@ -128,6 +128,16 @@ export const useBridgeConnection = () => {
     }
   };
 
+  const clearSession = async () => {
+    error.value = null;
+    try {
+      await service.clearSession();
+    } catch (e) {
+      error.value = e instanceof Error ? e.message : 'Failed to clear bridge session';
+      throw e;
+    }
+  };
+
   onMounted(() => {
     if (import.meta.client && !initialFetchDone) {
       initialFetchDone = true;
@@ -146,6 +156,7 @@ export const useBridgeConnection = () => {
     startStreaming,
     stopStreaming,
     setSession,
+    clearSession,
     fetchStatus,
   };
 };

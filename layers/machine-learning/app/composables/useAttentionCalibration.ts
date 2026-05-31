@@ -11,10 +11,13 @@ import type { EegIngressMode } from '../models/eeg-ingress.domain';
 import {
   assertBridgeIngressReady,
   assertLocalWsReady,
+  clearBoundSession,
   createBoundSession,
   makeLocalMarkerSender,
   makeNeuraflowMarkerSender,
   sendLocalLifecycleEvent,
+  usesNeuraflowBackendIngress,
+  usesNeuraflowBridgeStreaming,
 } from './eeg-ingress.utils';
 import { exactWait, generateCptDigits, generateSequence, playTone } from './eeg-protocol.utils';
 
@@ -179,9 +182,9 @@ export const useAttentionCalibration = () => {
     activeIngressMode.value = ingressMode;
 
     try {
-      if (ingressMode === 'neuraflow-bridge') {
+      if (usesNeuraflowBridgeStreaming(ingressMode)) {
         await assertBridgeIngressReady(bridge);
-      } else {
+      } else if (ingressMode === 'local-bridge') {
         assertLocalWsReady(localWsConnected);
       }
     } catch (e) {
@@ -201,8 +204,9 @@ export const useAttentionCalibration = () => {
       return;
     }
 
-    markerSink.value =
-      ingressMode === 'neuraflow-bridge' ? sendNeuraflowAttentionMarker : makeLocalMarkerSender(nuxtApp);
+    markerSink.value = usesNeuraflowBackendIngress(ingressMode)
+      ? sendNeuraflowAttentionMarker
+      : makeLocalMarkerSender(nuxtApp);
 
     await toggleFullscreen();
 
@@ -214,7 +218,7 @@ export const useAttentionCalibration = () => {
     collectedTrials.value = 0;
     const sessionStart = Date.now();
 
-    if (ingressMode === 'neuraflow-bridge') {
+    if (usesNeuraflowBackendIngress(ingressMode)) {
       await emitMarker('SESSION_START');
     } else {
       sendLocalLifecycleEvent(nuxtApp, 'SESSION_START', sessionId, '');
@@ -263,9 +267,10 @@ export const useAttentionCalibration = () => {
       currentState.value = 'idle';
       protocolEndReason.value = 'abort';
     } finally {
-      if (ingressMode === 'neuraflow-bridge') {
+      if (usesNeuraflowBridgeStreaming(ingressMode)) {
         await bridge.stopStreaming({ waitForDeviceStopped: false }).catch(() => {});
       }
+      await clearBoundSession(bridge, ingressMode);
       markerSink.value = null;
       activeIngressMode.value = null;
       exitFullscreen();
@@ -322,8 +327,12 @@ export const useAttentionCalibration = () => {
     breakResolve = null;
     exitFullscreen();
     void emitMarker('ABORTED');
-    if (activeIngressMode.value === 'neuraflow-bridge') {
+    const mode = activeIngressMode.value;
+    if (mode && usesNeuraflowBridgeStreaming(mode)) {
       void bridge.stopStreaming({ waitForDeviceStopped: false }).catch(() => {});
+    }
+    if (mode) {
+      void clearBoundSession(bridge, mode).catch(() => {});
     }
   };
 

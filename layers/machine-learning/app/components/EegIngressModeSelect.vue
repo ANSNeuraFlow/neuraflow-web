@@ -32,7 +32,7 @@ const options: { value: EegIngressMode; emoji: string; titleKey: string }[] = [
       {{ t('machineLearning.eegIngress.streamingMethodLabel') }}
       <span class="text-error ml-xx-sm">*</span>
     </p>
-    <div class="gap-sm grid grid-cols-2">
+    <div class="gap-sm grid grid-cols-1 sm:grid-cols-2">
       <button
         v-for="opt in options"
         :key="opt.value"
