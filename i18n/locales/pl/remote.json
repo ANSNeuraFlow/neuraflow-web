@@ -205,6 +205,10 @@
     "session": {
       "wip": "XXXX"
     },
+    "ssvep": {
+      "modeManual": "Ręczne",
+      "modeSsvep": "BCI SSVEP"
+    },
     "theme": {
       "switchToDark": "Tryb ciemny",
       "switchToLight": "Tryb jasny"
