@@ -37,6 +37,7 @@
     "protocolKind": {
       "focus": "Focus",
       "movement": "Movement",
+      "ssvep": "SSVEP",
       "unknown": "—"
     },
     "protocols": {
@@ -46,7 +47,9 @@
       "move_forward": "move forward",
       "move_left": "move left",
       "move_right": "move right",
-      "move_up": "move up"
+      "move_up": "move up",
+      "ssvep_calibration": "SSVEP calibration",
+      "ssvep_control": "SSVEP control"
     },
     "status": {
       "ACTIVE": "Active",

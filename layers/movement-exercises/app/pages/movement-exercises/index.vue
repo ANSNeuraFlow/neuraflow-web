@@ -84,6 +84,37 @@ definePageMeta({
       </NuxtLink>
 
       <NuxtLink
+        :to="localePath('/movement-exercises/ssvep-focus')"
+        class="glass-card p-md sm:p-x-lg hover:border-on-surface-inverted/40 group border border-transparent transition-colors"
+      >
+        <div class="gap-md flex items-start justify-between">
+          <div class="min-w-0 flex-1">
+            <p class="text-body-x-sm mb-xx-sm text-on-surface font-semibold uppercase tracking-wider">
+              {{ t('ssvep.game.kicker') }}
+            </p>
+            <h2 class="text-heading-md text-on-surface font-display font-bold">
+              {{ t('ssvep.game.hubTitle') }}
+            </h2>
+            <p class="text-body-sm text-on-surface/90 mt-x-sm font-medium leading-relaxed">
+              {{ t('ssvep.game.hubLead') }}
+            </p>
+            <p class="text-body-sm text-on-surface-dim mt-x-sm max-w-[48rem] leading-relaxed">
+              {{ t('ssvep.game.hubDescription') }}
+            </p>
+          </div>
+          <Icon
+            name="lucide:rocket"
+            size="2.4rem"
+            class="text-on-surface shrink-0 transition-transform group-hover:scale-110"
+          />
+        </div>
+        <p class="text-body-sm mt-x-lg text-on-surface font-semibold">
+          {{ t('movementExercises.hub.open') }}
+          <span aria-hidden="true"> →</span>
+        </p>
+      </NuxtLink>
+
+      <NuxtLink
         :to="localePath('/movement-exercises/forward-gate')"
         class="glass-card p-md sm:p-x-lg hover:border-on-surface-inverted/40 group border border-transparent transition-colors"
       >

@@ -1,0 +1,62 @@
+{
+  "ssvep": {
+    "calibration": {
+      "abort": "Abort",
+      "done": "Calibration complete. Templates saved on the local bridge.",
+      "intro": "Follow the highlighted target. Keep your gaze steady on the cued flicker during each trial.",
+      "pageSubtitle": "Optional TRCA templates — skip if FBCCA works well enough.",
+      "pageTitle": "SSVEP calibration",
+      "start": "Start calibration",
+      "trial": "Trial {current} / {total}"
+    },
+    "detection": {
+      "activeCommand": "Active: {command}",
+      "confidence": "{command} ({pct}%)",
+      "scoresTitle": "Frequency scores"
+    },
+    "game": {
+      "hubDescription": "Collect glowing targets using 9/11/13/15 Hz SSVEP control.",
+      "hubLead": "Steer with your gaze.",
+      "hubTitle": "Neural Navigator",
+      "kicker": "SSVEP",
+      "menu": "Back to menu",
+      "over": "Game over",
+      "pageTitle": "Neural Navigator",
+      "quit": "Quit",
+      "score": "Score",
+      "start": "Start game",
+      "subtitle": "Focus on a flickering edge to move the orb. Collect targets for points.",
+      "title": "Neural Navigator"
+    },
+    "landing": {
+      "calibrationDescription": "Short TRCA session to improve detection accuracy for your setup.",
+      "calibrationTitle": "Optional calibration",
+      "gameDescription": "Collect targets with SSVEP directional control.",
+      "gameTitle": "Neural Navigator",
+      "pageTitle": "SSVEP BCI",
+      "subtitle": "Control NeuraFlow with steady-state visual evoked potentials. Four flickering targets, real-time decoding via the local bridge.",
+      "testDescription": "Run stimuli and see real-time frequency scores without calibration.",
+      "testTitle": "Live test",
+      "title": "SSVEP Brain-Computer Interface"
+    },
+    "refreshRate": {
+      "autoDetect": "Auto-detect",
+      "description": "Select your monitor's refresh rate so flicker timing stays accurate. Frequencies 9, 11, 13, and 15 Hz are used by default.",
+      "title": "Display refresh rate"
+    },
+    "session": {
+      "connected": "Bridge connected",
+      "disconnected": "Bridge offline",
+      "panelTitle": "SSVEP session",
+      "startDetection": "Start detection",
+      "stopDetection": "Stop detection"
+    },
+    "stimuli": {
+      "focusHint": "Focus on one flickering target"
+    },
+    "test": {
+      "pageTitle": "SSVEP test",
+      "showTimingDebug": "Show timing debug (measured FPS)"
+    }
+  }
+}

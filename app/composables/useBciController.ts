@@ -22,12 +22,26 @@ export const useBciController = () => {
     if (off) onUnmounted(off);
   }
 
+  /** SSVEP / 4-direction control: UP, DOWN, LEFT, RIGHT */
+  const SSVEP_DIRECTION_ACTIONS = {
+    up: 'UP_ACTION',
+    down: 'DOWN_ACTION',
+    left: 'LEFT_HAND',
+    right: 'RIGHT_HAND',
+  } as const satisfies Record<string, BciAction>;
+
+  function onDirection(direction: keyof typeof SSVEP_DIRECTION_ACTIONS, callback: BciCommandHandler) {
+    onCommand(SSVEP_DIRECTION_ACTIONS[direction], callback);
+  }
+
   return {
     currentCommand,
     currentConfidence,
     isConnected,
     connectionError,
     onCommand,
+    onDirection,
+    SSVEP_DIRECTION_ACTIONS,
     reconnect: () => {
       if (import.meta.client) nuxtApp.$bciBridge?.reconnect();
     },

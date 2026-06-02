@@ -37,6 +37,7 @@
     "protocolKind": {
       "focus": "Skupienie",
       "movement": "Ruch",
+      "ssvep": "SSVEP",
       "unknown": "—"
     },
     "protocols": {
@@ -46,7 +47,9 @@
       "move_forward": "Ruch do przodu",
       "move_left": "Ruch w lewo",
       "move_right": "Ruch w prawo",
-      "move_up": "Ruch w górę"
+      "move_up": "Ruch w górę",
+      "ssvep_calibration": "Kalibracja SSVEP",
+      "ssvep_control": "Sterowanie SSVEP"
     },
     "status": {
       "ACTIVE": "Aktywna",

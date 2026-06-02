@@ -83,6 +83,7 @@ export default defineNuxtConfig({
     './layers/focus-exercises',
     './layers/mini-games',
     './layers/bridge-auth',
+    './layers/ssvep',
   ],
 
   piniaPluginPersistedstate: {

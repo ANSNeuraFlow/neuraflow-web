@@ -4,14 +4,25 @@ import {
   type BciAction,
   type BciCommandPayload,
   parseBciMessage,
+  parseSsvepScoresMessage,
+  SSVEP_STATE_KEYS,
+  type SsvepScoresPayload,
 } from '../models/bci.domain';
 
 type PayloadListener = (payload: BciCommandPayload) => void;
+type ScoresListener = (payload: SsvepScoresPayload) => void;
 
 const payloadListeners = new Set<PayloadListener>();
+const scoresListeners = new Set<ScoresListener>();
 
 function notifyPayloadListeners(payload: BciCommandPayload) {
   for (const fn of payloadListeners) {
+    fn(payload);
+  }
+}
+
+function notifyScoresListeners(payload: SsvepScoresPayload) {
+  for (const fn of scoresListeners) {
     fn(payload);
   }
 }
@@ -27,6 +38,7 @@ export default defineNuxtPlugin(() => {
   const currentConfidence = useState<number>(BCI_STATE_KEYS.confidence, () => 0);
   const isConnected = useState<boolean>(BCI_STATE_KEYS.connected, () => false);
   const connectionError = useState<string | null>(BCI_STATE_KEYS.error, () => null);
+  const ssvepScores = useState<Record<string, number>>(SSVEP_STATE_KEYS.scores, () => ({}));
 
   let ws: WebSocket | null = null;
   let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
@@ -89,7 +101,15 @@ export default defineNuxtPlugin(() => {
 
     ws.onmessage = (event: MessageEvent<string>) => {
       const payload = parseBciMessage(event.data);
-      if (payload) applyPayload(payload);
+      if (payload) {
+        applyPayload(payload);
+        return;
+      }
+      const scores = parseSsvepScoresMessage(event.data);
+      if (scores) {
+        ssvepScores.value = scores.scores;
+        notifyScoresListeners(scores);
+      }
     };
 
     ws.onclose = () => {
@@ -149,12 +169,19 @@ export default defineNuxtPlugin(() => {
     return () => payloadListeners.delete(fn);
   };
 
+  const subscribeScores = (fn: ScoresListener): (() => void) => {
+    scoresListeners.add(fn);
+    return () => scoresListeners.delete(fn);
+  };
+
   return {
     provide: {
       bciBridge: {
         subscribePayload,
+        subscribeScores,
         reconnect,
         sendJson,
+        ssvepScores,
       },
     },
   };

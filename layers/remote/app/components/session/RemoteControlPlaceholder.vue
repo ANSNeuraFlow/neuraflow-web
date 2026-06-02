@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { loadStoredRefreshRate } from '#layers/ssvep/app/utils/refresh-rate.utils';
+
 defineProps<{
   vehicleType: 'drone' | 'car';
 }>();
@@ -6,6 +8,10 @@ defineProps<{
 const emit = defineEmits<{
   endSession: [];
 }>();
+
+const { t } = useI18n();
+const bciMode = ref<'manual' | 'ssvep'>('manual');
+const refreshRate = ref(loadStoredRefreshRate() ?? 60);
 </script>
 
 <template>
@@ -51,7 +57,40 @@ const emit = defineEmits<{
       </AppButton>
     </div>
 
-    <div class="glass-card p-xx-lg flex min-h-[44rem] flex-col items-center justify-center text-center">
+    <div class="glass-card gap-sm p-md flex flex-wrap">
+      <AppButton
+        :variant="bciMode === 'manual' ? 'inverse' : 'secondary'"
+        size="sm"
+        @click="bciMode = 'manual'"
+      >
+        {{ t('remote.ssvep.modeManual') }}
+      </AppButton>
+      <AppButton
+        :variant="bciMode === 'ssvep' ? 'inverse' : 'secondary'"
+        size="sm"
+        @click="bciMode = 'ssvep'"
+      >
+        {{ t('remote.ssvep.modeSsvep') }}
+      </AppButton>
+    </div>
+
+    <div
+      v-if="bciMode === 'ssvep'"
+      class="gap-x-lg lg:grid lg:grid-cols-[1fr_22rem]"
+    >
+      <div class="glass-card relative min-h-[36rem] overflow-hidden">
+        <SsvepStimuli
+          :refresh-rate="refreshRate"
+          fullscreen
+        />
+      </div>
+      <SsvepRemoteControlPanel />
+    </div>
+
+    <div
+      v-else
+      class="glass-card p-xx-lg flex min-h-[44rem] flex-col items-center justify-center text-center"
+    >
       <h2 class="text-heading-sm text-on-surface mb-sm font-display font-bold">
         {{ $t('remote.control.placeholder.title') }}
       </h2>

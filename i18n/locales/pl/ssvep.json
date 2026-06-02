@@ -1,0 +1,62 @@
+{
+  "ssvep": {
+    "calibration": {
+      "abort": "Przerwij",
+      "done": "Kalibracja zakończona. Szablony zapisane w lokalnym mostku.",
+      "intro": "Patrz na podświetlony cel. Utrzymuj wzrok na migającym bodźcu podczas próby.",
+      "pageSubtitle": "Opcjonalne szablony TRCA — pomiń, jeśli FBCCA wystarcza.",
+      "pageTitle": "Kalibracja SSVEP",
+      "start": "Rozpocznij kalibrację",
+      "trial": "Próba {current} / {total}"
+    },
+    "detection": {
+      "activeCommand": "Aktywne: {command}",
+      "confidence": "{command} ({pct}%)",
+      "scoresTitle": "Wyniki częstotliwości"
+    },
+    "game": {
+      "hubDescription": "Zbieraj cele sterując SSVEP 9/11/13/15 Hz.",
+      "hubLead": "Steruj wzrokiem.",
+      "hubTitle": "Neural Navigator",
+      "kicker": "SSVEP",
+      "menu": "Menu",
+      "over": "Koniec gry",
+      "pageTitle": "Neural Navigator",
+      "quit": "Wyjdź",
+      "score": "Wynik",
+      "start": "Start gry",
+      "subtitle": "Patrz na krawędź ekranu, aby poruszać kulą. Zbieraj cele.",
+      "title": "Neural Navigator"
+    },
+    "landing": {
+      "calibrationDescription": "Krótka sesja TRCA poprawiająca dokładność dla Twojego układu.",
+      "calibrationTitle": "Kalibracja opcjonalna",
+      "gameDescription": "Zbieraj cele sterując kierunkami SSVEP.",
+      "gameTitle": "Neural Navigator",
+      "pageTitle": "BCI SSVEP",
+      "subtitle": "Steruj NeuraFlow za pomocą potencjałów wywołanych miganiem. Cztery cele, dekodowanie w czasie rzeczywistym przez lokalny mostek.",
+      "testDescription": "Uruchom bodźce i zobacz wyniki częstotliwości bez kalibracji.",
+      "testTitle": "Test na żywo",
+      "title": "Interfejs BCI SSVEP"
+    },
+    "refreshRate": {
+      "autoDetect": "Wykryj automatycznie",
+      "description": "Wybierz Hz monitora, aby miganie było dokładne. Domyślnie 9, 11, 13 i 15 Hz.",
+      "title": "Częstotliwość odświeżania monitora"
+    },
+    "session": {
+      "connected": "Mostek połączony",
+      "disconnected": "Mostek offline",
+      "panelTitle": "Sesja SSVEP",
+      "startDetection": "Start detekcji",
+      "stopDetection": "Stop detekcji"
+    },
+    "stimuli": {
+      "focusHint": "Skup wzrok na jednym migającym celu"
+    },
+    "test": {
+      "pageTitle": "Test SSVEP",
+      "showTimingDebug": "Pokaż debugowanie czasu (FPS)"
+    }
+  }
+}
