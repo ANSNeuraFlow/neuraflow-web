@@ -116,6 +116,11 @@ export default defineNuxtConfig({
   },
   security: {
     enabled: !IS_DEV,
+    headers: {
+      permissionsPolicy: {
+        fullscreen: ['self'],
+      },
+    },
   },
   i18n: {
     baseUrl: process.env.PUBLIC_SITE_BASE_URL,
