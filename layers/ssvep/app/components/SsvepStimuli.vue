@@ -81,7 +81,7 @@ defineExpose({ containerRef });
         "
       >
         <canvas
-          ref="canvasRefs.up"
+          :ref="canvasRefs.up"
           class="size-full rounded-md"
           aria-label="SSVEP up"
         />
@@ -97,7 +97,7 @@ defineExpose({ containerRef });
         "
       >
         <canvas
-          ref="canvasRefs.left"
+          :ref="canvasRefs.left"
           class="size-full rounded-md"
           aria-label="SSVEP left"
         />
@@ -121,7 +121,7 @@ defineExpose({ containerRef });
         "
       >
         <canvas
-          ref="canvasRefs.right"
+          :ref="canvasRefs.right"
           class="size-full rounded-md"
           aria-label="SSVEP right"
         />
@@ -137,7 +137,7 @@ defineExpose({ containerRef });
         "
       >
         <canvas
-          ref="canvasRefs.down"
+          :ref="canvasRefs.down"
           class="size-full rounded-md"
           aria-label="SSVEP down"
         />
