@@ -1,7 +1,47 @@
 {
   "remote": {
+    "carConfig": {
+      "controlTileSubtitle": "Pick a mode before you configure the sections below.",
+      "controlTileTitle": "Car control",
+      "introSubtitle": "Set up your control options and then the sections below. When you are ready, start the session at the bottom of the page.",
+      "manualPlaceholder": "Manual control — you can start a session right away without deploying a BCI model.",
+      "segmentLabel": "Control source",
+      "startHintManual": "You can start a session immediately — no BCI model deployment needed."
+    },
+    "carControl": {
+      "bciPanel": {
+        "connected": "Connected",
+        "detectedLeft": "Detected: LEFT",
+        "detectedRight": "Detected: RIGHT",
+        "disconnected": "No connection",
+        "enterFullscreen": "Enter fullscreen",
+        "exitFullscreen": "Exit fullscreen",
+        "noDetection": "no detection",
+        "title": "Mind control"
+      },
+      "dpad": {
+        "backward": "Backward",
+        "forward": "Forward",
+        "left": "Left",
+        "right": "Right",
+        "title": "Direction"
+      },
+      "modeBci": "BCI",
+      "modeManual": "Manual",
+      "timeline": {
+        "clear": "Clear",
+        "commands": {
+          "move_backward": "Move backward",
+          "move_forward": "Move forward",
+          "move_left": "Move left",
+          "move_right": "Move right"
+        },
+        "empty": "No commands issued yet.",
+        "title": "Command log"
+      }
+    },
     "carPage": {
-      "body": "RC car control through NeuraFlow — coming soon.",
+      "body": "RC car control through NeuraFlow.",
       "kicker": "RC car",
       "pageTitle": "RC car control — NeuraFlow",
       "title": "Car control"

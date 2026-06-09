@@ -1,7 +1,47 @@
 {
   "remote": {
+    "carConfig": {
+      "controlTileSubtitle": "Wybierz tryb przed konfiguracją szczegółów poniżej.",
+      "controlTileTitle": "Sterowanie samochodem",
+      "introSubtitle": "Ustawiasz tu opcje sterowania i — według wyboru — konfigurację pod spodem. Na końcu strony uruchamiasz sesję sterowania.",
+      "manualPlaceholder": "Sterowanie ręczne — możesz od razu rozpocząć sesję bez konfiguracji modelu.",
+      "segmentLabel": "Źródło sterowania",
+      "startHintManual": "Możesz od razu rozpocząć sesję — bez wdrażania modelu BCI."
+    },
+    "carControl": {
+      "bciPanel": {
+        "connected": "Połączono",
+        "detectedLeft": "Wykryto: LEWO",
+        "detectedRight": "Wykryto: PRAWO",
+        "disconnected": "Brak połączenia",
+        "enterFullscreen": "Pełny ekran",
+        "exitFullscreen": "Wyjdź z pełnego ekranu",
+        "noDetection": "brak wykrycia",
+        "title": "Sterowanie myślami"
+      },
+      "dpad": {
+        "backward": "Tył",
+        "forward": "Przód",
+        "left": "Lewo",
+        "right": "Prawo",
+        "title": "Kierunek"
+      },
+      "modeBci": "BCI",
+      "modeManual": "Ręczne",
+      "timeline": {
+        "clear": "Wyczyść",
+        "commands": {
+          "move_backward": "Ruch do tyłu",
+          "move_forward": "Ruch do przodu",
+          "move_left": "Ruch w lewo",
+          "move_right": "Ruch w prawo"
+        },
+        "empty": "Nie wydano jeszcze żadnych poleceń.",
+        "title": "Dziennik poleceń"
+      }
+    },
     "carPage": {
-      "body": "Moduł sterowania pojazdem RC przez NeuraFlow — w przygotowaniu.",
+      "body": "Moduł sterowania pojazdem RC przez NeuraFlow.",
       "kicker": "Samochód RC",
       "pageTitle": "Sterowanie samochodem RC — NeuraFlow",
       "title": "Sterowanie samochodem"
