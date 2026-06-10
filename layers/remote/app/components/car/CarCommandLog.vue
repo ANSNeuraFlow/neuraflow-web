@@ -11,18 +11,27 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-const commandIconMap: Record<CarCommand, string> = {
+const STATIC_COMMAND_ICONS: Partial<Record<CarCommand, string>> = {
   move_forward: 'material-symbols:arrow-upward',
   move_backward: 'material-symbols:arrow-downward',
   move_left: 'material-symbols:arrow-back',
   move_right: 'material-symbols:arrow-forward',
+  cancel_movement: 'material-symbols:stop-circle-outline',
+  neutral: 'material-symbols:pause-circle-outline',
+  brake: 'material-symbols:stop',
 };
 
-const commandColorClass: Record<CarCommand, string> = {
-  move_forward: 'text-on-surface-dim',
-  move_backward: 'text-on-surface-dim',
-  move_left: 'text-on-surface-dim',
-  move_right: 'text-on-surface-dim',
+const getCommandIcon = (command: CarCommand): string => {
+  if (command.startsWith('run_movement:')) return 'material-symbols:route';
+  return STATIC_COMMAND_ICONS[command] ?? 'material-symbols:terminal';
+};
+
+const getCommandLabel = (command: CarCommand): string => {
+  if (command.startsWith('run_movement:')) {
+    const movementId = command.slice('run_movement:'.length);
+    return t('remote.carControl.timeline.commands.run_movement', { id: movementId });
+  }
+  return t(`remote.carControl.timeline.commands.${command}`);
 };
 
 const formatTime = (date: Date): string =>
@@ -75,13 +84,12 @@ const formatTime = (date: Date): string =>
           :class="index === 0 ? 'opacity-100' : 'opacity-75'"
         >
           <Icon
-            :name="commandIconMap[entry.command]"
+            :name="getCommandIcon(entry.command)"
             size="1.6rem"
-            :class="commandColorClass[entry.command]"
-            class="shrink-0"
+            class="text-on-surface-dim shrink-0"
           />
           <span class="text-body-sm text-on-surface min-w-0 flex-1 font-medium">
-            {{ t(`remote.carControl.timeline.commands.${entry.command}`) }}
+            {{ getCommandLabel(entry.command) }}
           </span>
           <span class="text-body-x-sm text-on-surface-dim/50 shrink-0 font-mono tabular-nums">
             {{ formatTime(entry.timestamp) }}
