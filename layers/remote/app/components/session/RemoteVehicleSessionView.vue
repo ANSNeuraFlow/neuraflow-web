@@ -15,6 +15,7 @@ const view = ref<'config' | 'control'>('config');
 
 const mainBridgeReady = ref(false);
 const localBridgeReady = ref(false);
+const rcCarBridgeReady = ref(false);
 
 watch(controlMode, (mode, prev) => {
   if (prev === 'bci' && mode === 'manual' && view.value === 'config') {
@@ -34,6 +35,7 @@ watch(bciSource, (src, prev) => {
 const showMainCytonBridgePanel = computed(() => controlMode.value === 'bci' && bciSource.value === 'app');
 
 const canStartSession = computed(() => {
+  if (!rcCarBridgeReady.value) return false;
   if (showMainCytonBridgePanel.value && !mainBridgeReady.value) return false;
   if (controlMode.value === 'manual') return true;
   if (bciSource.value === 'local-bridge') return localBridgeReady.value;
@@ -41,6 +43,9 @@ const canStartSession = computed(() => {
 });
 
 const startSessionHint = computed(() => {
+  if (!rcCarBridgeReady.value) {
+    return t('remote.rcCarBridgePanel.startHint');
+  }
   if (showMainCytonBridgePanel.value && !mainBridgeReady.value) {
     return t('remote.control.mainBridgeStartHint');
   }
@@ -254,6 +259,11 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
           />
         </div>
       </div>
+
+      <RcCarBridgeConfigPanel
+        class="min-h-0"
+        @update:ready="rcCarBridgeReady = $event"
+      />
 
       <div
         class="glass-card p-md sm:p-x-lg gap-md flex flex-wrap items-center justify-between"

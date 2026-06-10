@@ -28,13 +28,31 @@
       },
       "modeBci": "BCI",
       "modeManual": "Manual",
+      "movements": {
+        "empty": "No movement macros available. Add gui bindings in movements.yaml.",
+        "running": "Running: {label}",
+        "stop": "Stop macro",
+        "title": "Movement macros"
+      },
+      "status": {
+        "bridgeConnected": "Bridge connected",
+        "bridgeDisconnected": "Bridge disconnected",
+        "serialConnected": "Serial connected",
+        "serialDisconnected": "Serial disconnected",
+        "steer": "Steer: {level}",
+        "throttle": "Throttle: {level}"
+      },
       "timeline": {
         "clear": "Clear",
         "commands": {
+          "brake": "Brake",
+          "cancel_movement": "Cancel macro",
           "move_backward": "Move backward",
           "move_forward": "Move forward",
           "move_left": "Move left",
-          "move_right": "Move right"
+          "move_right": "Move right",
+          "neutral": "Neutral",
+          "run_movement": "Run macro: {id}"
         },
         "empty": "No commands issued yet.",
         "title": "Command log"
@@ -241,6 +259,16 @@
       "hub": "Overview",
       "openMenu": "Open menu",
       "section": "RC vehicles"
+    },
+    "rcCarBridgePanel": {
+      "connected": "RC car bridge connected",
+      "serialConnected": "Car serial connected",
+      "serialDisconnected": "Car serial not connected",
+      "serialHint": "Connect the car via USB in the bridge desktop app.",
+      "startHint": "Connect the RC car bridge first.",
+      "statusDisconnected": "RC car bridge disconnected",
+      "subtitle": "Local WebSocket bridge for RC car motor control.",
+      "title": "RC car bridge"
     },
     "session": {
       "wip": "XXXX"

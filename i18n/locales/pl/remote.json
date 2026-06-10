@@ -28,13 +28,31 @@
       },
       "modeBci": "BCI",
       "modeManual": "Ręczne",
+      "movements": {
+        "empty": "Brak makr ruchu. Dodaj powiązania gui w movements.yaml.",
+        "running": "Wykonywanie: {label}",
+        "stop": "Zatrzymaj makro",
+        "title": "Makra ruchu"
+      },
+      "status": {
+        "bridgeConnected": "Mostek połączony",
+        "bridgeDisconnected": "Mostek rozłączony",
+        "serialConnected": "Serial połączony",
+        "serialDisconnected": "Serial rozłączony",
+        "steer": "Skręt: {level}",
+        "throttle": "Gaz: {level}"
+      },
       "timeline": {
         "clear": "Wyczyść",
         "commands": {
+          "brake": "Hamulec",
+          "cancel_movement": "Anuluj makro",
           "move_backward": "Ruch do tyłu",
           "move_forward": "Ruch do przodu",
           "move_left": "Ruch w lewo",
-          "move_right": "Ruch w prawo"
+          "move_right": "Ruch w prawo",
+          "neutral": "Neutralny",
+          "run_movement": "Uruchom makro: {id}"
         },
         "empty": "Nie wydano jeszcze żadnych poleceń.",
         "title": "Dziennik poleceń"
@@ -241,6 +259,16 @@
       "hub": "Przegląd",
       "openMenu": "Otwórz menu",
       "section": "Pojazdy RC"
+    },
+    "rcCarBridgePanel": {
+      "connected": "Mostek samochodu RC połączony",
+      "serialConnected": "Serial samochodu połączony",
+      "serialDisconnected": "Serial samochodu niepołączony",
+      "serialHint": "Podłącz samochód przez USB w aplikacji mostka.",
+      "startHint": "Najpierw połącz mostek samochodu RC.",
+      "statusDisconnected": "Mostek samochodu RC rozłączony",
+      "subtitle": "Lokalny mostek WebSocket do sterowania silnikami samochodu RC.",
+      "title": "Mostek samochodu RC"
     },
     "session": {
       "wip": "XXXX"
