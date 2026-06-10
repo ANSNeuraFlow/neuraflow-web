@@ -11,6 +11,7 @@ const session = useRemoteSession();
 
 const controlMode = ref<'bci' | 'manual'>('bci');
 const bciSource = ref<'app' | 'local-bridge'>('app');
+const bciDriveMode = ref<'instant' | 'consensus'>('instant');
 const view = ref<'config' | 'control'>('config');
 
 const mainBridgeReady = ref(false);
@@ -29,27 +30,30 @@ watch(bciSource, (src, prev) => {
   if (prev === 'app' && src === 'local-bridge' && view.value === 'config') {
     void session.stopDeployment();
   }
-  if (src === 'app') localBridgeReady.value = false;
+  if (src === 'app') {
+    localBridgeReady.value = false;
+    bciDriveMode.value = 'instant';
+  }
 });
 
 const showMainCytonBridgePanel = computed(() => controlMode.value === 'bci' && bciSource.value === 'app');
 
 const canStartSession = computed(() => {
+  if (controlMode.value === 'manual') return true;
   if (!rcCarBridgeReady.value) return false;
   if (showMainCytonBridgePanel.value && !mainBridgeReady.value) return false;
-  if (controlMode.value === 'manual') return true;
   if (bciSource.value === 'local-bridge') return localBridgeReady.value;
   return session.canStartControl.value;
 });
 
 const startSessionHint = computed(() => {
+  if (controlMode.value === 'manual') return t('remote.carConfig.startHintManual');
   if (!rcCarBridgeReady.value) {
     return t('remote.rcCarBridgePanel.startHint');
   }
   if (showMainCytonBridgePanel.value && !mainBridgeReady.value) {
     return t('remote.control.mainBridgeStartHint');
   }
-  if (controlMode.value === 'manual') return t('remote.carConfig.startHintManual');
   if (bciSource.value === 'local-bridge') {
     return canStartSession.value ? t('remote.control.localBridgeReadyHint') : t('remote.control.localBridgeStartHint');
   }
@@ -77,6 +81,14 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
   [
     'text-body-sm min-h-[3.2rem] min-w-0 flex-1 px-x-sm py-x-sm text-center font-semibold transition-colors duration-150 sm:px-x-lg sm:py-x-sm',
     bciSource.value === source
+      ? 'bg-on-surface text-surface'
+      : 'text-on-surface-dim hover:bg-on-surface/[0.07] hover:text-on-surface',
+  ].join(' ');
+
+const segmentBtnClassBciDriveMode = (mode: 'instant' | 'consensus') =>
+  [
+    'text-body-sm min-h-[3.2rem] min-w-0 flex-1 px-x-sm py-x-sm text-center font-semibold transition-colors duration-150 sm:px-x-lg sm:py-x-sm',
+    bciDriveMode.value === mode
       ? 'bg-on-surface text-surface'
       : 'text-on-surface-dim hover:bg-on-surface/[0.07] hover:text-on-surface',
   ].join(' ');
@@ -199,6 +211,42 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
               </button>
             </div>
           </div>
+
+          <template v-if="bciSource === 'local-bridge'">
+            <p
+              id="car-bci-drive-mode-label"
+              class="text-body-sm text-on-surface-dim mt-md font-medium"
+            >
+              {{ t('remote.carConfig.bciDriveModeLabel') }}
+            </p>
+
+            <div class="w-full max-w-[30rem] self-start sm:max-w-[40rem]">
+              <div
+                class="border-on-surface/[0.08] bg-on-surface/[0.03] divide-on-surface/[0.08] flex w-full divide-x overflow-hidden rounded-xl border"
+                role="group"
+                aria-labelledby="car-bci-drive-mode-label"
+              >
+                <button
+                  type="button"
+                  :class="segmentBtnClassBciDriveMode('instant')"
+                  role="radio"
+                  :aria-checked="bciDriveMode === 'instant'"
+                  @click="bciDriveMode = 'instant'"
+                >
+                  {{ t('remote.carConfig.bciDriveModeInstant') }}
+                </button>
+                <button
+                  type="button"
+                  :class="segmentBtnClassBciDriveMode('consensus')"
+                  role="radio"
+                  :aria-checked="bciDriveMode === 'consensus'"
+                  @click="bciDriveMode = 'consensus'"
+                >
+                  {{ t('remote.carConfig.bciDriveModeConsensus') }}
+                </button>
+              </div>
+            </div>
+          </template>
         </template>
       </div>
     </section>
@@ -310,6 +358,8 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
     <CarControlPanel
       v-else
       :control-mode="controlMode"
+      :bci-source="bciSource"
+      :bci-drive-mode="bciDriveMode"
       @end-session="endSession"
     />
   </div>

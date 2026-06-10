@@ -1,15 +1,40 @@
 <script setup lang="ts">
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+
 import { useBciController } from '~/composables/useBciController';
 
-const PREDICTION_INTERVAL_MS = 2500;
-const PULSE_DURATION_MS = 1250;
+import { useCarBciDrive } from '../../composables/useCarBciDrive';
+import {
+  CAR_BCI_PREDICTION_INTERVAL_MS,
+  CAR_BCI_PULSE_DURATION_MS,
+  type CarBciDriveMode,
+} from '../../models/car-bci.domain';
+
+const props = withDefaults(
+  defineProps<{
+    bciSource?: 'app' | 'local-bridge';
+    bciDriveMode?: CarBciDriveMode;
+  }>(),
+  {
+    bciSource: 'app',
+    bciDriveMode: 'instant',
+  },
+);
+
+const effectiveDriveMode = computed<CarBciDriveMode>(() =>
+  props.bciSource === 'local-bridge' && props.bciDriveMode === 'consensus' ? 'consensus' : 'instant',
+);
+
+const { consensusVotes, consensusPhase } = useCarBciDrive(
+  () => true,
+  () => effectiveDriveMode.value,
+);
 
 const { t } = useI18n();
 const { currentCommand, currentConfidence, isConnected } = useBciController();
 
 const containerRef = ref<HTMLElement | null>(null);
 const isFullscreen = ref(false);
-
 const isPulsing = ref(false);
 const progress = ref(0);
 
@@ -25,7 +50,7 @@ const triggerPulse = () => {
   if (pulseTimer) clearTimeout(pulseTimer);
   pulseTimer = setTimeout(() => {
     isPulsing.value = false;
-  }, PULSE_DURATION_MS);
+  }, CAR_BCI_PULSE_DURATION_MS);
 };
 
 const enterFullscreen = async () => {
@@ -47,10 +72,10 @@ const handleFullscreenChange = () => {
 
 onMounted(() => {
   triggerPulse();
-  intervalTimer = setInterval(triggerPulse, PREDICTION_INTERVAL_MS);
+  intervalTimer = setInterval(triggerPulse, CAR_BCI_PREDICTION_INTERVAL_MS);
   progressTimer = setInterval(() => {
     const elapsed = Date.now() - startTime;
-    progress.value = Math.min((elapsed / PREDICTION_INTERVAL_MS) * 100, 100);
+    progress.value = Math.min((elapsed / CAR_BCI_PREDICTION_INTERVAL_MS) * 100, 100);
   }, 50);
   document.addEventListener('fullscreenchange', handleFullscreenChange);
 });
@@ -71,6 +96,19 @@ const detectedDirection = computed(() => {
 
 const confidencePct = computed(() => Math.round(currentConfidence.value * 100));
 
+const consensusHint = computed(() => {
+  if (effectiveDriveMode.value !== 'consensus') return null;
+  if (consensusPhase.value === 'tiebreak') {
+    return t('remote.carControl.bciPanel.consensusTiebreak');
+  }
+  if (consensusVotes.value.length === 0) {
+    return t('remote.carControl.bciPanel.consensusCollecting');
+  }
+  return t('remote.carControl.bciPanel.consensusProgress', {
+    count: consensusVotes.value.length,
+  });
+});
+
 const arrowOffsetClass = computed(() =>
   isFullscreen.value ? '-translate-x-[26%] md:-translate-x-[28%]' : '-translate-x-[22%] md:-translate-x-[24%]',
 );
@@ -80,11 +118,11 @@ const arrowOffsetRightClass = computed(() =>
 );
 
 const crossSizeClass = computed(() =>
-  isFullscreen.value ? 'text-[12rem] md:text-[18rem]' : 'text-[8rem] md:text-[12rem]',
+  isFullscreen.value ? 'text-[12rem] md:text-[18rem]' : 'text-[6rem] md:text-[8rem]',
 );
 
 const iconSizeClass = computed(() =>
-  isFullscreen.value ? 'h-[12rem] w-[12rem] md:h-[22rem] md:w-[22rem]' : 'h-[7rem] w-[7rem] md:h-[12rem] md:w-[12rem]',
+  isFullscreen.value ? 'h-[12rem] w-[12rem] md:h-[22rem] md:w-[22rem]' : 'h-[5rem] w-[5rem] md:h-[7rem] md:w-[7rem]',
 );
 </script>
 
@@ -96,7 +134,7 @@ const iconSizeClass = computed(() =>
       isFullscreen ? 'fixed inset-0 z-[9999]' : 'glass-card min-h-0 rounded-2xl',
     ]"
   >
-    <div class="px-x-lg py-md absolute inset-x-0 top-0 z-10 flex items-center justify-between">
+    <div class="px-x-lg py-md flex shrink-0 items-center justify-between">
       <div class="gap-sm flex items-center">
         <Icon
           name="material-symbols:psychology-outline"
@@ -106,13 +144,19 @@ const iconSizeClass = computed(() =>
         <span class="text-body-sm font-semibold uppercase tracking-wider text-white/60">
           {{ t('remote.carControl.bciPanel.title') }}
         </span>
+        <span
+          v-if="effectiveDriveMode === 'consensus'"
+          class="text-body-x-sm px-sm py-xx-xs rounded-full border border-white/10 bg-white/[0.06] font-medium text-white/50"
+        >
+          {{ t('remote.carControl.bciPanel.consensusBadge') }}
+        </span>
       </div>
 
       <div class="gap-md flex items-center">
-        <div class="gap-xs flex items-center">
+        <div class="gap-sm flex items-center">
           <span
             :class="[
-              'h-[0.7rem] w-[0.7rem] rounded-full',
+              'h-[0.7rem] w-[0.7rem] shrink-0 rounded-full',
               isConnected ? 'bg-success animate-pulse' : 'bg-on-surface-dim/40',
             ]"
           />
@@ -139,14 +183,19 @@ const iconSizeClass = computed(() =>
       </div>
     </div>
 
-    <div :class="['relative w-full', isFullscreen ? 'min-h-screen flex-1' : 'min-h-[32rem]']">
-      <div class="pointer-events-none absolute inset-0 z-10 flex select-none items-center justify-center">
+    <div
+      :class="[
+        'relative flex w-full shrink-0 items-center justify-center',
+        isFullscreen ? 'min-h-0 flex-1' : 'aspect-[3/1] max-h-[16rem] min-h-[10rem]',
+      ]"
+    >
+      <div class="pointer-events-none absolute inset-0 flex select-none items-center justify-center">
         <span :class="[crossSizeClass, 'font-light leading-none tracking-tighter text-white']"> + </span>
       </div>
 
       <div
         v-show="isPulsing"
-        class="pointer-events-none absolute inset-0 z-20 flex select-none items-center justify-center"
+        class="pointer-events-none absolute inset-0 flex select-none items-center justify-center"
         :class="arrowOffsetClass"
       >
         <Icon
@@ -161,7 +210,7 @@ const iconSizeClass = computed(() =>
 
       <div
         v-show="isPulsing"
-        class="pointer-events-none absolute inset-0 z-20 flex select-none items-center justify-center"
+        class="pointer-events-none absolute inset-0 flex select-none items-center justify-center"
         :class="arrowOffsetRightClass"
       >
         <Icon
@@ -173,8 +222,10 @@ const iconSizeClass = computed(() =>
           ]"
         />
       </div>
+    </div>
 
-      <div class="gap-sm px-x-lg absolute bottom-[18%] left-0 right-0 z-30 flex flex-col items-center">
+    <div class="px-x-lg pb-md pt-sm gap-sm flex shrink-0 flex-col">
+      <div class="gap-sm flex flex-col items-center">
         <div
           v-if="detectedDirection"
           class="border-success/30 bg-success/10 px-x-lg py-sm gap-sm flex items-center rounded-xl border backdrop-blur-sm"
@@ -207,10 +258,44 @@ const iconSizeClass = computed(() =>
             {{ t('remote.carControl.bciPanel.noDetection') }}
           </span>
         </div>
-      </div>
-    </div>
 
-    <div class="px-x-lg pb-md absolute inset-x-0 bottom-0 z-10">
+        <div
+          v-if="effectiveDriveMode === 'consensus'"
+          class="gap-sm flex flex-col items-center"
+        >
+          <div
+            v-if="consensusVotes.length > 0"
+            class="gap-sm flex items-center"
+            :aria-label="t('remote.carControl.bciPanel.consensusVotesAria')"
+          >
+            <span
+              v-for="(vote, index) in consensusVotes"
+              :key="index"
+              :class="[
+                'flex h-[2.8rem] w-[2.8rem] items-center justify-center rounded-lg border font-mono text-[1.4rem] font-bold',
+                vote === 'left'
+                  ? 'border-success/30 bg-success/10 text-success'
+                  : 'border-accent/30 bg-accent/10 text-accent',
+              ]"
+            >
+              {{ vote === 'left' ? '←' : '→' }}
+            </span>
+            <span
+              v-if="consensusPhase === 'tiebreak'"
+              class="text-body-x-sm border-warning/30 bg-warning/10 text-warning px-sm py-xx-xs rounded-lg border font-medium"
+            >
+              ?
+            </span>
+          </div>
+          <p
+            v-if="consensusHint"
+            class="text-body-x-sm text-center font-medium text-white/45"
+          >
+            {{ consensusHint }}
+          </p>
+        </div>
+      </div>
+
       <div class="gap-sm flex items-center">
         <Icon
           name="material-symbols:timer-outline"
@@ -224,7 +309,7 @@ const iconSizeClass = computed(() =>
           />
         </div>
         <span class="text-body-x-sm font-mono tabular-nums text-white/25">
-          {{ (PREDICTION_INTERVAL_MS / 1000).toFixed(1) }}s
+          {{ (CAR_BCI_PREDICTION_INTERVAL_MS / 1000).toFixed(1) }}s
         </span>
       </div>
     </div>

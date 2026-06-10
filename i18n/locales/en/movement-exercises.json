@@ -2,10 +2,14 @@
   "movementExercises": {
     "blockSlide": {
       "backShort": "Back",
-      "calibrationSubtitle": "Map the horizontal axis on screen, then aim to match it with intention alone.",
-      "calibrationSubtitleManual": "Use the buttons or arrow keys to explore the axis \u2014 Space centers the block.",
-      "calibrationTitle": "Drill: slide the block",
+      "bciDisplayModeCues": "With arrows",
+      "bciDisplayModeLabel": "BCI view",
+      "bciDisplayModeSimple": "Simple",
       "center": "Center",
+      "fullscreen": {
+        "enter": "Full screen",
+        "exit": "Exit full screen"
+      },
       "kicker": "Exercise",
       "left": "Left",
       "pageTitle": "Slide the block \u2014 NeuraFlow",

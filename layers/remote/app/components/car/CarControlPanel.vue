@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { toRefs } from 'vue';
 
-import { useBciController } from '~/composables/useBciController';
-
 import { type CarDirection, useCarState } from '../../composables/useCarState';
 import { useFlightPath } from '../../composables/useFlightPath';
 import { useRcCarBridge } from '../../composables/useRcCarBridge';
+import type { CarBciDriveMode } from '../../models/car-bci.domain';
 import type { DroneTelemetryData } from '../../models/drone-control.domain';
 
-const props = defineProps<{
+defineProps<{
   controlMode: 'bci' | 'manual';
+  bciSource?: 'app' | 'local-bridge';
+  bciDriveMode?: CarBciDriveMode;
 }>();
 
 const emit = defineEmits<{
@@ -67,20 +68,32 @@ const handleKeydown = (e: KeyboardEvent) => {
 
 const handleKeyup = (e: KeyboardEvent) => {
   const dir = keyMap[e.key];
-  if (dir && pressedDir.value === dir) pressedDir.value = null;
+  if (!dir) return;
+  if (pressedDir.value === dir) pressedDir.value = null;
+  if (dir === 'forward' || dir === 'backward') {
+    car.releaseThrottle();
+  }
+  if (dir === 'left' || dir === 'right') {
+    car.releaseSteer();
+  }
+};
+
+const handleSteerPointerDown = (dir: 'left' | 'right') => {
+  pressedDir.value = dir;
+  car.move(dir);
+};
+
+const handleSteerPointerUp = () => {
+  if (pressedDir.value === 'left' || pressedDir.value === 'right') {
+    pressedDir.value = null;
+  }
+  car.releaseSteer();
 };
 
 const handleEndSession = () => {
   car.safeShutdown();
   emit('endSession');
 };
-
-const { onCommand } = useBciController();
-
-if (props.controlMode === 'bci') {
-  onCommand('LEFT_HAND', () => car.move('left'));
-  onCommand('RIGHT_HAND', () => car.move('right'));
-}
 
 onMounted(() => {
   window.addEventListener('keydown', handleKeydown);
@@ -155,6 +168,24 @@ const arrowBtnClass = (dir: CarDirection) =>
           />
 
           <AppStatusBadge
+            v-if="controlMode === 'bci' && bciSource"
+            class="shrink-0"
+            color="default"
+            :label="
+              bciSource === 'local-bridge'
+                ? t('remote.droneConfig.bciSourceLocalBridge')
+                : t('remote.droneConfig.bciSourceCloud')
+            "
+          />
+
+          <AppStatusBadge
+            v-if="controlMode === 'bci' && bciSource === 'local-bridge' && bciDriveMode === 'consensus'"
+            class="shrink-0"
+            color="default"
+            :label="t('remote.carControl.bciPanel.consensusBadge')"
+          />
+
+          <AppStatusBadge
             v-if="bridge.movementRunning.value && bridge.activeMovement.value"
             class="shrink-0"
             color="warning"
@@ -190,98 +221,121 @@ const arrowBtnClass = (dir: CarDirection) =>
       </AppButton>
     </div>
 
-    <div class="gap-x-lg gap-y-lg grid grid-cols-1 xl:grid-cols-[1fr_30rem]">
-      <CarBciPanel />
+    <div
+      class="gap-x-lg gap-y-lg grid grid-cols-1"
+      :class="controlMode === 'bci' ? 'xl:grid-cols-[1fr_30rem]' : 'lg:grid-cols-2 lg:items-stretch'"
+    >
+      <CarBciPanel
+        v-if="controlMode === 'bci'"
+        class="min-h-0"
+        :bci-source="bciSource"
+        :bci-drive-mode="bciDriveMode"
+      />
 
-      <div class="gap-md flex flex-col">
-        <div class="glass-card gap-md p-md sm:p-x-lg flex flex-col">
-          <div class="gap-sm flex items-center">
-            <Icon
-              name="material-symbols:directions-car-outline"
-              size="1.8rem"
-              class="text-on-surface-dim shrink-0"
-            />
-            <h2 class="text-heading-x-sm text-on-surface font-display font-bold">
-              {{ t('remote.carControl.dpad.title') }}
-            </h2>
-          </div>
-
-          <div class="flex flex-1 flex-col items-center justify-center">
-            <div class="gap-sm grid grid-cols-3">
-              <div />
-              <button
-                type="button"
-                :class="arrowBtnClass('forward')"
-                :aria-label="t('remote.carControl.dpad.forward')"
-                @click="car.move('forward')"
-              >
-                <Icon
-                  name="material-symbols:arrow-upward"
-                  size="2.4rem"
-                />
-              </button>
-              <div />
-
-              <button
-                type="button"
-                :class="arrowBtnClass('left')"
-                :aria-label="t('remote.carControl.dpad.left')"
-                @click="car.move('left')"
-              >
-                <Icon
-                  name="material-symbols:arrow-back"
-                  size="2.4rem"
-                />
-              </button>
-
-              <div class="flex h-[5.6rem] w-[5.6rem] items-center justify-center">
-                <div class="border-on-surface/25 bg-on-surface/[0.12] h-[2rem] w-[2rem] rounded-full border" />
-              </div>
-
-              <button
-                type="button"
-                :class="arrowBtnClass('right')"
-                :aria-label="t('remote.carControl.dpad.right')"
-                @click="car.move('right')"
-              >
-                <Icon
-                  name="material-symbols:arrow-forward"
-                  size="2.4rem"
-                />
-              </button>
-
-              <div />
-              <button
-                type="button"
-                :class="arrowBtnClass('backward')"
-                :aria-label="t('remote.carControl.dpad.backward')"
-                @click="car.move('backward')"
-              >
-                <Icon
-                  name="material-symbols:arrow-downward"
-                  size="2.4rem"
-                />
-              </button>
-              <div />
-            </div>
-          </div>
-
-          <p class="gap-x-sm text-body-x-sm text-on-surface-dim/50 flex shrink-0 items-center">
-            <Icon
-              name="material-symbols:keyboard-outline"
-              size="1.4rem"
-            />
-            {{ t('remote.droneControl.controls.keyboardHint') }}
-          </p>
+      <div
+        class="glass-card gap-md p-md sm:p-x-lg flex min-h-[22rem] flex-col"
+        :class="controlMode === 'manual' ? 'min-w-0' : ''"
+      >
+        <div class="gap-sm flex items-center">
+          <Icon
+            name="material-symbols:directions-car-outline"
+            size="1.8rem"
+            class="text-on-surface-dim shrink-0"
+          />
+          <h2 class="text-heading-x-sm text-on-surface font-display font-bold">
+            {{ t('remote.carControl.dpad.title') }}
+          </h2>
         </div>
 
-        <CarMovementsPanel />
+        <div class="flex flex-1 flex-col items-center justify-center">
+          <div class="gap-sm grid grid-cols-3">
+            <div />
+            <button
+              type="button"
+              :class="arrowBtnClass('forward')"
+              :aria-label="t('remote.carControl.dpad.forward')"
+              @click="car.move('forward')"
+            >
+              <Icon
+                name="material-symbols:arrow-upward"
+                size="2.4rem"
+              />
+            </button>
+            <div />
+
+            <button
+              type="button"
+              :class="arrowBtnClass('left')"
+              :aria-label="t('remote.carControl.dpad.left')"
+              @pointerdown.prevent="handleSteerPointerDown('left')"
+              @pointerup="handleSteerPointerUp"
+              @pointerleave="handleSteerPointerUp"
+              @pointercancel="handleSteerPointerUp"
+            >
+              <Icon
+                name="material-symbols:arrow-back"
+                size="2.4rem"
+              />
+            </button>
+
+            <div class="flex h-[5.6rem] w-[5.6rem] items-center justify-center">
+              <div class="border-on-surface/25 bg-on-surface/[0.12] h-[2rem] w-[2rem] rounded-full border" />
+            </div>
+
+            <button
+              type="button"
+              :class="arrowBtnClass('right')"
+              :aria-label="t('remote.carControl.dpad.right')"
+              @pointerdown.prevent="handleSteerPointerDown('right')"
+              @pointerup="handleSteerPointerUp"
+              @pointerleave="handleSteerPointerUp"
+              @pointercancel="handleSteerPointerUp"
+            >
+              <Icon
+                name="material-symbols:arrow-forward"
+                size="2.4rem"
+              />
+            </button>
+
+            <div />
+            <button
+              type="button"
+              :class="arrowBtnClass('backward')"
+              :aria-label="t('remote.carControl.dpad.backward')"
+              @click="car.move('backward')"
+            >
+              <Icon
+                name="material-symbols:arrow-downward"
+                size="2.4rem"
+              />
+            </button>
+            <div />
+          </div>
+        </div>
+
+        <p class="gap-sm text-body-x-sm text-on-surface-dim/50 flex shrink-0 items-center">
+          <Icon
+            name="material-symbols:keyboard-outline"
+            size="1.4rem"
+            class="shrink-0"
+          />
+          {{ t('remote.droneControl.controls.keyboardHint') }}
+        </p>
       </div>
+
+      <CarMovementsPanel
+        v-if="controlMode === 'manual'"
+        layout="card"
+        class="min-h-0 min-w-0"
+      />
     </div>
+
+    <CarMovementsPanel v-if="controlMode === 'bci'" />
 
     <div class="gap-x-lg gap-y-lg grid grid-cols-1 xl:grid-cols-[1fr_minmax(0,30rem)]">
       <DroneMap
         compact
+        vehicle-type="car"
         class="h-full min-h-0 w-full min-w-0"
         :telemetry="mapTelemetry"
         :flight-path="flightPath"

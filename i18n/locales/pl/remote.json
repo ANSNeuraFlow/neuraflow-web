@@ -1,6 +1,9 @@
 {
   "remote": {
     "carConfig": {
+      "bciDriveModeConsensus": "Głosowanie 2/3",
+      "bciDriveModeInstant": "Natychmiastowy",
+      "bciDriveModeLabel": "Tryb decyzji BCI",
       "controlTileSubtitle": "Wybierz tryb przed konfiguracją szczegółów poniżej.",
       "controlTileTitle": "Sterowanie samochodem",
       "introSubtitle": "Ustawiasz tu opcje sterowania i — według wyboru — konfigurację pod spodem. Na końcu strony uruchamiasz sesję sterowania.",
@@ -11,6 +14,11 @@
     "carControl": {
       "bciPanel": {
         "connected": "Połączono",
+        "consensusBadge": "Głosowanie 2/3",
+        "consensusCollecting": "Zbieram głosy — potrzebne 2 zgodne kierunki",
+        "consensusProgress": "Głos {count}/2 — czekam na zgodność",
+        "consensusTiebreak": "Remis — trzeci głos decyduje",
+        "consensusVotesAria": "Dotychczasowe głosy",
         "detectedLeft": "Wykryto: LEWO",
         "detectedRight": "Wykryto: PRAWO",
         "disconnected": "Brak połączenia",
