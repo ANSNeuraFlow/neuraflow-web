@@ -1,0 +1,1 @@
+export type BlockSlideBciDisplayMode = 'simple' | 'cues';/** Steps from center in each direction: 6 left and 6 right (13 positions including center). */export const BLOCK_SLIDE_STEPS_FROM_CENTER = 6;export const BLOCK_SLIDE_SLOT_COUNT = BLOCK_SLIDE_STEPS_FROM_CENTER * 2 + 1;

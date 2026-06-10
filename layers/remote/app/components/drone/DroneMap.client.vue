@@ -12,9 +12,11 @@ const props = withDefaults(
     flightPath: FlightPathPoint[];
     isTracking: boolean;
     compact?: boolean;
+    vehicleType?: 'drone' | 'car';
   }>(),
   {
     compact: false,
+    vehicleType: 'drone',
   },
 );
 
@@ -70,10 +72,27 @@ function buildDroneIconHtml(heading: number | null): string {
 </svg></div>`;
 }
 
-function makeDroneIcon(heading: number | null) {
+function buildCarIconHtml(heading: number | null): string {
+  const rotation = heading ?? 0;
+  return `<div style="transform:rotate(${rotation}deg);width:36px;height:36px;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 2px 6px rgb(0 0 0 / 0.55))">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="36" height="36" aria-hidden="true">
+<rect x="9" y="14" width="18" height="14" rx="3" fill="#6366f1" stroke="rgb(255 255 255 / 0.95)" stroke-width="1.5"/>
+<rect x="11" y="9" width="14" height="8" rx="2.5" fill="#6366f1" stroke="rgb(255 255 255 / 0.95)" stroke-width="1.5"/>
+<rect x="12.5" y="10.5" width="4.5" height="4" rx="0.8" fill="rgb(255 255 255 / 0.75)"/>
+<rect x="19" y="10.5" width="4.5" height="4" rx="0.8" fill="rgb(255 255 255 / 0.75)"/>
+<polygon points="18,5.5 14.5,9.5 21.5,9.5" fill="white" opacity="0.95"/>
+<rect x="7" y="15" width="3.5" height="7" rx="1.2" fill="#1e1b4b" stroke="rgb(255 255 255 / 0.7)" stroke-width="1"/>
+<rect x="25.5" y="15" width="3.5" height="7" rx="1.2" fill="#1e1b4b" stroke="rgb(255 255 255 / 0.7)" stroke-width="1"/>
+<rect x="7" y="24" width="3.5" height="7" rx="1.2" fill="#1e1b4b" stroke="rgb(255 255 255 / 0.7)" stroke-width="1"/>
+<rect x="25.5" y="24" width="3.5" height="7" rx="1.2" fill="#1e1b4b" stroke="rgb(255 255 255 / 0.7)" stroke-width="1"/>
+</svg></div>`;
+}
+
+function makeVehicleIcon(heading: number | null) {
+  const html = props.vehicleType === 'car' ? buildCarIconHtml(heading) : buildDroneIconHtml(heading);
   return L.divIcon({
-    html: buildDroneIconHtml(heading),
-    className: 'drone-map-icon',
+    html,
+    className: 'vehicle-map-icon',
     iconSize: [36, 36],
     iconAnchor: [18, 18],
   });
@@ -84,7 +103,7 @@ function updateMarkerPosition() {
   const lat = props.telemetry.gpsLat ?? DEFAULT_MAP_CENTER.lat;
   const lng = props.telemetry.gpsLon ?? DEFAULT_MAP_CENTER.lng;
   droneMarker.setLatLng([lat, lng]);
-  droneMarker.setIcon(makeDroneIcon(props.telemetry.heading));
+  droneMarker.setIcon(makeVehicleIcon(props.telemetry.heading));
   if (autoFollow.value) {
     mapInstance.setView([lat, lng], mapInstance.getZoom(), { animate: true });
   }
@@ -167,7 +186,7 @@ onMounted(() => {
   initTileLayer();
 
   droneMarker = L.marker([currentLat.value, currentLng.value], {
-    icon: makeDroneIcon(props.telemetry.heading),
+    icon: makeVehicleIcon(props.telemetry.heading),
     zIndexOffset: 1000,
   }).addTo(mapInstance);
 
@@ -201,7 +220,10 @@ onBeforeUnmount(() => {
   mapInstance = null;
 });
 
-watch(() => [props.telemetry.gpsLat, props.telemetry.gpsLon, props.telemetry.heading] as const, updateMarkerPosition);
+watch(
+  () => [props.telemetry.gpsLat, props.telemetry.gpsLon, props.telemetry.heading, props.vehicleType] as const,
+  updateMarkerPosition,
+);
 
 watch(autoFollow, () => {
   if (autoFollow.value) updateMarkerPosition();
@@ -269,7 +291,7 @@ watch(() => props.flightPath, refreshPolyline, { deep: true });
 <style>
 @import url('leaflet/dist/leaflet.css');
 
-.drone-map-icon {
+.vehicle-map-icon {
   background: transparent !important;
   border: none !important;
 }

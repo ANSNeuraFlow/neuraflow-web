@@ -10,6 +10,7 @@ const session = useRemoteSession();
 const view = ref<'config' | 'exercise'>('config');
 const controlMode = ref<'bci' | 'manual'>('bci');
 const bciSource = ref<'app' | 'local-bridge'>('app');
+const bciDisplayMode = ref<'simple' | 'cues'>('simple');
 
 const mainBridgeReady = ref(false);
 
@@ -60,6 +61,14 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
   [
     'text-body-sm min-h-[3.2rem] min-w-0 flex-1 px-x-sm py-x-sm text-center font-semibold transition-colors duration-150 sm:px-x-lg sm:py-x-sm',
     bciSource.value === source
+      ? 'bg-on-surface text-surface'
+      : 'text-on-surface-dim hover:bg-on-surface/[0.07] hover:text-on-surface',
+  ].join(' ');
+
+const segmentBtnClassBciDisplayMode = (mode: 'simple' | 'cues') =>
+  [
+    'text-body-sm min-h-[3.2rem] min-w-0 flex-1 px-x-sm py-x-sm text-center font-semibold transition-colors duration-150 sm:px-x-lg sm:py-x-sm',
+    bciDisplayMode.value === mode
       ? 'bg-on-surface text-surface'
       : 'text-on-surface-dim hover:bg-on-surface/[0.07] hover:text-on-surface',
   ].join(' ');
@@ -184,6 +193,40 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
                   </button>
                 </div>
               </div>
+
+              <p
+                id="block-slide-bci-display-mode-label"
+                class="text-body-sm text-on-surface-dim mt-md font-medium"
+              >
+                {{ t('movementExercises.blockSlide.bciDisplayModeLabel') }}
+              </p>
+
+              <div class="w-full max-w-[30rem] self-start sm:max-w-[40rem]">
+                <div
+                  class="border-on-surface/[0.08] bg-on-surface/[0.03] divide-on-surface/[0.08] flex w-full divide-x overflow-hidden rounded-xl border"
+                  role="group"
+                  aria-labelledby="block-slide-bci-display-mode-label"
+                >
+                  <button
+                    type="button"
+                    :class="segmentBtnClassBciDisplayMode('simple')"
+                    role="radio"
+                    :aria-checked="bciDisplayMode === 'simple'"
+                    @click="bciDisplayMode = 'simple'"
+                  >
+                    {{ t('movementExercises.blockSlide.bciDisplayModeSimple') }}
+                  </button>
+                  <button
+                    type="button"
+                    :class="segmentBtnClassBciDisplayMode('cues')"
+                    role="radio"
+                    :aria-checked="bciDisplayMode === 'cues'"
+                    @click="bciDisplayMode = 'cues'"
+                  >
+                    {{ t('movementExercises.blockSlide.bciDisplayModeCues') }}
+                  </button>
+                </div>
+              </div>
             </template>
           </div>
         </section>
@@ -285,6 +328,7 @@ const segmentBtnClassBciSource = (source: 'app' | 'local-bridge') =>
         v-else
         key="exercise"
         :control-mode="controlMode"
+        :bci-display-mode="bciDisplayMode"
         @end-session="closeExercise"
       />
     </Transition>

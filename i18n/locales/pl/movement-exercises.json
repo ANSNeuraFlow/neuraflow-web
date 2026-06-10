@@ -2,10 +2,14 @@
   "movementExercises": {
     "blockSlide": {
       "backShort": "Wstecz",
-      "calibrationSubtitle": "Sprawdź, jak reaguje oś pozioma — potem odtwarzaj to samo intencją w myślach.",
-      "calibrationSubtitleManual": "Sprawdź przyciskami lub strzałkami oś poziomą — Spacja wyśrodkuje klocek.",
-      "calibrationTitle": "Ćwiczenie: przesuń klocek",
+      "bciDisplayModeCues": "Ze strzałkami",
+      "bciDisplayModeLabel": "Widok BCI",
+      "bciDisplayModeSimple": "Prosty",
       "center": "Wyśrodkuj",
+      "fullscreen": {
+        "enter": "Pełny ekran",
+        "exit": "Wyjdź z pełnego ekranu"
+      },
       "kicker": "Ćwiczenie",
       "left": "Lewo",
       "pageTitle": "Przesuń klocek — NeuraFlow",
