@@ -3,7 +3,7 @@ import { toRefs } from 'vue';
 
 import { useBciController } from '~/composables/useBciController';
 
-import { type CarDirection, useCarState } from '../../composables/useCarState';
+import { BCI_MOVEMENT_IDS, type CarDirection, useCarState } from '../../composables/useCarState';
 import { useFlightPath } from '../../composables/useFlightPath';
 import { useRcCarBridge } from '../../composables/useRcCarBridge';
 import type { DroneTelemetryData } from '../../models/drone-control.domain';
@@ -78,8 +78,8 @@ const handleEndSession = () => {
 const { onCommand } = useBciController();
 
 if (props.controlMode === 'bci') {
-  onCommand('LEFT_HAND', () => car.move('left'));
-  onCommand('RIGHT_HAND', () => car.move('right'));
+  onCommand('LEFT_HAND', () => car.runMovement(BCI_MOVEMENT_IDS.left));
+  onCommand('RIGHT_HAND', () => car.runMovement(BCI_MOVEMENT_IDS.right));
 }
 
 onMounted(() => {

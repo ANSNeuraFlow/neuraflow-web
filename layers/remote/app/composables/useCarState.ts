@@ -9,6 +9,11 @@ export interface CarCommandEntry {
   timestamp: Date;
 }
 
+export const BCI_MOVEMENT_IDS = {
+  left: 'turn_and_brief_throttle_left',
+  right: 'turn_and_brief_throttle_right',
+} as const;
+
 const DIRECTION_COMMANDS: Record<CarDirection, { command: 'throttle_step' | 'steer_step'; delta: number }> = {
   forward: { command: 'throttle_step', delta: 1 },
   backward: { command: 'throttle_step', delta: -1 },
