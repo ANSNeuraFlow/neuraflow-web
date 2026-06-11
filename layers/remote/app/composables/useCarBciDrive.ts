@@ -6,17 +6,11 @@ import { useBciController } from '~/composables/useBciController';
 import {
   CAR_BCI_PREDICTION_INTERVAL_MS,
   CAR_BCI_STATE_KEYS,
-  CAR_BCI_STEER_HOLD_MS,
   type CarBciConsensusPhase,
   type CarBciDriveMode,
   type CarBciSteerVote,
 } from '../models/car-bci.domain';
-import { type CarDirection, useCarState } from './useCarState';
-
-const BCI_STEER_COMMANDS: Record<'LEFT_HAND' | 'RIGHT_HAND', CarDirection> = {
-  LEFT_HAND: 'left',
-  RIGHT_HAND: 'right',
-};
+import { BCI_MOVEMENT_IDS, type CarDirection, useCarState } from './useCarState';
 
 function steerVoteToDirection(vote: CarBciSteerVote): CarDirection {
   return vote === 'left' ? 'left' : 'right';
@@ -28,10 +22,10 @@ function commandToVote(command: 'LEFT_HAND' | 'RIGHT_HAND'): CarBciSteerVote {
 
 /**
  * Maps live BCI predictions (local bridge or cloud ingress on the same WebSocket)
- * to RC car bridge commands — same max-steer / max-off throttle semantics as manual d-pad.
+ * to predefined movement macros on the RC car bridge.
  *
  * In `consensus` mode each prediction window (2.5s) yields one vote; two matching votes
- * trigger a steer pulse. A 1–1 split waits for a third vote to break the tie.
+ * trigger a macro. A 1–1 split waits for a third vote to break the tie.
  */
 export function useCarBciDrive(
   enabled: MaybeRefOrGetter<boolean> = true,
@@ -43,17 +37,9 @@ export function useCarBciDrive(
   const consensusVotes = useState<CarBciSteerVote[]>(CAR_BCI_STATE_KEYS.consensusVotes, () => []);
   const consensusPhase = useState<CarBciConsensusPhase>(CAR_BCI_STATE_KEYS.consensusPhase, () => 'collecting');
 
-  let steerResetTimer: ReturnType<typeof setTimeout> | null = null;
   let intervalTimer: ReturnType<typeof setInterval> | null = null;
   let intervalLeftCount = 0;
   let intervalRightCount = 0;
-
-  const clearSteerResetTimer = () => {
-    if (steerResetTimer) {
-      clearTimeout(steerResetTimer);
-      steerResetTimer = null;
-    }
-  };
 
   const clearIntervalTimer = () => {
     if (intervalTimer) {
@@ -69,14 +55,10 @@ export function useCarBciDrive(
     intervalRightCount = 0;
   };
 
-  const pulseSteer = (direction: CarDirection) => {
+  const triggerMacro = (direction: CarDirection) => {
     if (!toValue(enabled)) return;
-    car.move(direction);
-    clearSteerResetTimer();
-    steerResetTimer = setTimeout(() => {
-      car.releaseSteer();
-      steerResetTimer = null;
-    }, CAR_BCI_STEER_HOLD_MS);
+    const movementId = direction === 'left' ? BCI_MOVEMENT_IDS.left : BCI_MOVEMENT_IDS.right;
+    car.runMovement(movementId);
   };
 
   const applyConsensusVote = (vote: CarBciSteerVote) => {
@@ -84,7 +66,7 @@ export function useCarBciDrive(
     const [first, second] = votes;
 
     if (votes.length === 2 && first !== undefined && first === second) {
-      pulseSteer(steerVoteToDirection(first));
+      triggerMacro(steerVoteToDirection(first));
       resetConsensus();
       return;
     }
@@ -99,7 +81,7 @@ export function useCarBciDrive(
       const leftCount = votes.filter((v) => v === 'left').length;
       const rightCount = votes.filter((v) => v === 'right').length;
       const winner: CarBciSteerVote = leftCount >= rightCount ? 'left' : 'right';
-      pulseSteer(steerVoteToDirection(winner));
+      triggerMacro(steerVoteToDirection(winner));
       resetConsensus();
       return;
     }
@@ -125,7 +107,7 @@ export function useCarBciDrive(
     if (!toValue(enabled)) return;
 
     if (toValue(driveMode) === 'instant') {
-      pulseSteer(BCI_STEER_COMMANDS[command]);
+      triggerMacro(command === 'LEFT_HAND' ? 'left' : 'right');
       return;
     }
 
@@ -149,7 +131,6 @@ export function useCarBciDrive(
   watch([() => toValue(enabled), () => toValue(driveMode)], syncIntervalTimer, { immediate: true });
 
   onUnmounted(() => {
-    clearSteerResetTimer();
     clearIntervalTimer();
     resetConsensus();
   });
