@@ -9,6 +9,11 @@ export interface CarCommandEntry {
   timestamp: Date;
 }
 
+export const BCI_MOVEMENT_IDS = {
+  left: 'turn_and_brief_throttle_left',
+  right: 'turn_and_brief_throttle_right',
+} as const;
+
 /** Bridge clamps to device bounds; values only need to exceed the typical range. */
 const THROTTLE_FULL_FORWARD = 999;
 const THROTTLE_OFF = 0;
