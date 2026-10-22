@@ -32,7 +32,7 @@ const localePath = useLocalePath();
       </div>
     </section>
 
-    <div class="gap-lg grid grid-cols-1 md:grid-cols-2">
+    <div class="gap-lg grid grid-cols-1 lg:grid-cols-3">
       <NuxtLink
         :to="localePath('/machine-learning/sessions/motor-imagery')"
         class="glass-card group relative flex cursor-pointer flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
@@ -121,6 +121,55 @@ const localePath = useLocalePath();
           <div class="border-on-surface/[0.08] mt-x-lg pt-md flex items-center justify-between border-t">
             <span class="text-body-sm text-on-surface font-semibold">
               {{ $t('machineLearning.sessions.focusCta') }}
+            </span>
+            <Icon
+              name="material-symbols:arrow-forward"
+              size="2rem"
+              class="text-on-surface-dim transition-transform duration-200 group-hover:translate-x-1"
+            />
+          </div>
+        </div>
+      </NuxtLink>
+
+      <NuxtLink
+        :to="localePath('/machine-learning/sessions/model-eval')"
+        class="glass-card group relative flex cursor-pointer flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+      >
+        <div
+          class="from-success/10 to-accent/5 pointer-events-none absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          aria-hidden="true"
+        />
+        <div
+          class="bg-success/8 pointer-events-none absolute -bottom-16 -right-16 h-[200px] w-[200px] rounded-full blur-3xl"
+          aria-hidden="true"
+        />
+
+        <div class="p-md sm:p-x-lg relative z-10 flex flex-1 flex-col">
+          <h2 class="text-heading-md tracking-sm text-on-surface font-display font-bold">
+            {{ $t('machineLearning.sessions.modelEvalTitle') }}
+          </h2>
+          <p class="text-body-sm mt-xx-sm text-on-surface-dim flex-1">
+            {{ $t('machineLearning.sessions.modelEvalSubtitle') }}
+          </p>
+
+          <ul class="mt-md gap-sm flex flex-col">
+            <li
+              v-for="key in ['modelEvalFeature1', 'modelEvalFeature2', 'modelEvalFeature3']"
+              :key="key"
+              class="gap-sm flex items-center"
+            >
+              <Icon
+                name="material-symbols:check-circle-outline"
+                size="1.6rem"
+                class="text-on-surface-dim shrink-0"
+              />
+              <span class="text-body-sm text-on-surface-dim">{{ $t(`machineLearning.sessions.${key}`) }}</span>
+            </li>
+          </ul>
+
+          <div class="border-on-surface/[0.08] mt-x-lg pt-md flex items-center justify-between border-t">
+            <span class="text-body-sm text-on-surface font-semibold">
+              {{ $t('machineLearning.sessions.modelEvalCta') }}
             </span>
             <Icon
               name="material-symbols:arrow-forward"

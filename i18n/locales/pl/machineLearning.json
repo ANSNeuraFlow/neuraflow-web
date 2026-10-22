@@ -181,6 +181,49 @@
       "reconnectLocalBridge": "Połącz ponownie",
       "streamingMethodLabel": "Sposób streamowania"
     },
+    "modelEval": {
+      "addLeft": "Lewo",
+      "addRight": "Prawo",
+      "back": "Wróć do wyboru treningu",
+      "builderTitle": "Scenariusz",
+      "directionLeft": "Lewo",
+      "directionRight": "Prawo",
+      "empty": "Dodaj co najmniej jedną strzałkę. Licznik pokazuje, ile ruchów jest w scenariuszu.",
+      "errors": {
+        "bridgeOffline": "Brak połączenia z Local Bridge. Sprawdź WebSocket BCI i spróbuj ponownie.",
+        "empty": "Dodaj co najmniej jedną strzałkę.",
+        "runFailed": "Nie udało się dokończyć scenariusza."
+      },
+      "kicker": "Skuteczność modelu",
+      "modelHint": "Scenariusz sprawdza model załadowany w NeuraFlow Local Bridge.",
+      "modelReady": "Mostek jest połączony. Predykcje idą z jego lokalnego modelu.",
+      "modelTitle": "Model lokalny",
+      "modelWaiting": "Czekam na połączenie z Local Bridge.",
+      "pageTitle": "Skuteczność modelu",
+      "reconnect": "Połącz ponownie",
+      "remove": "Usuń krok {index}",
+      "runner": {
+        "abort": "Przerwij"
+      },
+      "start": "Uruchom scenariusz",
+      "step": "Krok {index}",
+      "subtitle": "Dodawaj po kolei strzałki i zobacz, które ruchy lokalny model wykrył źle.",
+      "summary": {
+        "back": "Wróć do scenariusza",
+        "colConfidence": "Pewność",
+        "colDetected": "Wykryte",
+        "colExpected": "Oczekiwane",
+        "colTrial": "Próba",
+        "exportCsv": "Zapisz CSV",
+        "none": "Brak",
+        "score": "Trafienia {hits} / {total}",
+        "title": "Podsumowanie",
+        "wrongEmpty": "Model wykrył wszystkie ruchy poprawnie.",
+        "wrongTitle": "Źle wykryte ruchy"
+      },
+      "title": "Scenariusz lewo / prawo",
+      "total": "Łącznie {count}"
+    },
     "models": {
       "dataForModelSubtitle": "Ukończone sesje EEG, które możesz wykorzystać jako dane treningowe. Nowe nagrania zaczniesz na stronie Sesje.",
       "dataForModelSubtitlePicking": "Zaznacz sesje do uwzględnienia, potem wybierz Trenuj model.",
@@ -223,6 +266,13 @@
       "historySubtitle": "Zarejestrowano {count} sesji",
       "historyTitle": "Historia sesji",
       "kicker": "Sesje EEG",
+      "modelEvalBack": "Wróć do wyboru treningu",
+      "modelEvalCta": "Otwórz",
+      "modelEvalFeature1": "Kolejność strzałek układasz sam",
+      "modelEvalFeature2": "Predykcje z modelu w Local Bridge",
+      "modelEvalFeature3": "Podsumowanie ruchów wykrytych źle",
+      "modelEvalSubtitle": "Ułóż scenariusz lewo/prawo i sprawdź na żywo, czy model wykrywa tę samą strzałkę.",
+      "modelEvalTitle": "Skuteczność modelu",
       "motorImageryBackToChoice": "Wróć do wyboru treningu",
       "motorImageryBadge": "Dostępne",
       "motorImageryCta": "Otwórz",

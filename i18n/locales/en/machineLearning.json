@@ -181,6 +181,49 @@
       "reconnectLocalBridge": "Reconnect",
       "streamingMethodLabel": "Streaming method"
     },
+    "modelEval": {
+      "addLeft": "Left",
+      "addRight": "Right",
+      "back": "Back to training types",
+      "builderTitle": "Scenario",
+      "directionLeft": "Left",
+      "directionRight": "Right",
+      "empty": "Add at least one arrow. The counter shows how many movements are in the scenario.",
+      "errors": {
+        "bridgeOffline": "Local Bridge is not connected. Check the BCI WebSocket and try again.",
+        "empty": "Add at least one arrow.",
+        "runFailed": "The scenario could not be finished."
+      },
+      "kicker": "Model accuracy",
+      "modelHint": "The scenario checks the model loaded in NeuraFlow Local Bridge.",
+      "modelReady": "The bridge is connected. Predictions come from its local model.",
+      "modelTitle": "Local model",
+      "modelWaiting": "Waiting for the Local Bridge connection.",
+      "pageTitle": "Model accuracy",
+      "reconnect": "Reconnect",
+      "remove": "Remove step {index}",
+      "runner": {
+        "abort": "Abort"
+      },
+      "start": "Start scenario",
+      "step": "Step {index}",
+      "subtitle": "Add arrows one by one and see which movements the local model got wrong.",
+      "summary": {
+        "back": "Back to scenario",
+        "colConfidence": "Confidence",
+        "colDetected": "Detected",
+        "colExpected": "Expected",
+        "colTrial": "Trial",
+        "exportCsv": "Save CSV",
+        "none": "None",
+        "score": "Hits {hits} / {total}",
+        "title": "Summary",
+        "wrongEmpty": "The model detected every movement correctly.",
+        "wrongTitle": "Incorrectly detected movements"
+      },
+      "title": "Left / right scenario",
+      "total": "Total {count}"
+    },
     "models": {
       "dataForModelSubtitle": "Completed EEG sessions you can use as training data. Record new sessions on the Sessions page.",
       "dataForModelSubtitlePicking": "Tick the sessions to include, then tap Train model.",
@@ -223,6 +266,13 @@
       "historySubtitle": "{count} sessions recorded",
       "historyTitle": "Session History",
       "kicker": "EEG Sessions",
+      "modelEvalBack": "Back to training types",
+      "modelEvalCta": "Open",
+      "modelEvalFeature1": "You set the arrow order yourself",
+      "modelEvalFeature2": "Predictions from the Local Bridge model",
+      "modelEvalFeature3": "Summary of movements the model got wrong",
+      "modelEvalSubtitle": "Build a left/right scenario and check live whether the model detects the same arrow.",
+      "modelEvalTitle": "Model accuracy",
       "motorImageryBackToChoice": "Back to training types",
       "motorImageryBadge": "Available",
       "motorImageryCta": "Open",
